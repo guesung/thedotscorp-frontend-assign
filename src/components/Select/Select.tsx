@@ -127,9 +127,25 @@ function SelectTrigger({ children }: SelectTriggerProps) {
     listboxId,
     labelId,
     variant,
+    value,
   } = useSelectContext();
 
   const isDisabled = variant === "disabled";
+
+  const handleOpen = () => {
+    if (isDisabled) return;
+    setIsOpen(true);
+  };
+
+  // 열렸을 때 선택된 옵션의 인덱스로 highlightedIndex 초기화
+  useEffect(() => {
+    if (isOpen && value && options.length > 0) {
+      const selectedIndex = options.indexOf(value);
+      if (selectedIndex !== -1) {
+        setHighlightedIndex(selectedIndex);
+      }
+    }
+  }, [isOpen, value, options, setHighlightedIndex]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (isDisabled) return;
@@ -138,7 +154,7 @@ function SelectTrigger({ children }: SelectTriggerProps) {
       case "ArrowDown":
         e.preventDefault();
         if (!isOpen) {
-          setIsOpen(true);
+          handleOpen();
         } else {
           setHighlightedIndex(
             highlightedIndex < options.length - 1 ? highlightedIndex + 1 : 0
@@ -160,7 +176,7 @@ function SelectTrigger({ children }: SelectTriggerProps) {
           setIsOpen(false);
           triggerRef.current?.focus();
         } else {
-          setIsOpen(true);
+          handleOpen();
         }
         break;
       case "Escape":
@@ -176,6 +192,15 @@ function SelectTrigger({ children }: SelectTriggerProps) {
       ? `${listboxId}-option-${highlightedIndex}`
       : undefined;
 
+  const handleClick = () => {
+    if (isDisabled) return;
+    if (isOpen) {
+      setIsOpen(false);
+    } else {
+      handleOpen();
+    }
+  };
+
   return (
     <button
       ref={triggerRef}
@@ -188,7 +213,7 @@ function SelectTrigger({ children }: SelectTriggerProps) {
       aria-activedescendant={activeOptionId}
       aria-disabled={isDisabled}
       disabled={isDisabled}
-      onClick={() => !isDisabled && setIsOpen(!isOpen)}
+      onClick={handleClick}
       onKeyDown={handleKeyDown}
       className={`w-full px-3 py-2 text-left rounded-md shadow-sm focus:outline-none ${
         isDisabled
