@@ -11,14 +11,30 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Primary: Story = {
+export const Default: Story = {
   render: () => {
     const [value, setValue] = useState<string>();
 
     return (
-      <Select value={value} onChange={setValue}>
+      <Select value={value} onChange={setValue} variant="default">
         <Select.Label>과일 선택</Select.Label>
         <Select.Trigger>{value || "선택하세요"}</Select.Trigger>
+        <Select.Popup>
+          <Select.Option value="apple">사과</Select.Option>
+          <Select.Option value="banana">바나나</Select.Option>
+          <Select.Option value="orange">오렌지</Select.Option>
+        </Select.Popup>
+      </Select>
+    );
+  },
+};
+
+export const Disabled: Story = {
+  render: () => {
+    return (
+      <Select variant="disabled">
+        <Select.Label>과일 선택</Select.Label>
+        <Select.Trigger>선택하세요</Select.Trigger>
         <Select.Popup>
           <Select.Option value="apple">사과</Select.Option>
           <Select.Option value="banana">바나나</Select.Option>

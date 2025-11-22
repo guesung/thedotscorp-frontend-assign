@@ -10,6 +10,8 @@ import React, {
   type RefObject,
 } from "react";
 
+type SelectVariant = "default" | "disabled";
+
 interface SelectContextValue {
   isOpen: boolean;
   setIsOpen: (open: boolean) => void;
@@ -23,6 +25,7 @@ interface SelectContextValue {
   triggerRef: RefObject<HTMLButtonElement | null>;
   listboxId: string;
   labelId: string;
+  variant: SelectVariant;
 }
 
 const SelectContext = createContext<SelectContextValue | null>(null);
@@ -39,9 +42,15 @@ interface SelectRootProps {
   children: ReactNode;
   value?: string;
   onChange?: (value: string) => void;
+  variant?: SelectVariant;
 }
 
-function SelectRoot({ children, value, onChange }: SelectRootProps) {
+function SelectRoot({
+  children,
+  value,
+  onChange,
+  variant = "default",
+}: SelectRootProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const [options, setOptions] = useState<string[]>([]);
@@ -75,6 +84,7 @@ function SelectRoot({ children, value, onChange }: SelectRootProps) {
         triggerRef,
         listboxId,
         labelId,
+        variant,
       }}
     >
       <div className="relative w-64">{children}</div>
@@ -87,10 +97,15 @@ interface SelectLabelProps {
 }
 
 function SelectLabel({ children }: SelectLabelProps) {
-  const { labelId } = useSelectContext();
+  const { labelId, variant } = useSelectContext();
 
   return (
-    <label id={labelId} className="block mb-1 text-sm font-medium text-gray-700">
+    <label
+      id={labelId}
+      className={`block mb-1 text-sm font-medium ${
+        variant === "disabled" ? "text-gray-400" : "text-gray-700"
+      }`}
+    >
       {children}
     </label>
   );
@@ -111,9 +126,14 @@ function SelectTrigger({ children }: SelectTriggerProps) {
     triggerRef,
     listboxId,
     labelId,
+    variant,
   } = useSelectContext();
 
+  const isDisabled = variant === "disabled";
+
   const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (isDisabled) return;
+
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
@@ -151,9 +171,10 @@ function SelectTrigger({ children }: SelectTriggerProps) {
     }
   };
 
-  const activeOptionId = isOpen && options[highlightedIndex]
-    ? `${listboxId}-option-${highlightedIndex}`
-    : undefined;
+  const activeOptionId =
+    isOpen && options[highlightedIndex]
+      ? `${listboxId}-option-${highlightedIndex}`
+      : undefined;
 
   return (
     <button
@@ -165,9 +186,15 @@ function SelectTrigger({ children }: SelectTriggerProps) {
       aria-controls={listboxId}
       aria-labelledby={labelId}
       aria-activedescendant={activeOptionId}
-      onClick={() => setIsOpen(!isOpen)}
+      aria-disabled={isDisabled}
+      disabled={isDisabled}
+      onClick={() => !isDisabled && setIsOpen(!isOpen)}
       onKeyDown={handleKeyDown}
-      className="w-full px-3 py-2 text-left bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      className={`w-full px-3 py-2 text-left rounded-md shadow-sm focus:outline-none ${
+        isDisabled
+          ? "bg-gray-100 border border-gray-200 text-gray-400 cursor-not-allowed"
+          : "bg-white border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      }`}
     >
       {children}
     </button>
