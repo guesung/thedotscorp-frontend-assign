@@ -5,6 +5,7 @@ import React, {
   useEffect,
   useCallback,
   useRef,
+  useId,
   type ReactNode,
   type RefObject,
 } from "react";
@@ -20,6 +21,8 @@ interface SelectContextValue {
   registerOption: (value: string) => void;
   unregisterOption: (value: string) => void;
   triggerRef: RefObject<HTMLButtonElement | null>;
+  listboxId: string;
+  labelId: string;
 }
 
 const SelectContext = createContext<SelectContextValue | null>(null);
@@ -43,6 +46,9 @@ function SelectRoot({ children, value, onChange }: SelectRootProps) {
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const [options, setOptions] = useState<string[]>([]);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const id = useId();
+  const listboxId = `${id}-listbox`;
+  const labelId = `${id}-label`;
 
   const registerOption = useCallback((optionValue: string) => {
     setOptions((prev) =>
@@ -67,6 +73,8 @@ function SelectRoot({ children, value, onChange }: SelectRootProps) {
         registerOption,
         unregisterOption,
         triggerRef,
+        listboxId,
+        labelId,
       }}
     >
       <div className="relative w-64">{children}</div>
@@ -79,8 +87,10 @@ interface SelectLabelProps {
 }
 
 function SelectLabel({ children }: SelectLabelProps) {
+  const { labelId } = useSelectContext();
+
   return (
-    <label className="block mb-1 text-sm font-medium text-gray-700">
+    <label id={labelId} className="block mb-1 text-sm font-medium text-gray-700">
       {children}
     </label>
   );
@@ -99,6 +109,8 @@ function SelectTrigger({ children }: SelectTriggerProps) {
     options,
     onChange,
     triggerRef,
+    listboxId,
+    labelId,
   } = useSelectContext();
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -139,10 +151,20 @@ function SelectTrigger({ children }: SelectTriggerProps) {
     }
   };
 
+  const activeOptionId = isOpen && options[highlightedIndex]
+    ? `${listboxId}-option-${highlightedIndex}`
+    : undefined;
+
   return (
     <button
       ref={triggerRef}
       type="button"
+      role="combobox"
+      aria-haspopup="listbox"
+      aria-expanded={isOpen}
+      aria-controls={listboxId}
+      aria-labelledby={labelId}
+      aria-activedescendant={activeOptionId}
       onClick={() => setIsOpen(!isOpen)}
       onKeyDown={handleKeyDown}
       className="w-full px-3 py-2 text-left bg-white border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
@@ -157,12 +179,17 @@ interface SelectPopupProps {
 }
 
 function SelectPopup({ children }: SelectPopupProps) {
-  const { isOpen } = useSelectContext();
+  const { isOpen, listboxId, labelId } = useSelectContext();
 
   if (!isOpen) return null;
 
   return (
-    <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+    <ul
+      id={listboxId}
+      role="listbox"
+      aria-labelledby={labelId}
+      className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto"
+    >
       {children}
     </ul>
   );
@@ -182,10 +209,13 @@ function SelectOption({ children, value }: SelectOptionProps) {
     registerOption,
     unregisterOption,
     triggerRef,
+    listboxId,
+    value: selectedValue,
   } = useSelectContext();
 
   const index = options.indexOf(value);
   const isHighlighted = index === highlightedIndex;
+  const isSelected = value === selectedValue;
 
   useEffect(() => {
     registerOption(value);
@@ -200,6 +230,9 @@ function SelectOption({ children, value }: SelectOptionProps) {
 
   return (
     <li
+      id={`${listboxId}-option-${index}`}
+      role="option"
+      aria-selected={isSelected}
       onClick={handleClick}
       className={`px-3 py-2 cursor-pointer ${
         isHighlighted ? "bg-blue-500 text-white" : "hover:bg-gray-100"
