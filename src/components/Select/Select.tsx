@@ -4,7 +4,9 @@ import React, {
   useState,
   useEffect,
   useCallback,
+  useRef,
   type ReactNode,
+  type RefObject,
 } from "react";
 
 interface SelectContextValue {
@@ -17,6 +19,7 @@ interface SelectContextValue {
   options: string[];
   registerOption: (value: string) => void;
   unregisterOption: (value: string) => void;
+  triggerRef: RefObject<HTMLButtonElement | null>;
 }
 
 const SelectContext = createContext<SelectContextValue | null>(null);
@@ -39,6 +42,7 @@ function SelectRoot({ children, value, onChange }: SelectRootProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const [options, setOptions] = useState<string[]>([]);
+  const triggerRef = useRef<HTMLButtonElement>(null);
 
   const registerOption = useCallback((optionValue: string) => {
     setOptions((prev) =>
@@ -62,6 +66,7 @@ function SelectRoot({ children, value, onChange }: SelectRootProps) {
         options,
         registerOption,
         unregisterOption,
+        triggerRef,
       }}
     >
       <div className="relative w-64">{children}</div>
@@ -93,6 +98,7 @@ function SelectTrigger({ children }: SelectTriggerProps) {
     setHighlightedIndex,
     options,
     onChange,
+    triggerRef,
   } = useSelectContext();
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -120,6 +126,7 @@ function SelectTrigger({ children }: SelectTriggerProps) {
         if (isOpen && options[highlightedIndex]) {
           onChange?.(options[highlightedIndex]);
           setIsOpen(false);
+          triggerRef.current?.focus();
         } else {
           setIsOpen(true);
         }
@@ -127,12 +134,14 @@ function SelectTrigger({ children }: SelectTriggerProps) {
       case "Escape":
         e.preventDefault();
         setIsOpen(false);
+        triggerRef.current?.focus();
         break;
     }
   };
 
   return (
     <button
+      ref={triggerRef}
       type="button"
       onClick={() => setIsOpen(!isOpen)}
       onKeyDown={handleKeyDown}
@@ -172,6 +181,7 @@ function SelectOption({ children, value }: SelectOptionProps) {
     options,
     registerOption,
     unregisterOption,
+    triggerRef,
   } = useSelectContext();
 
   const index = options.indexOf(value);
@@ -185,9 +195,8 @@ function SelectOption({ children, value }: SelectOptionProps) {
   const handleClick = () => {
     onChange?.(value);
     setIsOpen(false);
+    triggerRef.current?.focus();
   };
-
-  console.log(isHighlighted);
 
   return (
     <li
