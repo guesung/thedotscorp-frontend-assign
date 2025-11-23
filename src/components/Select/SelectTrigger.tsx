@@ -21,12 +21,17 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
     selectedLabel,
   } = useSelectContext();
 
-  const findNextEnabledIndex = (currentIndex: number, direction: 1 | -1) => {
-    const len = options.length;
+  const findNextEnabledIndex = (
+    currentIndex: number,
+    direction: "up" | "down"
+  ) => {
+    const optionCount = options.length;
     let nextIndex = currentIndex;
 
-    for (let i = 0; i < len; i++) {
-      nextIndex = (nextIndex + direction + len) % len;
+    for (let i = 0; i < optionCount; i++) {
+      nextIndex =
+        (nextIndex + (direction === "down" ? 1 : -1) + optionCount) %
+        optionCount;
       if (options[nextIndex] && !options[nextIndex].disabled) {
         return nextIndex;
       }
@@ -58,16 +63,16 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
     switch (e.key) {
       case "ArrowDown":
         e.preventDefault();
-        if (!isOpen) {
-          handleOpen();
+        if (isOpen) {
+          setHighlightedIndex(findNextEnabledIndex(highlightedIndex, "down"));
         } else {
-          setHighlightedIndex(findNextEnabledIndex(highlightedIndex, 1));
+          handleOpen();
         }
         break;
       case "ArrowUp":
         e.preventDefault();
         if (isOpen) {
-          setHighlightedIndex(findNextEnabledIndex(highlightedIndex, -1));
+          setHighlightedIndex(findNextEnabledIndex(highlightedIndex, "up"));
         }
         break;
       case "Enter":
