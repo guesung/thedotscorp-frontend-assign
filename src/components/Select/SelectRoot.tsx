@@ -3,6 +3,7 @@ import {
   useCallback,
   useContext,
   useId,
+  useMemo,
   useRef,
   useState,
   type PropsWithChildren,
@@ -17,6 +18,12 @@ interface SelectOption {
   disabled: boolean;
 }
 
+interface RegisterOptionProps {
+  value: string;
+  label: string;
+  disabled?: boolean;
+}
+
 interface SelectContextValue {
   isOpen: boolean; // DropDown 열림 여부
   setIsOpen: (open: boolean) => void;
@@ -25,9 +32,9 @@ interface SelectContextValue {
   highlightedIndex: number; // 하이라이트된 옵션 인덱스
   setHighlightedIndex: (index: number) => void;
   options: SelectOption[]; // 옵션 목록
-  registerOption: (value: string, label: string, disabled?: boolean) => void;
+  registerOption: (props: RegisterOptionProps) => void;
   isOptionDisabled: (value: string) => boolean; // 옵션이 비활성화되었는지 확인
-  getSelectedLabel: () => string | undefined; // 선택된 옵션의 라벨 반환
+  selectedLabel?: string; // 선택된 옵션의 라벨
   triggerRef: RefObject<HTMLButtonElement | null>;
   listboxId: string; // 리스트 박스(Popup) ID
   labelId: string; // 라벨 ID
@@ -66,44 +73,26 @@ export function SelectRoot({
   const labelId = `${id}-label`;
 
   const registerOption = useCallback(
-    (optionValue: string, label: string, disabled?: boolean) => {
+    ({ value, label, disabled = false }: RegisterOptionProps) => {
       setOptions((prev) => {
-        const exists = prev.some((option) => option.value === optionValue);
-        if (exists) {
-          // 이미 존재하면 label과 disabled 상태 업데이트
-          return prev.map((option) =>
-            option.value === optionValue
-              ? { ...option, label, disabled: disabled ?? false }
-              : option
-          );
-        }
-        return [
-          ...prev,
-          { value: optionValue, label, disabled: disabled ?? false },
-        ];
+        const exists = prev.some((option) => option.value === value);
+        return exists ? prev : [...prev, { value: value, label, disabled }];
       });
     },
     []
   );
 
   const isOptionDisabled = useCallback(
-    (optionValue: string) => {
-      const option = options.find((option) => option.value === optionValue);
+    (value: string) => {
+      const option = options.find((option) => option.value === value);
       return option?.disabled ?? false;
     },
     [options]
   );
 
+  const selectedLabel = useMemo(() => {
+    return options.find((option) => option.value === value)?.label;
   }, [value, options]);
-  // const getSelectedLabel = useCallback(() => {
-  //   if (!value) return undefined;
-  //   const option = options.find((option) => option.value === value);
-  //   return option?.label;
-  // }, [value, options]);
-
-  const selectedLabel = options.find((option) => option.value === value)?.label;
-
-  console.log(selectedLabel);
 
   return (
     <SelectContext.Provider
@@ -117,7 +106,7 @@ export function SelectRoot({
         options,
         registerOption,
         isOptionDisabled,
-        getSelectedLabel,
+        selectedLabel,
         triggerRef,
         listboxId,
         labelId,
