@@ -43,7 +43,9 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
 
   useEffect(() => {
     if (isOpen && value && options.length > 0) {
-      const selectedIndex = options.findIndex((opt) => opt.value === value);
+      const selectedIndex = options.findIndex(
+        (option) => option.value === value
+      );
       if (selectedIndex !== -1) {
         setHighlightedIndex(selectedIndex);
       }

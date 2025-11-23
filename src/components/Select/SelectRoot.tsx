@@ -68,13 +68,13 @@ export function SelectRoot({
   const registerOption = useCallback(
     (optionValue: string, label: string, disabled?: boolean) => {
       setOptions((prev) => {
-        const exists = prev.some((opt) => opt.value === optionValue);
+        const exists = prev.some((option) => option.value === optionValue);
         if (exists) {
           // 이미 존재하면 label과 disabled 상태 업데이트
-          return prev.map((opt) =>
-            opt.value === optionValue
-              ? { ...opt, label, disabled: disabled ?? false }
-              : opt
+          return prev.map((option) =>
+            option.value === optionValue
+              ? { ...option, label, disabled: disabled ?? false }
+              : option
           );
         }
         return [
@@ -88,7 +88,7 @@ export function SelectRoot({
 
   const isOptionDisabled = useCallback(
     (optionValue: string) => {
-      const option = options.find((opt) => opt.value === optionValue);
+      const option = options.find((option) => option.value === optionValue);
       return option?.disabled ?? false;
     },
     [options]
@@ -96,7 +96,7 @@ export function SelectRoot({
 
   const getSelectedLabel = useCallback(() => {
     if (!value) return undefined;
-    const option = options.find((opt) => opt.value === value);
+    const option = options.find((option) => option.value === value);
     return option?.label;
   }, [value, options]);
 
