@@ -13,6 +13,7 @@ type SelectVariant = "default" | "disabled";
 
 interface SelectOption {
   value: string;
+  label: string;
   disabled: boolean;
 }
 
@@ -24,9 +25,9 @@ interface SelectContextValue {
   highlightedIndex: number; // 하이라이트된 옵션 인덱스
   setHighlightedIndex: (index: number) => void;
   options: SelectOption[]; // 옵션 목록
-  registerOption: (value: string, disabled?: boolean) => void;
-  unregisterOption: (value: string) => void;
+  registerOption: (value: string, label: string, disabled?: boolean) => void;
   isOptionDisabled: (value: string) => boolean; // 옵션이 비활성화되었는지 확인
+  getSelectedLabel: () => string | undefined; // 선택된 옵션의 라벨 반환
   triggerRef: RefObject<HTMLButtonElement | null>;
   listboxId: string; // 리스트 박스(Popup) ID
   labelId: string; // 라벨 ID
@@ -65,26 +66,25 @@ export function SelectRoot({
   const labelId = `${id}-label`;
 
   const registerOption = useCallback(
-    (optionValue: string, disabled?: boolean) => {
+    (optionValue: string, label: string, disabled?: boolean) => {
       setOptions((prev) => {
         const exists = prev.some((opt) => opt.value === optionValue);
         if (exists) {
-          // 이미 존재하면 disabled 상태만 업데이트
+          // 이미 존재하면 label과 disabled 상태 업데이트
           return prev.map((opt) =>
             opt.value === optionValue
-              ? { ...opt, disabled: disabled ?? false }
+              ? { ...opt, label, disabled: disabled ?? false }
               : opt
           );
         }
-        return [...prev, { value: optionValue, disabled: disabled ?? false }];
+        return [
+          ...prev,
+          { value: optionValue, label, disabled: disabled ?? false },
+        ];
       });
     },
     []
   );
-
-  const unregisterOption = useCallback((optionValue: string) => {
-    setOptions((prev) => prev.filter((opt) => opt.value !== optionValue));
-  }, []);
 
   const isOptionDisabled = useCallback(
     (optionValue: string) => {
@@ -93,6 +93,12 @@ export function SelectRoot({
     },
     [options]
   );
+
+  const getSelectedLabel = useCallback(() => {
+    if (!value) return undefined;
+    const option = options.find((opt) => opt.value === value);
+    return option?.label;
+  }, [value, options]);
 
   return (
     <SelectContext.Provider
@@ -105,8 +111,8 @@ export function SelectRoot({
         setHighlightedIndex,
         options,
         registerOption,
-        unregisterOption,
         isOptionDisabled,
+        getSelectedLabel,
         triggerRef,
         listboxId,
         labelId,
