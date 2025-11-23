@@ -23,7 +23,7 @@ export function SelectOption({
     value: selectedValue,
   } = useSelectContext();
 
-  const index = options.indexOf(value);
+  const index = options.findIndex((opt) => opt.value === value);
   const isHighlighted = index === highlightedIndex;
   const isSelected = value === selectedValue;
 

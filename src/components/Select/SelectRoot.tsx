@@ -10,6 +10,12 @@ import {
 } from "react";
 
 type SelectVariant = "default" | "disabled";
+
+interface SelectOption {
+  value: string;
+  disabled: boolean;
+}
+
 interface SelectContextValue {
   isOpen: boolean; // DropDown 열림 여부
   setIsOpen: (open: boolean) => void;
@@ -17,8 +23,7 @@ interface SelectContextValue {
   onChange?: (value: string) => void;
   highlightedIndex: number; // 하이라이트된 옵션 인덱스
   setHighlightedIndex: (index: number) => void;
-  options: string[]; // 옵션 목록
-  disabledOptions: Set<string>; // 비활성화된 옵션 목록
+  options: SelectOption[]; // 옵션 목록
   registerOption: (value: string, disabled?: boolean) => void;
   unregisterOption: (value: string) => void;
   isOptionDisabled: (value: string) => boolean; // 옵션이 비활성화되었는지 확인
@@ -53,10 +58,7 @@ export function SelectRoot({
 }: SelectRootProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
-  const [options, setOptions] = useState<string[]>([]);
-  const [disabledOptions, setDisabledOptions] = useState<Set<string>>(
-    new Set(),
-  );
+  const [options, setOptions] = useState<SelectOption[]>([]);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const id = useId();
   const listboxId = `${id}-listbox`;
@@ -64,28 +66,32 @@ export function SelectRoot({
 
   const registerOption = useCallback(
     (optionValue: string, disabled?: boolean) => {
-      setOptions((prev) =>
-        prev.includes(optionValue) ? prev : [...prev, optionValue],
-      );
-      if (disabled) {
-        setDisabledOptions((prev) => new Set(prev).add(optionValue));
-      }
+      setOptions((prev) => {
+        const exists = prev.some((opt) => opt.value === optionValue);
+        if (exists) {
+          // 이미 존재하면 disabled 상태만 업데이트
+          return prev.map((opt) =>
+            opt.value === optionValue
+              ? { ...opt, disabled: disabled ?? false }
+              : opt
+          );
+        }
+        return [...prev, { value: optionValue, disabled: disabled ?? false }];
+      });
     },
-    [],
+    []
   );
 
   const unregisterOption = useCallback((optionValue: string) => {
-    setOptions((prev) => prev.filter((v) => v !== optionValue));
-    setDisabledOptions((prev) => {
-      const newSet = new Set(prev);
-      newSet.delete(optionValue);
-      return newSet;
-    });
+    setOptions((prev) => prev.filter((opt) => opt.value !== optionValue));
   }, []);
 
   const isOptionDisabled = useCallback(
-    (optionValue: string) => disabledOptions.has(optionValue),
-    [disabledOptions],
+    (optionValue: string) => {
+      const option = options.find((opt) => opt.value === optionValue);
+      return option?.disabled ?? false;
+    },
+    [options]
   );
 
   return (
@@ -98,7 +104,6 @@ export function SelectRoot({
         highlightedIndex,
         setHighlightedIndex,
         options,
-        disabledOptions,
         registerOption,
         unregisterOption,
         isOptionDisabled,

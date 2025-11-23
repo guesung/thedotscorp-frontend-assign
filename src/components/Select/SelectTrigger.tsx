@@ -18,7 +18,6 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
     labelId,
     variant,
     value,
-    isOptionDisabled,
   } = useSelectContext();
 
   const findNextEnabledIndex = (currentIndex: number, direction: 1 | -1) => {
@@ -27,7 +26,7 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
 
     for (let i = 0; i < len; i++) {
       nextIndex = (nextIndex + direction + len) % len;
-      if (!isOptionDisabled(options[nextIndex])) {
+      if (options[nextIndex] && !options[nextIndex].disabled) {
         return nextIndex;
       }
     }
@@ -43,7 +42,7 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
 
   useEffect(() => {
     if (isOpen && value && options.length > 0) {
-      const selectedIndex = options.indexOf(value);
+      const selectedIndex = options.findIndex((opt) => opt.value === value);
       if (selectedIndex !== -1) {
         setHighlightedIndex(selectedIndex);
       }
@@ -73,9 +72,9 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
         if (
           isOpen &&
           options[highlightedIndex] &&
-          !isOptionDisabled(options[highlightedIndex])
+          !options[highlightedIndex].disabled
         ) {
-          onChange?.(options[highlightedIndex]);
+          onChange?.(options[highlightedIndex].value);
           setIsOpen(false);
           triggerRef.current?.focus();
         } else if (!isOpen) {
@@ -91,7 +90,7 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
   };
 
   const activeOptionId =
-    isOpen && options[highlightedIndex]
+    isOpen && options[highlightedIndex] && !options[highlightedIndex].disabled
       ? `${listboxId}-option-${highlightedIndex}`
       : undefined;
 
