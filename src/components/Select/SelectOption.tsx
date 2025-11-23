@@ -47,7 +47,7 @@ export function SelectOption({
 
   useEffect(() => {
     const label = nodeToString(children);
-    registerOption(value, label, disabled);
+    registerOption({ value, label, disabled });
   }, [value, children, disabled, registerOption]);
 
   const handleClick = () => {

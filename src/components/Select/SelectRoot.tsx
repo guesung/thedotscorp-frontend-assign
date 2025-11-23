@@ -94,11 +94,16 @@ export function SelectRoot({
     [options]
   );
 
-  const getSelectedLabel = useCallback(() => {
-    if (!value) return undefined;
-    const option = options.find((option) => option.value === value);
-    return option?.label;
   }, [value, options]);
+  // const getSelectedLabel = useCallback(() => {
+  //   if (!value) return undefined;
+  //   const option = options.find((option) => option.value === value);
+  //   return option?.label;
+  // }, [value, options]);
+
+  const selectedLabel = options.find((option) => option.value === value)?.label;
+
+  console.log(selectedLabel);
 
   return (
     <SelectContext.Provider
