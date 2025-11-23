@@ -2,14 +2,20 @@ import {
   createContext,
   useContext,
   useId,
+  useState,
+  useEffect,
   type PropsWithChildren,
 } from "react";
+
+type ModalAnimation = "fade" | "slide" | "none";
 
 interface ModalContextValue {
   isOpen: boolean;
   onClose: () => void;
   titleId: string;
   descriptionId: string;
+  animation: ModalAnimation;
+  isAnimating: boolean;
 }
 
 const ModalContext = createContext<ModalContextValue | null>(null);
@@ -26,14 +32,41 @@ export function useModalContext() {
 interface ModalRootProps extends PropsWithChildren {
   isOpen: boolean;
   onClose: () => void;
+  animation?: ModalAnimation;
 }
 
-export function ModalRoot({ children, isOpen, onClose }: ModalRootProps) {
+export function ModalRoot({
+  children,
+  isOpen,
+  onClose,
+  animation = "fade",
+}: ModalRootProps) {
   const id = useId();
   const titleId = `${id}-title`;
   const descriptionId = `${id}-description`;
 
-  if (!isOpen) {
+  // 애니메이션 상태 관리
+  const [shouldRender, setShouldRender] = useState(isOpen);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if (isOpen) {
+      setShouldRender(true);
+      // 다음 프레임에서 애니메이션 시작
+      requestAnimationFrame(() => {
+        setIsAnimating(true);
+      });
+    } else {
+      setIsAnimating(false);
+      // 애니메이션 종료 후 언마운트
+      const timer = setTimeout(() => {
+        setShouldRender(false);
+      }, 200); // 애니메이션 duration과 일치
+      return () => clearTimeout(timer);
+    }
+  }, [isOpen]);
+
+  if (!shouldRender) {
     return null;
   }
 
@@ -44,6 +77,8 @@ export function ModalRoot({ children, isOpen, onClose }: ModalRootProps) {
         onClose,
         titleId,
         descriptionId,
+        animation,
+        isAnimating,
       }}
     >
       {children}

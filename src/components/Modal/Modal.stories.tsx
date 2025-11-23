@@ -2,19 +2,18 @@ import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import Modal from "./Modal";
 
-const meta = {
+const meta: Meta = {
   title: "Components/Modal",
-  component: Modal,
   tags: ["autodocs"],
   parameters: {
     layout: "centered",
   },
-} satisfies Meta<typeof Modal>;
+};
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj;
 
-// 기본 모달
+// 기본 모달 (Fade 애니메이션)
 export const Default: Story = {
   render: function Render() {
     const [isOpen, setIsOpen] = useState(false);
@@ -62,6 +61,47 @@ export const Default: Story = {
   },
 };
 
+// Slide 애니메이션
+export const SlideAnimation: Story = {
+  render: function Render() {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+      <>
+        <button
+          onClick={() => setIsOpen(true)}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          Slide 모달 열기
+        </button>
+
+        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} animation="slide">
+          <Modal.Portal>
+            <Modal.Overlay>
+              <Modal.Content>
+                <Modal.Header>Slide 애니메이션</Modal.Header>
+                <Modal.Body>
+                  <p className="text-gray-600">
+                    이 모달은 위에서 아래로 슬라이드되며 나타납니다.
+                  </p>
+                </Modal.Body>
+                <Modal.Footer>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  >
+                    확인
+                  </button>
+                </Modal.Footer>
+              </Modal.Content>
+            </Modal.Overlay>
+          </Modal.Portal>
+        </Modal>
+      </>
+    );
+  },
+};
+
 // 닫기 버튼이 있는 모달
 export const WithCloseButton: Story = {
   render: function Render() {
@@ -79,7 +119,7 @@ export const WithCloseButton: Story = {
         <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
           <Modal.Portal>
             <Modal.Overlay>
-              <Modal.Content className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 relative focus:outline-none">
+              <Modal.Content className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 relative focus:outline-none transition-all duration-200 ease-out">
                 <Modal.CloseButton />
                 <Modal.Header>알림</Modal.Header>
                 <Modal.Body>
@@ -163,7 +203,7 @@ export const LongContent: Story = {
         <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
           <Modal.Portal>
             <Modal.Overlay>
-              <Modal.Content className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[80vh] flex flex-col focus:outline-none">
+              <Modal.Content className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4 max-h-[80vh] flex flex-col focus:outline-none transition-all duration-200 ease-out">
                 <Modal.Header>이용약관</Modal.Header>
                 <Modal.Body className="px-6 py-4 overflow-y-auto flex-1">
                   <div className="space-y-4 text-gray-600">
@@ -189,6 +229,80 @@ export const LongContent: Story = {
                     className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
                   >
                     동의
+                  </button>
+                </Modal.Footer>
+              </Modal.Content>
+            </Modal.Overlay>
+          </Modal.Portal>
+        </Modal>
+      </>
+    );
+  },
+};
+
+// 폼이 있는 모달 (Focus Trap 테스트)
+export const WithForm: Story = {
+  render: function Render() {
+    const [isOpen, setIsOpen] = useState(false);
+
+    return (
+      <>
+        <button
+          onClick={() => setIsOpen(true)}
+          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+        >
+          로그인 모달 열기
+        </button>
+
+        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
+          <Modal.Portal>
+            <Modal.Overlay>
+              <Modal.Content>
+                <Modal.Header>로그인</Modal.Header>
+                <Modal.Body>
+                  <form className="space-y-4">
+                    <div>
+                      <label
+                        htmlFor="email"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        이메일
+                      </label>
+                      <input
+                        id="email"
+                        type="email"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="email@example.com"
+                      />
+                    </div>
+                    <div>
+                      <label
+                        htmlFor="password"
+                        className="block text-sm font-medium text-gray-700 mb-1"
+                      >
+                        비밀번호
+                      </label>
+                      <input
+                        id="password"
+                        type="password"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="••••••••"
+                      />
+                    </div>
+                  </form>
+                </Modal.Body>
+                <Modal.Footer>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
+                  >
+                    취소
+                  </button>
+                  <button
+                    onClick={() => setIsOpen(false)}
+                    className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                  >
+                    로그인
                   </button>
                 </Modal.Footer>
               </Modal.Content>
