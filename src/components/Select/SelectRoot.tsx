@@ -11,19 +11,19 @@ import {
 
 type SelectVariant = "default" | "disabled";
 interface SelectContextValue {
-  isOpen: boolean;
+  isOpen: boolean; // DropDown 열림 여부
   setIsOpen: (open: boolean) => void;
-  value?: string;
+  value?: string; // 선택된 값
   onChange?: (value: string) => void;
-  highlightedIndex: number;
+  highlightedIndex: number; // 하이라이트된 옵션 인덱스
   setHighlightedIndex: (index: number) => void;
-  options: string[];
+  options: string[]; // 옵션 목록
   registerOption: (value: string) => void;
   unregisterOption: (value: string) => void;
   triggerRef: RefObject<HTMLButtonElement | null>;
-  listboxId: string;
-  labelId: string;
-  variant: SelectVariant;
+  listboxId: string; // 리스트 박스(Popup) ID
+  labelId: string; // 라벨 ID
+  variant: SelectVariant; // 변경 가능한 버전 (default, disabled)
 }
 
 const SelectContext = createContext<SelectContextValue | null>(null);
