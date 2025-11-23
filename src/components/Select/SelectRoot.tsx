@@ -33,7 +33,6 @@ interface SelectContextValue {
   setHighlightedIndex: (index: number) => void;
   options: SelectOption[]; // 옵션 목록
   registerOption: (props: RegisterOptionProps) => void;
-  isOptionDisabled: (value: string) => boolean; // 옵션이 비활성화되었는지 확인
   selectedLabel?: string; // 선택된 옵션의 라벨
   triggerRef: RefObject<HTMLButtonElement | null>;
   listboxId: string; // 리스트 박스(Popup) ID
@@ -82,14 +81,6 @@ export function SelectRoot({
     []
   );
 
-  const isOptionDisabled = useCallback(
-    (value: string) => {
-      const option = options.find((option) => option.value === value);
-      return option?.disabled ?? false;
-    },
-    [options]
-  );
-
   const selectedLabel = useMemo(() => {
     return options.find((option) => option.value === value)?.label;
   }, [value, options]);
@@ -105,7 +96,6 @@ export function SelectRoot({
         setHighlightedIndex,
         options,
         registerOption,
-        isOptionDisabled,
         selectedLabel,
         triggerRef,
         listboxId,
