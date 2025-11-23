@@ -1,3 +1,4 @@
+import { SelectGroup } from "./SelectGroup";
 import { SelectLabel } from "./SelectLabel";
 import { SelectOption } from "./SelectOption";
 import { SelectPopup } from "./SelectPopup";
@@ -9,6 +10,7 @@ const Select = Object.assign(SelectRoot, {
   Trigger: SelectTrigger,
   Popup: SelectPopup,
   Option: SelectOption,
+  Group: SelectGroup,
 });
 
 export default Select;
