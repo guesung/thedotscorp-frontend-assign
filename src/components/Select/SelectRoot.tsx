@@ -55,7 +55,7 @@ export function SelectRoot({
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const [options, setOptions] = useState<string[]>([]);
   const [disabledOptions, setDisabledOptions] = useState<Set<string>>(
-    new Set()
+    new Set(),
   );
   const triggerRef = useRef<HTMLButtonElement>(null);
   const id = useId();
@@ -65,13 +65,13 @@ export function SelectRoot({
   const registerOption = useCallback(
     (optionValue: string, disabled?: boolean) => {
       setOptions((prev) =>
-        prev.includes(optionValue) ? prev : [...prev, optionValue]
+        prev.includes(optionValue) ? prev : [...prev, optionValue],
       );
       if (disabled) {
         setDisabledOptions((prev) => new Set(prev).add(optionValue));
       }
     },
-    []
+    [],
   );
 
   const unregisterOption = useCallback((optionValue: string) => {
@@ -85,7 +85,7 @@ export function SelectRoot({
 
   const isOptionDisabled = useCallback(
     (optionValue: string) => disabledOptions.has(optionValue),
-    [disabledOptions]
+    [disabledOptions],
   );
 
   return (
