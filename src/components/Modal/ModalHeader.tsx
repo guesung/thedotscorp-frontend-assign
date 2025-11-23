@@ -1,0 +1,19 @@
+import type { PropsWithChildren } from "react";
+import { useModalContext } from "./ModalRoot";
+
+interface ModalHeaderProps extends PropsWithChildren {
+  className?: string;
+}
+
+export function ModalHeader({ children, className }: ModalHeaderProps) {
+  const { titleId } = useModalContext();
+
+  return (
+    <header
+      id={titleId}
+      className={className ?? "px-6 py-4 border-b border-gray-200"}
+    >
+      <h2 className="text-lg font-semibold text-gray-900">{children}</h2>
+    </header>
+  );
+}
