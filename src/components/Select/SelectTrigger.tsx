@@ -1,6 +1,5 @@
-import type { KeyboardEvent, ReactNode } from "react";
+import { useEffect, type KeyboardEvent, type ReactNode } from "react";
 import { useSelectContext } from "./SelectRoot";
-import { useEffect } from "storybook/internal/preview-api";
 
 interface SelectTriggerProps {
   children: ReactNode;
