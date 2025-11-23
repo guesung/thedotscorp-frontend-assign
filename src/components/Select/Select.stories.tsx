@@ -13,10 +13,8 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: function Default() {
-    const [value, setValue] = useState<string>();
-
     return (
-      <Select value={value} onChange={setValue} variant="default">
+      <Select variant="default">
         <Select.Label>과일 선택</Select.Label>
         <Select.Trigger>선택하세요</Select.Trigger>
         <Select.Popup>
@@ -46,13 +44,11 @@ export const Disabled: Story = {
 };
 
 function DisabledOptionExample() {
-  const [value, setValue] = useState<string>();
-
   return (
-      <Select value={value} onChange={setValue}>
-        <Select.Label>과일 선택 (일부 품절)</Select.Label>
-        <Select.Trigger>선택하세요</Select.Trigger>
-        <Select.Popup>
+    <Select>
+      <Select.Label>과일 선택 (일부 품절)</Select.Label>
+      <Select.Trigger>선택하세요</Select.Trigger>
+      <Select.Popup>
         <Select.Option value="apple">사과</Select.Option>
         <Select.Option value="banana" disabled>
           바나나 (품절)
@@ -72,13 +68,11 @@ export const DisabledOption: Story = {
 };
 
 function GroupedOptionsExample() {
-  const [value, setValue] = useState<string>();
-
   return (
-      <Select value={value} onChange={setValue}>
-        <Select.Label>음식 선택</Select.Label>
-        <Select.Trigger>선택하세요</Select.Trigger>
-        <Select.Popup>
+    <Select>
+      <Select.Label>음식 선택</Select.Label>
+      <Select.Trigger>선택하세요</Select.Trigger>
+      <Select.Popup>
         <Select.Group label="과일">
           <Select.Option value="apple">사과</Select.Option>
           <Select.Option value="banana">바나나</Select.Option>

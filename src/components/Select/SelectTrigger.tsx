@@ -12,12 +12,12 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
     highlightedIndex,
     setHighlightedIndex,
     options,
-    onChange,
+    setSelectedValue,
     triggerRef,
     listboxId,
     labelId,
     variant,
-    value,
+    selectedValue,
     selectedLabel,
   } = useSelectContext();
 
@@ -42,15 +42,15 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
   };
 
   useEffect(() => {
-    if (isOpen && value && options.length > 0) {
+    if (isOpen && selectedValue && options.length > 0) {
       const selectedIndex = options.findIndex(
-        (option) => option.value === value
+        (option) => option.value === selectedValue
       );
       if (selectedIndex !== -1) {
         setHighlightedIndex(selectedIndex);
       }
     }
-  }, [isOpen, value, options, setHighlightedIndex]);
+  }, [isOpen, selectedValue, options, setHighlightedIndex]);
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (isDisabled) return;
@@ -77,7 +77,7 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
           options[highlightedIndex] &&
           !options[highlightedIndex].disabled
         ) {
-          onChange?.(options[highlightedIndex].value);
+          setSelectedValue(options[highlightedIndex].value);
           setIsOpen(false);
           triggerRef.current?.focus();
         } else if (!isOpen) {

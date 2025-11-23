@@ -31,14 +31,14 @@ export function SelectOption({
   disabled = false,
 }: SelectOptionProps) {
   const {
-    onChange,
+    setSelectedValue,
     setIsOpen,
     highlightedIndex,
     options,
     registerOption,
     triggerRef,
     listboxId,
-    value: selectedValue,
+    selectedValue,
   } = useSelectContext();
 
   const index = options.findIndex((option) => option.value === value);
@@ -52,7 +52,7 @@ export function SelectOption({
 
   const handleClick = () => {
     if (disabled) return;
-    onChange?.(value);
+    setSelectedValue(value);
     setIsOpen(false);
     triggerRef.current?.focus();
   };
