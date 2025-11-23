@@ -30,6 +30,7 @@ interface SelectContextValue {
 
 const SelectContext = createContext<SelectContextValue | null>(null);
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useSelectContext() {
   const context = useContext(SelectContext);
   if (!context) {
