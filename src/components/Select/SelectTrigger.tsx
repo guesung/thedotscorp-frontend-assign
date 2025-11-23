@@ -18,7 +18,21 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
     labelId,
     variant,
     value,
+    isOptionDisabled,
   } = useSelectContext();
+
+  const findNextEnabledIndex = (currentIndex: number, direction: 1 | -1) => {
+    const len = options.length;
+    let nextIndex = currentIndex;
+
+    for (let i = 0; i < len; i++) {
+      nextIndex = (nextIndex + direction + len) % len;
+      if (!isOptionDisabled(options[nextIndex])) {
+        return nextIndex;
+      }
+    }
+    return currentIndex;
+  };
 
   const isDisabled = variant === "disabled";
 
@@ -27,7 +41,6 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
     setIsOpen(true);
   };
 
-  // 열렸을 때 선택된 옵션의 인덱스로 highlightedIndex 초기화
   useEffect(() => {
     if (isOpen && value && options.length > 0) {
       const selectedIndex = options.indexOf(value);
@@ -46,26 +59,26 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
         if (!isOpen) {
           handleOpen();
         } else {
-          setHighlightedIndex(
-            highlightedIndex < options.length - 1 ? highlightedIndex + 1 : 0
-          );
+          setHighlightedIndex(findNextEnabledIndex(highlightedIndex, 1));
         }
         break;
       case "ArrowUp":
         e.preventDefault();
         if (isOpen) {
-          setHighlightedIndex(
-            highlightedIndex > 0 ? highlightedIndex - 1 : options.length - 1
-          );
+          setHighlightedIndex(findNextEnabledIndex(highlightedIndex, -1));
         }
         break;
       case "Enter":
         e.preventDefault();
-        if (isOpen && options[highlightedIndex]) {
+        if (
+          isOpen &&
+          options[highlightedIndex] &&
+          !isOptionDisabled(options[highlightedIndex])
+        ) {
           onChange?.(options[highlightedIndex]);
           setIsOpen(false);
           triggerRef.current?.focus();
-        } else {
+        } else if (!isOpen) {
           handleOpen();
         }
         break;

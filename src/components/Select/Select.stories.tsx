@@ -44,3 +44,27 @@ export const Disabled: Story = {
     );
   },
 };
+
+export const DisabledOption: Story = {
+  render: () => {
+    const [value, setValue] = useState<string>();
+
+    return (
+      <Select value={value} onChange={setValue}>
+        <Select.Label>과일 선택 (일부 품절)</Select.Label>
+        <Select.Trigger>{value || "선택하세요"}</Select.Trigger>
+        <Select.Popup>
+          <Select.Option value="apple">사과</Select.Option>
+          <Select.Option value="banana" disabled>
+            바나나 (품절)
+          </Select.Option>
+          <Select.Option value="orange">오렌지</Select.Option>
+          <Select.Option value="grape" disabled>
+            포도 (품절)
+          </Select.Option>
+          <Select.Option value="mango">망고</Select.Option>
+        </Select.Popup>
+      </Select>
+    );
+  },
+};
