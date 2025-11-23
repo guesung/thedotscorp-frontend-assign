@@ -1,93 +1,58 @@
-import {
-  useEffect,
-  useRef,
-  useCallback,
-  type PropsWithChildren,
-} from "react";
+import { useEffect, useRef, type PropsWithChildren } from "react";
 import { useModalContext } from "./ModalRoot";
+import { useFocusTrap, getFocusableElements } from "../../hooks/useFocusTrap";
 
 interface ModalContentProps extends PropsWithChildren {
   className?: string;
 }
 
-// 포커스 가능한 요소 셀렉터
-const FOCUSABLE_SELECTOR =
-  'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-
 export function ModalContent({ children, className }: ModalContentProps) {
   const { onClose, titleId, descriptionId, animation, isAnimating } =
     useModalContext();
+
   const contentRef = useRef<HTMLDivElement>(null);
   const previousActiveElementRef = useRef<HTMLElement | null>(null);
 
-  // 포커스 가능한 요소들 가져오기
-  const getFocusableElements = useCallback(() => {
-    if (!contentRef.current) return [];
-    return Array.from(
-      contentRef.current.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
-    ).filter((el) => !el.hasAttribute("disabled") && el.tabIndex !== -1);
-  }, []);
+  // 포커스 트랩 (Tab 키 순환)
+  useFocusTrap(contentRef);
 
-  // ESC 키로 닫기 + Focus Trap
+  // ESC 키로 닫기
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         onClose();
-        return;
-      }
-
-      // Focus Trap: Tab 키 순환
-      if (e.key === "Tab") {
-        const focusableElements = getFocusableElements();
-        if (focusableElements.length === 0) return;
-
-        const firstElement = focusableElements[0];
-        const lastElement = focusableElements[focusableElements.length - 1];
-
-        if (e.shiftKey) {
-          // Shift + Tab: 뒤로 이동
-          if (document.activeElement === firstElement) {
-            e.preventDefault();
-            lastElement.focus();
-          }
-        } else {
-          // Tab: 앞으로 이동
-          if (document.activeElement === lastElement) {
-            e.preventDefault();
-            firstElement.focus();
-          }
-        }
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [onClose, getFocusableElements]);
+  }, [onClose]);
 
-  // 포커스 관리: 모달 열릴 때 포커스 이동, 닫힐 때 복원
+  // 포커스 관리: 열릴 때 포커스 이동, 닫힐 때 복원
   useEffect(() => {
-    // 이전 포커스 요소 저장
     previousActiveElementRef.current = document.activeElement as HTMLElement;
 
-    // 모달 내 첫 번째 포커스 가능한 요소로 포커스 이동
-    const focusableElements = getFocusableElements();
+    const focusableElements = getFocusableElements(contentRef.current);
     if (focusableElements.length > 0) {
       focusableElements[0].focus();
     } else {
       contentRef.current?.focus();
     }
 
-    // body 스크롤 방지
+    return () => {
+      previousActiveElementRef.current?.focus();
+    };
+  }, []);
+
+  // body 스크롤 방지
+  useEffect(() => {
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     return () => {
-      // 포커스 복원
-      previousActiveElementRef.current?.focus();
-      // 스크롤 복원
       document.body.style.overflow = originalOverflow;
     };
-  }, [getFocusableElements]);
+  }, []);
 
   // 배경 클릭 이벤트 전파 방지
   const handleContentClick = (e: React.MouseEvent) => {
