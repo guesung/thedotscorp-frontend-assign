@@ -53,11 +53,16 @@ export function useSelectContext() {
 
 interface SelectRootProps extends PropsWithChildren {
   variant?: SelectVariant;
+  defaultSelectedValue?: string;
 }
 
-export function SelectRoot({ children, variant = "default" }: SelectRootProps) {
+export function SelectRoot({
+  children,
+  variant = "default",
+  defaultSelectedValue,
+}: SelectRootProps) {
   const [selectedValue, setSelectedValue] = useState<string | undefined>(
-    undefined
+    defaultSelectedValue
   );
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
