@@ -54,12 +54,14 @@ export function useSelectContext() {
 interface SelectRootProps extends PropsWithChildren {
   variant?: SelectVariant;
   defaultSelectedValue?: string;
+  width?: string;
 }
 
 export function SelectRoot({
   children,
   variant = "default",
   defaultSelectedValue,
+  width = "16rem",
 }: SelectRootProps) {
   const [selectedValue, setSelectedValue] = useState<string | undefined>(
     defaultSelectedValue
@@ -104,7 +106,9 @@ export function SelectRoot({
         variant,
       }}
     >
-      <div className="relative w-64">{children}</div>
+      <div className="relative" style={{ width }}>
+        {children}
+      </div>
     </SelectContext.Provider>
   );
 }
