@@ -2,6 +2,8 @@ import { createContext, useContext, useId, useState, useEffect, useRef, useMemo,
 import { ModalPortal } from './ModalPortal';
 import { ModalOverlay } from './ModalOverlay';
 
+const ANIMATION_DURATION = 200;
+
 interface ModalContextValue {
   isOpen: boolean;
   onClose: () => void;
@@ -63,7 +65,7 @@ export function ModalRoot({
           previousActiveElementRef.current?.focus();
           previousActiveElementRef.current = null;
         }
-      }, 200);
+      }, ANIMATION_DURATION);
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
