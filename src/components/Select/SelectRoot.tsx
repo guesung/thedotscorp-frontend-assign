@@ -14,6 +14,7 @@ import {
   type ReactNode,
   type RefObject,
 } from 'react';
+import { useClickOutside } from '@/hooks/useClickOutside';
 import { SelectOption, type SelectOptionProps } from './SelectOption';
 
 type SelectVariant = 'default' | 'disabled';
@@ -73,7 +74,14 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function Sel
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const id = useId();
+
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  useClickOutside(containerRef, handleClose);
   const listboxId = `${id}-listbox`;
   const labelId = `${id}-label`;
 
@@ -185,7 +193,7 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function Sel
 
   return (
     <SelectContext.Provider value={contextValue}>
-      <div className="relative" style={{ width }}>
+      <div ref={containerRef} className="relative" style={{ width }}>
         {children}
       </div>
     </SelectContext.Provider>
