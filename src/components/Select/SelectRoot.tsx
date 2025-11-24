@@ -1,8 +1,10 @@
 import {
   createContext,
+  forwardRef,
   useCallback,
   useContext,
   useId,
+  useImperativeHandle,
   useMemo,
   useRef,
   useState,
@@ -52,6 +54,15 @@ export function useSelectContext() {
   return context;
 }
 
+export interface SelectHandle {
+  open: () => void;
+  close: () => void;
+  toggle: () => void;
+  focus: () => void;
+  blur: () => void;
+  selectValue: (value: string) => void;
+}
+
 interface SelectRootProps extends PropsWithChildren {
   variant?: SelectVariant;
   value: string | undefined;
@@ -59,63 +70,118 @@ interface SelectRootProps extends PropsWithChildren {
   width?: string;
 }
 
-export function SelectRoot({
-  children,
-  variant = "default",
-  value,
-  onChange,
-  width = "16rem",
-}: SelectRootProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [highlightedIndex, setHighlightedIndex] = useState(0);
-  const [options, setOptions] = useState<SelectOption[]>([]);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const id = useId();
-  const listboxId = `${id}-listbox`;
-  const labelId = `${id}-label`;
+export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(
+  function SelectRoot(
+    { children, variant = "default", value, onChange, width = "16rem" },
+    ref
+  ) {
+    const [isOpen, setIsOpen] = useState(false);
+    const [highlightedIndex, setHighlightedIndex] = useState(0);
+    const [options, setOptions] = useState<SelectOption[]>([]);
+    const triggerRef = useRef<HTMLButtonElement>(null);
+    const id = useId();
+    const listboxId = `${id}-listbox`;
+    const labelId = `${id}-label`;
 
-  const registerOption = useCallback(
-    ({ value, children, disabled = false }: RegisterOptionProps) => {
-      setOptions((prev) => {
-        const exists = prev.some((option) => option.value === value);
-        return exists ? prev : [...prev, { value: value, children, disabled }];
-      });
-    },
-    []
-  );
+    const registerOption = useCallback(
+      ({ value, children, disabled = false }: RegisterOptionProps) => {
+        setOptions((prev) => {
+          const exists = prev.some((option) => option.value === value);
+          return exists
+            ? prev
+            : [...prev, { value: value, children, disabled }];
+        });
+      },
+      []
+    );
 
-  const handleSetSelectedValue = useCallback(
-    (newValue: string | undefined) => {
-      onChange(newValue);
-    },
-    [onChange]
-  );
+    const handleSetSelectedValue = useCallback(
+      (newValue: string | undefined) => {
+        onChange(newValue);
+      },
+      [onChange]
+    );
 
-  const selectedOption = useMemo(() => {
-    return options.find((option) => option.value === value)?.children;
-  }, [value, options]);
+    const selectedOption = useMemo(() => {
+      return options.find((option) => option.value === value)?.children;
+    }, [value, options]);
 
-  return (
-    <SelectContext.Provider
-      value={{
-        isOpen,
-        setIsOpen,
-        selectedValue: value,
-        setSelectedValue: handleSetSelectedValue,
-        highlightedIndex,
-        setHighlightedIndex,
-        options,
-        registerOption,
-        selectedOption,
-        triggerRef,
-        listboxId,
-        labelId,
-        variant,
-      }}
-    >
-      <div className="relative" style={{ width }}>
-        {children}
-      </div>
-    </SelectContext.Provider>
-  );
-}
+    useImperativeHandle(
+      ref,
+      () => ({
+        open: () => {
+          if (variant !== "disabled") {
+            setIsOpen(true);
+            const selectedIndex = options.findIndex(
+              (option) => option.value === value
+            );
+            if (selectedIndex !== -1) {
+              setHighlightedIndex(selectedIndex);
+            }
+          }
+        },
+        close: () => {
+          setIsOpen(false);
+          triggerRef.current?.focus();
+        },
+        toggle: () => {
+          if (variant !== "disabled") {
+            if (isOpen) {
+              setIsOpen(false);
+              triggerRef.current?.focus();
+            } else {
+              setIsOpen(true);
+              const selectedIndex = options.findIndex(
+                (option) => option.value === value
+              );
+              if (selectedIndex !== -1) {
+                setHighlightedIndex(selectedIndex);
+              }
+            }
+          }
+        },
+        focus: () => {
+          triggerRef.current?.focus();
+        },
+        blur: () => {
+          triggerRef.current?.blur();
+        },
+        selectValue: (newValue: string) => {
+          if (variant !== "disabled") {
+            const option = options.find((opt) => opt.value === newValue);
+            if (option && !option.disabled) {
+              handleSetSelectedValue(newValue);
+              setIsOpen(false);
+              triggerRef.current?.focus();
+            }
+          }
+        },
+      }),
+      [variant, isOpen, options, value, handleSetSelectedValue]
+    );
+
+    return (
+      <SelectContext.Provider
+        value={{
+          isOpen,
+          setIsOpen,
+          selectedValue: value,
+          setSelectedValue: handleSetSelectedValue,
+          highlightedIndex,
+          setHighlightedIndex,
+          options,
+          registerOption,
+          selectedOption,
+          triggerRef,
+          listboxId,
+          labelId,
+          variant,
+        }}
+      >
+        <div className="relative" style={{ width }}>
+          {children}
+        </div>
+      </SelectContext.Provider>
+    );
+  }
+);
