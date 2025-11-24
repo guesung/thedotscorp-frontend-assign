@@ -364,7 +364,7 @@ export const ImperativeHandle: Story = {
     docs: {
       story: {
         inline: false,
-        iframeHeight: 350,
+        iframeHeight: 450,
       },
     },
   },
