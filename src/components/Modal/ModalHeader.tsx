@@ -1,5 +1,6 @@
 import type { PropsWithChildren } from "react";
 import { useModalContext } from "./ModalRoot";
+import { cn } from "@/lib/utils";
 
 interface ModalHeaderProps extends PropsWithChildren {
   className?: string;
@@ -11,7 +12,7 @@ export function ModalHeader({ children, className }: ModalHeaderProps) {
   return (
     <header
       id={titleId}
-      className={className ?? "px-6 py-4 border-b border-gray-200"}
+      className={cn("px-6 py-4 border-b border-gray-200", className)}
     >
       <h2 className="text-lg font-semibold text-gray-900">{children}</h2>
     </header>
