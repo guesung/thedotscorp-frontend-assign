@@ -7,6 +7,7 @@ import {
   useRef,
   useState,
   type PropsWithChildren,
+  type ReactNode,
   type RefObject,
 } from "react";
 
@@ -14,13 +15,13 @@ type SelectVariant = "default" | "disabled";
 
 interface SelectOption {
   value: string;
-  label: string;
+  children: ReactNode;
   disabled: boolean;
 }
 
 interface RegisterOptionProps {
   value: string;
-  label: string;
+  children: ReactNode;
   disabled?: boolean;
 }
 
@@ -33,7 +34,7 @@ interface SelectContextValue {
   setHighlightedIndex: (index: number) => void;
   options: SelectOption[]; // 옵션 목록
   registerOption: (props: RegisterOptionProps) => void;
-  selectedLabel?: string; // 선택된 옵션의 라벨
+  selectedChildren?: ReactNode; // 선택된 옵션의 children
   triggerRef: RefObject<HTMLButtonElement | null>;
   listboxId: string; // 리스트 박스(Popup) ID
   labelId: string; // 라벨 ID
@@ -75,17 +76,17 @@ export function SelectRoot({
   const labelId = `${id}-label`;
 
   const registerOption = useCallback(
-    ({ value, label, disabled = false }: RegisterOptionProps) => {
+    ({ value, children, disabled = false }: RegisterOptionProps) => {
       setOptions((prev) => {
         const exists = prev.some((option) => option.value === value);
-        return exists ? prev : [...prev, { value: value, label, disabled }];
+        return exists ? prev : [...prev, { value: value, children, disabled }];
       });
     },
     []
   );
 
-  const selectedLabel = useMemo(() => {
-    return options.find((option) => option.value === selectedValue)?.label;
+  const selectedChildren = useMemo(() => {
+    return options.find((option) => option.value === selectedValue)?.children;
   }, [selectedValue, options]);
 
   return (
@@ -99,7 +100,7 @@ export function SelectRoot({
         setHighlightedIndex,
         options,
         registerOption,
-        selectedLabel,
+        selectedChildren,
         triggerRef,
         listboxId,
         labelId,

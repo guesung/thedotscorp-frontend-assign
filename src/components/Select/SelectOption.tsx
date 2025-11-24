@@ -1,5 +1,4 @@
 import { useEffect, type PropsWithChildren } from "react";
-import { nodeToString } from "../../utils/node";
 import { useSelectContext } from "./SelectRoot";
 
 interface SelectOptionProps extends PropsWithChildren {
@@ -30,8 +29,7 @@ export function SelectOption({
   useEffect(() => {
     if (options.find((option) => option.value === value)) return;
 
-    const label = nodeToString(children);
-    registerOption({ value, label, disabled });
+    registerOption({ value, children, disabled });
   }, [value, children, disabled, registerOption, options]);
 
   const handleSelectOptionClick = () => {
