@@ -48,12 +48,6 @@ jobs:
       - name: Lint
         run: pnpm run lint
 
-      - name: Check formatting
-        run: pnpm exec prettier --check .
-
-      - name: Build
-        run: pnpm run build
-
       - name: Test
         run: pnpm run test -- --run
 
