@@ -2,6 +2,9 @@
 
 ## Select
 
+<img width="294" height="232" alt="image" src="https://github.com/user-attachments/assets/c6b45136-b5a5-4f05-9f38-1923a00329b1" />
+
+
 ### 컴포넌트 구조 설계
 
 ### 1. 합성 컴포넌트 패턴
@@ -191,6 +194,8 @@ const selectedOption = useMemo(() => {
 ---
 
 ## Modal
+
+<img width="494" height="314" alt="image" src="https://github.com/user-attachments/assets/27452bfb-3d89-4900-85c4-6d36a9644225" />
 
 ### 컴포넌트 구조 설계
 
