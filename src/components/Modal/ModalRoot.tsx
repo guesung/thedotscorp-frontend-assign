@@ -86,7 +86,7 @@ export function ModalRoot({
       isAnimating,
       contentRef,
     }),
-    [isOpen, onClose, titleId, descriptionId, isAnimating]
+    [isOpen, onClose, titleId, descriptionId, isAnimating],
   );
 
   if (!shouldRender) {

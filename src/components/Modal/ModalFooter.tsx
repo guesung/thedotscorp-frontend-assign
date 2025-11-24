@@ -10,7 +10,7 @@ export function ModalFooter({ children, className }: ModalFooterProps) {
     <footer
       className={cn(
         "px-6 py-4 border-t border-gray-200 flex justify-end gap-2",
-        className
+        className,
       )}
     >
       {children}

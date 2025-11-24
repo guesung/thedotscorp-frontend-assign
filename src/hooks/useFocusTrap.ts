@@ -6,7 +6,7 @@ export const FOCUSABLE_SELECTOR =
 export function getFocusableElements(container: HTMLElement | null) {
   if (!container) return [];
   return Array.from(
-    container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
+    container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR),
   ).filter((el) => !el.hasAttribute("disabled") && el.tabIndex !== -1);
 }
 

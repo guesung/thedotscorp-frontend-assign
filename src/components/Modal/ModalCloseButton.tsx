@@ -22,7 +22,7 @@ export function ModalCloseButton({
       aria-label="닫기"
       className={cn(
         "absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded",
-        className
+        className,
       )}
       {...props}
     >

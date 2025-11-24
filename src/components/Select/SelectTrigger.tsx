@@ -23,7 +23,7 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
 
   const findNextEnabledIndex = (
     currentIndex: number,
-    direction: "up" | "down"
+    direction: "up" | "down",
   ) => {
     const optionCount = options.length;
     let nextIndex = currentIndex;
@@ -46,7 +46,7 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
 
     setIsOpen(true);
     const selectedIndex = options.findIndex(
-      (option) => option.value === selectedValue
+      (option) => option.value === selectedValue,
     );
     if (selectedIndex !== -1) {
       setHighlightedIndex(selectedIndex);

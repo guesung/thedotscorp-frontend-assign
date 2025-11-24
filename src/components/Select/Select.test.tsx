@@ -59,7 +59,7 @@ describe("Select with react-hook-form", () => {
     // 제출된 값 확인
     expect(onSubmit).toHaveBeenCalledWith(
       { fruit: "apple" },
-      expect.any(Object)
+      expect.any(Object),
     );
   });
 
