@@ -43,19 +43,13 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
 
   const handleOpen = () => {
     if (isDisabled) return;
-    setIsOpen(true);
-  };
 
-  useEffect(() => {
-    if (isOpen && selectedValue && options.length > 0) {
-      const selectedIndex = options.findIndex(
-        (option) => option.value === selectedValue
-      );
-      if (selectedIndex !== -1) {
-        setHighlightedIndex(selectedIndex);
-      }
-    }
-  }, [isOpen, selectedValue, options, setHighlightedIndex]);
+    setIsOpen(true);
+    const selectedIndex = options.findIndex(
+      (option) => option.value === selectedValue
+    );
+    if (selectedIndex !== -1) setHighlightedIndex(selectedIndex);
+  };
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (isDisabled) return;
