@@ -55,42 +55,6 @@ export const Default: Story = {
   },
 };
 
-export const SlideAnimation: Story = {
-  render: function Render() {
-    const [isOpen, setIsOpen] = useState(false);
-
-    return (
-      <>
-        <button
-          onClick={() => setIsOpen(true)}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-        >
-          Slide 모달 열기
-        </button>
-
-        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-          <Modal.Content>
-            <Modal.Header>Slide 애니메이션</Modal.Header>
-            <Modal.Body>
-              <p className="text-gray-600">
-                이 모달은 위에서 아래로 슬라이드되며 나타납니다.
-              </p>
-            </Modal.Body>
-            <Modal.Footer>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              >
-                확인
-              </button>
-            </Modal.Footer>
-          </Modal.Content>
-        </Modal>
-      </>
-    );
-  },
-};
-
 export const WithCloseButton: Story = {
   render: function Render() {
     const [isOpen, setIsOpen] = useState(false);
