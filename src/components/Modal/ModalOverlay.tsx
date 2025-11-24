@@ -11,7 +11,7 @@ export function ModalOverlay({
   closeOnClick = true,
   className,
 }: ModalOverlayProps) {
-  const { onClose, animation, isAnimating } = useModalContext();
+  const { onClose, isAnimating } = useModalContext();
 
   const handleClick = () => {
     if (closeOnClick) {
@@ -19,10 +19,7 @@ export function ModalOverlay({
     }
   };
 
-  // 애니메이션 클래스 생성
   const getAnimationClasses = () => {
-    if (animation === "none") return "";
-
     const baseTransition = "transition-opacity duration-200 ease-out";
     const opacityState = isAnimating ? "opacity-100" : "opacity-0";
 

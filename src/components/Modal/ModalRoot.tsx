@@ -9,14 +9,11 @@ import {
 import { ModalPortal } from "./ModalPortal";
 import { ModalOverlay } from "./ModalOverlay";
 
-type ModalAnimation = "fade" | "slide" | "none";
-
 interface ModalContextValue {
   isOpen: boolean;
   onClose: () => void;
   titleId: string;
   descriptionId: string;
-  animation: ModalAnimation;
   isAnimating: boolean;
 }
 
@@ -34,7 +31,6 @@ export function useModalContext() {
 interface ModalRootProps extends PropsWithChildren {
   isOpen: boolean;
   onClose: () => void;
-  animation?: ModalAnimation;
   closeOnOverlayClick?: boolean;
   portalContainer?: Element | null;
 }
@@ -43,7 +39,6 @@ export function ModalRoot({
   children,
   isOpen,
   onClose,
-  animation = "fade",
   closeOnOverlayClick = true,
   portalContainer = document.body,
 }: ModalRootProps) {
@@ -80,7 +75,6 @@ export function ModalRoot({
         onClose,
         titleId,
         descriptionId,
-        animation,
         isAnimating,
       }}
     >

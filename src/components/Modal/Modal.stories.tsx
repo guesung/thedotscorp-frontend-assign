@@ -68,11 +68,7 @@ export const SlideAnimation: Story = {
           Slide 모달 열기
         </button>
 
-        <Modal
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          animation="slide"
-        >
+        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
           <Modal.Content>
             <Modal.Header>Slide 애니메이션</Modal.Header>
             <Modal.Body>

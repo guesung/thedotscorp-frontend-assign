@@ -1,4 +1,9 @@
-import { useEffect, useRef, type PropsWithChildren } from "react";
+import {
+  useEffect,
+  useRef,
+  type MouseEvent,
+  type PropsWithChildren,
+} from "react";
 import { useModalContext } from "./ModalRoot";
 import { useFocusTrap, getFocusableElements } from "../../hooks/useFocusTrap";
 
@@ -7,16 +12,13 @@ interface ModalContentProps extends PropsWithChildren {
 }
 
 export function ModalContent({ children, className }: ModalContentProps) {
-  const { onClose, titleId, descriptionId, animation, isAnimating } =
-    useModalContext();
+  const { onClose, titleId, descriptionId, isAnimating } = useModalContext();
 
   const contentRef = useRef<HTMLDivElement>(null);
   const previousActiveElementRef = useRef<HTMLElement | null>(null);
 
-  // 포커스 트랩 (Tab 키 순환)
   useFocusTrap(contentRef);
 
-  // ESC 키로 닫기
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -28,7 +30,6 @@ export function ModalContent({ children, className }: ModalContentProps) {
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [onClose]);
 
-  // 포커스 관리: 열릴 때 포커스 이동, 닫힐 때 복원
   useEffect(() => {
     previousActiveElementRef.current = document.activeElement as HTMLElement;
 
@@ -44,7 +45,6 @@ export function ModalContent({ children, className }: ModalContentProps) {
     };
   }, []);
 
-  // body 스크롤 방지
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -54,30 +54,11 @@ export function ModalContent({ children, className }: ModalContentProps) {
     };
   }, []);
 
-  // 배경 클릭 이벤트 전파 방지
-  const handleContentClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-  };
-
-  // 애니메이션 클래스 생성
   const getAnimationClasses = () => {
-    if (animation === "none") return "";
-
     const baseTransition = "transition-all duration-200 ease-out";
-
-    if (animation === "fade") {
-      const opacityState = isAnimating ? "opacity-100" : "opacity-0";
-      const scaleState = isAnimating ? "scale-100" : "scale-95";
-      return `${baseTransition} ${opacityState} ${scaleState}`;
-    }
-
-    if (animation === "slide") {
-      const opacityState = isAnimating ? "opacity-100" : "opacity-0";
-      const translateState = isAnimating ? "translate-y-0" : "-translate-y-4";
-      return `${baseTransition} ${opacityState} ${translateState}`;
-    }
-
-    return "";
+    const opacityState = isAnimating ? "opacity-100" : "opacity-0";
+    const scaleState = isAnimating ? "scale-100" : "scale-95";
+    return `${baseTransition} ${opacityState} ${scaleState}`;
   };
 
   return (
@@ -92,7 +73,9 @@ export function ModalContent({ children, className }: ModalContentProps) {
         className ??
         `bg-white rounded-lg shadow-xl max-w-md w-full mx-4 focus:outline-none ${getAnimationClasses()}`
       }
-      onClick={handleContentClick}
+      onClick={(e: MouseEvent) => {
+        e.stopPropagation();
+      }}
     >
       {children}
     </div>
