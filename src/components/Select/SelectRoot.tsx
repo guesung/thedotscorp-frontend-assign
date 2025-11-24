@@ -160,24 +160,38 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(
       [variant, isOpen, options, value, handleSetSelectedValue]
     );
 
+    const contextValue = useMemo(
+      () => ({
+        isOpen,
+        setIsOpen,
+        selectedValue: value,
+        setSelectedValue: handleSetSelectedValue,
+        highlightedIndex,
+        setHighlightedIndex,
+        options,
+        registerOption,
+        selectedOption,
+        triggerRef,
+        listboxId,
+        labelId,
+        variant,
+      }),
+      [
+        isOpen,
+        value,
+        handleSetSelectedValue,
+        highlightedIndex,
+        options,
+        registerOption,
+        selectedOption,
+        listboxId,
+        labelId,
+        variant,
+      ]
+    );
+
     return (
-      <SelectContext.Provider
-        value={{
-          isOpen,
-          setIsOpen,
-          selectedValue: value,
-          setSelectedValue: handleSetSelectedValue,
-          highlightedIndex,
-          setHighlightedIndex,
-          options,
-          registerOption,
-          selectedOption,
-          triggerRef,
-          listboxId,
-          labelId,
-          variant,
-        }}
-      >
+      <SelectContext.Provider value={contextValue}>
         <div className="relative" style={{ width }}>
           {children}
         </div>

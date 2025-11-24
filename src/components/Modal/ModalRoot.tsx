@@ -5,6 +5,7 @@ import {
   useState,
   useEffect,
   useRef,
+  useMemo,
   type PropsWithChildren,
 } from "react";
 import { ModalPortal } from "./ModalPortal";
@@ -76,21 +77,24 @@ export function ModalRoot({
     }
   }, [isOpen]);
 
+  const contextValue = useMemo(
+    () => ({
+      isOpen,
+      onClose,
+      titleId,
+      descriptionId,
+      isAnimating,
+      contentRef,
+    }),
+    [isOpen, onClose, titleId, descriptionId, isAnimating]
+  );
+
   if (!shouldRender) {
     return null;
   }
 
   return (
-    <ModalContext.Provider
-      value={{
-        isOpen,
-        onClose,
-        titleId,
-        descriptionId,
-        isAnimating,
-        contentRef,
-      }}
-    >
+    <ModalContext.Provider value={contextValue}>
       <ModalPortal container={portalContainer}>
         <ModalOverlay closeOnClick={closeOnOverlayClick}>
           {children}
