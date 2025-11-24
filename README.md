@@ -29,8 +29,9 @@ React 19와 TypeScript를 사용한 프로젝트입니다.
 
 ## 컴포넌트 문서
 
-- [Select](./src/components/Select/README.md)
-- [Modal](./src/components/Modal/README.md)
+### [Select](./src/components/Select/README.md)
+
+### [Modal](./src/components/Modal/README.md)
 
 ## 기술 스택
 
