@@ -1,4 +1,3 @@
-import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import Select from "./Select";
 
@@ -17,11 +16,11 @@ export const Default: Story = {
       <Select variant="default">
         <Select.Label>과일 선택</Select.Label>
         <Select.Trigger>선택하세요</Select.Trigger>
-        <Select.Popup>
+        <Select.List>
           <Select.Option value="apple">사과</Select.Option>
           <Select.Option value="banana">바나나</Select.Option>
           <Select.Option value="orange">오렌지</Select.Option>
-        </Select.Popup>
+        </Select.List>
       </Select>
     );
   },
@@ -33,11 +32,11 @@ export const Disabled: Story = {
       <Select variant="disabled">
         <Select.Label>과일 선택</Select.Label>
         <Select.Trigger>선택하세요</Select.Trigger>
-        <Select.Popup>
+        <Select.List>
           <Select.Option value="apple">사과</Select.Option>
           <Select.Option value="banana">바나나</Select.Option>
           <Select.Option value="orange">오렌지</Select.Option>
-        </Select.Popup>
+        </Select.List>
       </Select>
     );
   },
@@ -48,7 +47,7 @@ function DisabledOptionExample() {
     <Select>
       <Select.Label>과일 선택 (일부 품절)</Select.Label>
       <Select.Trigger>선택하세요</Select.Trigger>
-      <Select.Popup>
+      <Select.List>
         <Select.Option value="apple">사과</Select.Option>
         <Select.Option value="banana" disabled>
           바나나 (품절)
@@ -58,7 +57,7 @@ function DisabledOptionExample() {
           포도 (품절)
         </Select.Option>
         <Select.Option value="mango">망고</Select.Option>
-      </Select.Popup>
+      </Select.List>
     </Select>
   );
 }
@@ -72,7 +71,7 @@ function GroupedOptionsExample() {
     <Select>
       <Select.Label>음식 선택</Select.Label>
       <Select.Trigger>선택하세요</Select.Trigger>
-      <Select.Popup>
+      <Select.List>
         <Select.Group label="과일">
           <Select.Option value="apple">사과</Select.Option>
           <Select.Option value="banana">바나나</Select.Option>
@@ -90,7 +89,7 @@ function GroupedOptionsExample() {
           <Select.Option value="pork">돼지고기</Select.Option>
           <Select.Option value="chicken">닭고기</Select.Option>
         </Select.Group>
-      </Select.Popup>
+      </Select.List>
     </Select>
   );
 }

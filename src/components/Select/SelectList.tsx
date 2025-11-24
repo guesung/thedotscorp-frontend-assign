@@ -1,9 +1,9 @@
 import type { PropsWithChildren } from "react";
 import { useSelectContext } from "./SelectRoot";
 
-interface SelectPopupProps extends PropsWithChildren {}
+interface SelectListProps extends PropsWithChildren {}
 
-export function SelectPopup({ children }: SelectPopupProps) {
+export function SelectList({ children }: SelectListProps) {
   const { isOpen, listboxId, labelId } = useSelectContext();
 
   if (!isOpen) return null;
@@ -19,3 +19,4 @@ export function SelectPopup({ children }: SelectPopupProps) {
     </ul>
   );
 }
+
