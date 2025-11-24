@@ -66,7 +66,7 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
         break;
       case 'Enter':
         e.preventDefault();
-        if (isOpen && options[highlightedIndex]) {
+        if (isOpen && options[highlightedIndex] && !options[highlightedIndex].disabled) {
           setSelectedValue(options[highlightedIndex].value);
           setIsOpen(false);
           triggerRef.current?.focus();
