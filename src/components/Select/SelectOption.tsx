@@ -1,28 +1,10 @@
-import { useEffect, type PropsWithChildren, type ReactNode } from "react";
+import { useEffect, type PropsWithChildren } from "react";
+import { nodeToString } from "../../utils/node";
 import { useSelectContext } from "./SelectRoot";
 
 interface SelectOptionProps extends PropsWithChildren {
   value: string;
   disabled?: boolean;
-}
-
-// ReactNode를 문자열로 변환하는 헬퍼 함수
-function nodeToString(node: ReactNode): string {
-  if (typeof node === "string") return node;
-  if (typeof node === "number") return String(node);
-  if (Array.isArray(node)) {
-    return node.map(nodeToString).join("");
-  }
-  if (node && typeof node === "object") {
-    // React element인 경우
-    if ("props" in node && node.props) {
-      const props = node.props as { children?: ReactNode };
-      if (props.children) {
-        return nodeToString(props.children);
-      }
-    }
-  }
-  return "";
 }
 
 export function SelectOption({
@@ -50,7 +32,7 @@ export function SelectOption({
     registerOption({ value, label, disabled });
   }, [value, children, disabled, registerOption]);
 
-  const handleClick = () => {
+  const handleSelectOptionClick = () => {
     if (disabled) return;
     setSelectedValue(value);
     setIsOpen(false);
@@ -63,7 +45,7 @@ export function SelectOption({
       role="option"
       aria-selected={isSelected}
       aria-disabled={disabled}
-      onClick={handleClick}
+      onClick={handleSelectOptionClick}
       className={`px-3 py-2 ${
         disabled
           ? "text-gray-400 cursor-not-allowed"
