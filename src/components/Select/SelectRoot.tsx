@@ -68,7 +68,7 @@ interface SelectRootProps extends PropsWithChildren {
 
 export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function SelectRoot(
   { children, variant = 'default', value, onChange, width = '16rem' },
-  ref
+  ref,
 ) {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
@@ -108,7 +108,7 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function Sel
     (newValue: string | undefined) => {
       onChange(newValue);
     },
-    [onChange]
+    [onChange],
   );
 
   const selectedOption = useMemo(() => {
@@ -162,7 +162,7 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function Sel
         }
       },
     }),
-    [variant, isOpen, options, value, handleSetSelectedValue]
+    [variant, isOpen, options, value, handleSetSelectedValue],
   );
 
   const contextValue = useMemo(
@@ -180,7 +180,7 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function Sel
       labelId,
       variant,
     }),
-    [isOpen, value, handleSetSelectedValue, highlightedIndex, options, selectedOption, listboxId, labelId, variant]
+    [isOpen, value, handleSetSelectedValue, highlightedIndex, options, selectedOption, listboxId, labelId, variant],
   );
 
   return (
