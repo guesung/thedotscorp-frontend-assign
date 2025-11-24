@@ -1,6 +1,6 @@
 import type { ButtonHTMLAttributes } from "react";
 import { useModalContext } from "./ModalRoot";
-import { CloseIcon } from "../icons/close";
+import { CloseIcon } from "@/components/icons/close";
 
 interface ModalCloseButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {

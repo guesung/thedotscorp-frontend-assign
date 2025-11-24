@@ -1,7 +1,7 @@
 import { useRef, type MouseEvent, type PropsWithChildren } from "react";
-import { useFocusTrap } from "../../hooks/useFocusTrap";
-import { useKeyboardEvent } from "../../hooks/useKeyboardEvent";
-import { useBodyScrollLock } from "../../hooks/useBodyScrollLock";
+import { useFocusTrap } from "@/hooks/useFocusTrap";
+import { useKeyboardEvent } from "@/hooks/useKeyboardEvent";
+import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useModalContext } from "./ModalRoot";
 
 interface ModalContentProps extends PropsWithChildren {
