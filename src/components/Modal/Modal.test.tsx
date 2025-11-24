@@ -62,46 +62,54 @@ describe('Modal', () => {
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
 
-    // it('onClose 콜백이 호출되어야 함', async () => {
-    //   const user = userEvent.setup();
-    //   const onClose = vi.fn();
+    it('onClose 콜백이 호출되어야 함', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
 
-    //   function TestModal() {
-    //     const [isOpen, setIsOpen] = useState(true);
+      function TestModal() {
+        const [isOpen, setIsOpen] = useState(true);
 
-    //     return (
-    //       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-    //         <Modal.Content>
-    //           <Modal.Header>테스트 모달</Modal.Header>
-    //           <Modal.Body>
-    //             <button onClick={() => setIsOpen(false)}>닫기</button>
-    //           </Modal.Body>
-    //         </Modal.Content>
-    //       </Modal>
-    //     );
-    //   }
+        const handleClose = () => {
+          onClose();
+          setIsOpen(false);
+        };
 
-    //   render(<TestModal />);
+        return (
+          <Modal isOpen={isOpen} onClose={handleClose}>
+            <Modal.Content>
+              <Modal.Header>테스트 모달</Modal.Header>
+              <Modal.Body>
+                <button onClick={handleClose}>닫기</button>
+              </Modal.Body>
+            </Modal.Content>
+          </Modal>
+        );
+      }
 
-    //   // 애니메이션 완료 대기
-    //   await waitFor(
-    //     () => {
-    //       expect(getDialog()).toBeInTheDocument();
-    //     },
-    //     { timeout: 300 },
-    //   );
+      render(<TestModal />);
 
-    //   const dialog = getDialog();
-    //   const closeButton = within(dialog!).getByText('닫기').closest('button')!;
-    //   await user.click(closeButton);
+      // 애니메이션 완료 대기
+      await waitFor(
+        () => {
+          expect(getDialog()).toBeInTheDocument();
+        },
+        { timeout: 300 },
+      );
 
-    //   await waitFor(
-    //     () => {
-    //       expect(getDialog()).not.toBeInTheDocument();
-    //     },
-    //     { timeout: 300 },
-    //   );
-    // });
+      const dialog = getDialog();
+      const closeButton = within(dialog!).getByText('닫기').closest('button')!;
+      await user.click(closeButton);
+
+      // onClose가 호출되었는지 확인
+      expect(onClose).toHaveBeenCalledTimes(1);
+
+      await waitFor(
+        () => {
+          expect(getDialog()).not.toBeInTheDocument();
+        },
+        { timeout: 300 },
+      );
+    });
 
     it('외부 상태로 모달을 제어할 수 있어야 함', async () => {
       const user = userEvent.setup();
