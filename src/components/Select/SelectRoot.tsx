@@ -15,7 +15,6 @@ import {
   type RefObject,
 } from "react";
 import { SelectOption, type SelectOptionProps } from "./SelectOption";
-import { SelectGroup } from "./SelectGroup";
 
 type SelectVariant = "default" | "disabled";
 
@@ -70,7 +69,7 @@ interface SelectRootProps extends PropsWithChildren {
 export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(
   function SelectRoot(
     { children, variant = "default", value, onChange, width = "16rem" },
-    ref,
+    ref
   ) {
     const [isOpen, setIsOpen] = useState(false);
     const [highlightedIndex, setHighlightedIndex] = useState(0);
@@ -82,7 +81,7 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(
     const options = useMemo(() => {
       const collectOptions = (
         children: ReactNode,
-        collected: SelectOptionData[] = [],
+        collected: SelectOptionData[] = []
       ): SelectOptionData[] => {
         Children.forEach(children, (child) => {
           if (!isValidElement(child)) return;
@@ -96,9 +95,10 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(
               children: optionProps.children,
               disabled: optionProps.disabled ?? false,
             });
-          } else if (child.type === SelectGroup && props.children) {
-            collectOptions(props.children, collected);
-          } else if (props.children) {
+            return;
+          }
+
+          if (props.children) {
             collectOptions(props.children, collected);
           }
         });
@@ -112,7 +112,7 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(
       (newValue: string | undefined) => {
         onChange(newValue);
       },
-      [onChange],
+      [onChange]
     );
 
     const selectedOption = useMemo(() => {
@@ -126,7 +126,7 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(
           if (variant !== "disabled") {
             setIsOpen(true);
             const selectedIndex = options.findIndex(
-              (option) => option.value === value,
+              (option) => option.value === value
             );
             if (selectedIndex !== -1) {
               setHighlightedIndex(selectedIndex);
@@ -145,7 +145,7 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(
             } else {
               setIsOpen(true);
               const selectedIndex = options.findIndex(
-                (option) => option.value === value,
+                (option) => option.value === value
               );
               if (selectedIndex !== -1) {
                 setHighlightedIndex(selectedIndex);
@@ -170,7 +170,7 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(
           }
         },
       }),
-      [variant, isOpen, options, value, handleSetSelectedValue],
+      [variant, isOpen, options, value, handleSetSelectedValue]
     );
 
     const contextValue = useMemo(
@@ -198,7 +198,7 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(
         listboxId,
         labelId,
         variant,
-      ],
+      ]
     );
 
     return (
@@ -208,5 +208,5 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(
         </div>
       </SelectContext.Provider>
     );
-  },
+  }
 );
