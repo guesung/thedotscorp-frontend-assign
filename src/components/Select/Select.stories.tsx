@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Select from "./Select";
+import type { SelectHandle } from "./SelectRoot";
 
 const meta = {
   title: "Components/Select",
@@ -267,6 +268,103 @@ export const RichContentOption: Story = {
       story: {
         inline: false,
         iframeHeight: 400,
+      },
+    },
+  },
+};
+
+function ImperativeHandleExample() {
+  const [value, setValue] = useState<string | undefined>(undefined);
+  const selectRef = useRef<SelectHandle>(null);
+
+  return (
+    <div className="space-y-4">
+      <div className="flex gap-2 flex-wrap">
+        <button
+          type="button"
+          onClick={() => selectRef.current?.open()}
+          className="px-3 py-1.5 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+        >
+          열기
+        </button>
+        <button
+          type="button"
+          onClick={() => selectRef.current?.close()}
+          className="px-3 py-1.5 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+        >
+          닫기
+        </button>
+        <button
+          type="button"
+          onClick={() => selectRef.current?.toggle()}
+          className="px-3 py-1.5 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2"
+        >
+          토글
+        </button>
+        <button
+          type="button"
+          onClick={() => selectRef.current?.selectValue("apple")}
+          className="px-3 py-1.5 bg-purple-500 text-white rounded-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        >
+          사과 선택
+        </button>
+        <button
+          type="button"
+          onClick={() => selectRef.current?.selectValue("banana")}
+          className="px-3 py-1.5 bg-purple-500 text-white rounded-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        >
+          바나나 선택
+        </button>
+        <button
+          type="button"
+          onClick={() => selectRef.current?.selectValue("orange")}
+          className="px-3 py-1.5 bg-purple-500 text-white rounded-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
+        >
+          오렌지 선택
+        </button>
+        <button
+          type="button"
+          onClick={() => selectRef.current?.focus()}
+          className="px-3 py-1.5 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+        >
+          포커스
+        </button>
+        <button
+          type="button"
+          onClick={() => selectRef.current?.blur()}
+          className="px-3 py-1.5 bg-gray-500 text-white rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2"
+        >
+          블러
+        </button>
+      </div>
+      <div>
+        <p className="text-sm text-gray-600 mb-2">
+          선택된 값: <span className="font-semibold">{value || "없음"}</span>
+        </p>
+        <Select ref={selectRef} value={value} onChange={setValue}>
+          <Select.Label>과일 선택 (Imperative Handle)</Select.Label>
+          <Select.Trigger>선택하세요</Select.Trigger>
+          <Select.List>
+            <Select.Option value="apple">사과</Select.Option>
+            <Select.Option value="banana">바나나</Select.Option>
+            <Select.Option value="orange">오렌지</Select.Option>
+            <Select.Option value="grape">포도</Select.Option>
+            <Select.Option value="mango">망고</Select.Option>
+          </Select.List>
+        </Select>
+      </div>
+    </div>
+  );
+}
+
+export const ImperativeHandle: Story = {
+  render: () => <ImperativeHandleExample />,
+  parameters: {
+    layout: "padded",
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 350,
       },
     },
   },
