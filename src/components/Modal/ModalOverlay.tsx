@@ -19,18 +19,13 @@ export function ModalOverlay({
     }
   };
 
-  const getAnimationClasses = () => {
-    const baseTransition = "transition-opacity duration-200 ease-out";
-    const opacityState = isAnimating ? "opacity-100" : "opacity-0";
-
-    return `${baseTransition} ${opacityState}`;
-  };
-
   return (
     <div
       className={
         className ??
-        `fixed inset-0 bg-black/50 flex items-center justify-center z-50 ${getAnimationClasses()}`
+        `fixed inset-0 bg-black/50 flex items-center justify-center z-50 transition-opacity duration-200 ease-out ${
+          isAnimating ? "opacity-100" : "opacity-0"
+        }`
       }
       onClick={handleClick}
       aria-hidden="true"
