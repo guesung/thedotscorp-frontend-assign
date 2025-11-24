@@ -6,6 +6,8 @@ import {
   useEffect,
   type PropsWithChildren,
 } from "react";
+import { ModalPortal } from "./ModalPortal";
+import { ModalOverlay } from "./ModalOverlay";
 
 type ModalAnimation = "fade" | "slide" | "none";
 
@@ -33,6 +35,8 @@ interface ModalRootProps extends PropsWithChildren {
   isOpen: boolean;
   onClose: () => void;
   animation?: ModalAnimation;
+  closeOnOverlayClick?: boolean;
+  portalContainer?: Element | null;
 }
 
 export function ModalRoot({
@@ -40,28 +44,27 @@ export function ModalRoot({
   isOpen,
   onClose,
   animation = "fade",
+  closeOnOverlayClick = true,
+  portalContainer = document.body,
 }: ModalRootProps) {
   const id = useId();
   const titleId = `${id}-title`;
   const descriptionId = `${id}-description`;
 
-  // 애니메이션 상태 관리
   const [shouldRender, setShouldRender] = useState(isOpen);
   const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     if (isOpen) {
       setShouldRender(true);
-      // 다음 프레임에서 애니메이션 시작
       requestAnimationFrame(() => {
         setIsAnimating(true);
       });
     } else {
       setIsAnimating(false);
-      // 애니메이션 종료 후 언마운트
       const timer = setTimeout(() => {
         setShouldRender(false);
-      }, 200); // 애니메이션 duration과 일치
+      }, 200);
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
@@ -81,7 +84,11 @@ export function ModalRoot({
         isAnimating,
       }}
     >
-      {children}
+      <ModalPortal container={portalContainer}>
+        <ModalOverlay closeOnClick={closeOnOverlayClick}>
+          {children}
+        </ModalOverlay>
+      </ModalPortal>
     </ModalContext.Provider>
   );
 }
