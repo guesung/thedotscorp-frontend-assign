@@ -16,6 +16,7 @@ import {
 } from 'react';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { SelectOption, type SelectOptionProps } from './SelectOption';
+import { cn } from '@/utils/cn';
 
 type SelectVariant = 'default' | 'disabled';
 
@@ -64,11 +65,11 @@ interface SelectRootProps extends PropsWithChildren {
   variant?: SelectVariant;
   value: string | undefined;
   onChange: (value: string | undefined) => void;
-  width?: string;
+  className?: string;
 }
 
 export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function SelectRoot(
-  { children, variant = 'default', value, onChange, width = '16rem' },
+  { children, variant = 'default', value, onChange, className },
   ref,
 ) {
   const [isOpen, setIsOpen] = useState(false);
@@ -193,7 +194,7 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function Sel
 
   return (
     <SelectContext.Provider value={contextValue}>
-      <div ref={containerRef} className="relative" style={{ width }}>
+      <div ref={containerRef} className={cn('relative w-64', className)}>
         {children}
       </div>
     </SelectContext.Provider>

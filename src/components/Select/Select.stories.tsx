@@ -99,7 +99,7 @@ function GroupedOptionsExample() {
     <Select value={value} onChange={setValue}>
       <Select.Label>음식 선택</Select.Label>
       <Select.Trigger>선택하세요</Select.Trigger>
-      <Select.List maxHeight="20rem">
+      <Select.List className="max-h-80">
         <Select.Group label="과일">
           <Select.Option value="apple">
             사과 <span className="text-red-500 text-xs">인기</span>
@@ -182,10 +182,10 @@ export const ColoredTextOption: Story = {
 function RichContentOptionExample() {
   const [value, setValue] = useState<string | undefined>(undefined);
   return (
-    <Select width="20rem" value={value} onChange={setValue}>
+    <Select className="w-80" value={value} onChange={setValue}>
       <Select.Label>상품 선택 (상세 정보 포함)</Select.Label>
       <Select.Trigger>선택하세요</Select.Trigger>
-      <Select.List maxHeight="25rem">
+      <Select.List className="max-h-100">
         <Select.Option value="premium-apple">
           <div className="flex items-center justify-between w-full">
             <span>프리미엄 사과</span>

@@ -1,11 +1,12 @@
 import { useEffect, useRef, type PropsWithChildren } from 'react';
 import { useSelectContext } from './SelectRoot';
+import { cn } from '@/utils/cn';
 
 interface SelectListProps extends PropsWithChildren {
-  maxHeight?: string;
+  className?: string;
 }
 
-export function SelectList({ children, maxHeight = '15rem' }: SelectListProps) {
+export function SelectList({ children, className = '' }: SelectListProps) {
   const { isOpen, listboxId, labelId, highlightedIndex } = useSelectContext();
   const listboxRef = useRef<HTMLUListElement>(null);
 
@@ -43,8 +44,10 @@ export function SelectList({ children, maxHeight = '15rem' }: SelectListProps) {
       id={listboxId}
       role="listbox"
       aria-labelledby={labelId}
-      className="absolute z-dropdown w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg overflow-auto"
-      style={{ maxHeight }}
+      className={cn(
+        'absolute z-dropdown w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg overflow-auto max-h-60',
+        className,
+      )}
     >
       {children}
     </ul>
