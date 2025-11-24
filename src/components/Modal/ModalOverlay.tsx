@@ -23,7 +23,7 @@ export function ModalOverlay({
   return (
     <div
       className={cn(
-        "fixed inset-0 bg-black/50 flex items-center justify-center z-50 transition-opacity duration-200 ease-out",
+        "fixed inset-0 bg-overlay flex items-center justify-center z-modal transition-opacity duration ease-out",
         isAnimating ? "opacity-100" : "opacity-0",
         className
       )}

@@ -50,7 +50,7 @@ export function SelectOption({
         disabled
           ? "text-gray-400 cursor-not-allowed"
           : isHighlighted
-          ? "bg-blue-500 text-white cursor-pointer"
+          ? "bg-primary-500 text-white cursor-pointer"
           : "hover:bg-gray-100 cursor-pointer"
       }`}
     >

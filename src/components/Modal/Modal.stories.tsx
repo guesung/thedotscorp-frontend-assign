@@ -21,7 +21,7 @@ export const Default: Story = {
       <>
         <button
           onClick={() => setIsOpen(true)}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600"
         >
           모달 열기
         </button>
@@ -43,7 +43,7 @@ export const Default: Story = {
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                className="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600"
               >
                 확인
               </button>
@@ -63,7 +63,7 @@ export const WithCloseButton: Story = {
       <>
         <button
           onClick={() => setIsOpen(true)}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600"
         >
           모달 열기
         </button>
@@ -80,7 +80,7 @@ export const WithCloseButton: Story = {
             <Modal.Footer>
               <button
                 onClick={() => setIsOpen(false)}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                className="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600"
               >
                 확인
               </button>
@@ -100,7 +100,7 @@ export const NoCloseOnOverlayClick: Story = {
       <>
         <button
           onClick={() => setIsOpen(true)}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600"
         >
           모달 열기
         </button>
@@ -121,7 +121,7 @@ export const NoCloseOnOverlayClick: Story = {
             <Modal.Footer>
               <button
                 onClick={() => setIsOpen(false)}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                className="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600"
               >
                 확인
               </button>
@@ -141,7 +141,7 @@ export const LongContent: Story = {
       <>
         <button
           onClick={() => setIsOpen(true)}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600"
         >
           모달 열기
         </button>
@@ -170,7 +170,7 @@ export const LongContent: Story = {
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                className="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600"
               >
                 동의
               </button>
@@ -190,7 +190,7 @@ export const WithForm: Story = {
       <>
         <button
           onClick={() => setIsOpen(true)}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+          className="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600"
         >
           로그인 모달 열기
         </button>
@@ -210,7 +210,7 @@ export const WithForm: Story = {
                   <input
                     id="email"
                     type="email"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                     placeholder="email@example.com"
                   />
                 </div>
@@ -224,7 +224,7 @@ export const WithForm: Story = {
                   <input
                     id="password"
                     type="password"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500"
                     placeholder="••••••••"
                   />
                 </div>
@@ -239,7 +239,7 @@ export const WithForm: Story = {
               </button>
               <button
                 onClick={() => setIsOpen(false)}
-                className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                className="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600"
               >
                 로그인
               </button>

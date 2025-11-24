@@ -112,7 +112,7 @@ function ColoredTextOptionExample() {
           사과 <span className="text-red-500 font-semibold">인기</span>
         </Select.Option>
         <Select.Option value="banana">
-          바나나 <span className="text-blue-500 font-semibold">신상품</span>
+          바나나 <span className="text-primary-500 font-semibold">신상품</span>
         </Select.Option>
         <Select.Option value="orange">
           오렌지 <span className="text-green-500 font-semibold">추천</span>
@@ -163,7 +163,7 @@ function RichContentOptionExample() {
           <div className="flex items-center justify-between w-full">
             <span>신선한 오렌지</span>
             <div className="flex items-center gap-2 ml-2">
-              <span className="text-blue-500 font-semibold text-sm">
+              <span className="text-primary-500 font-semibold text-sm">
                 신상품
               </span>
               <span className="text-gray-500 text-xs">₩12,000</span>
@@ -191,7 +191,7 @@ function RichContentOptionExample() {
               <span className="text-orange-500 font-semibold text-sm">
                 베스트
               </span>
-              <span className="bg-blue-100 text-blue-700 px-2 py-0.5 rounded text-xs font-medium">
+              <span className="bg-primary-100 text-primary-700 px-2 py-0.5 rounded text-xs font-medium">
                 무료배송
               </span>
               <span className="text-gray-500 text-xs">₩18,000</span>

@@ -120,7 +120,7 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
       className={`w-full px-3 py-2 text-left rounded-md shadow-sm focus:outline-none ${
         isDisabled
           ? "bg-gray-100 border border-gray-200 text-gray-400 cursor-not-allowed"
-          : "bg-white border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          : "bg-white border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
       }`}
     >
       {selectedChildren || children || "선택하세요"}

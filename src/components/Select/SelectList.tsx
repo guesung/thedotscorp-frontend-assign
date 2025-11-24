@@ -29,7 +29,7 @@ export function SelectList({ children, maxHeight = "15rem" }: SelectListProps) {
       id={listboxId}
       role="listbox"
       aria-labelledby={labelId}
-      className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg overflow-auto"
+      className="absolute z-dropdown w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg overflow-auto"
       style={{ maxHeight }}
     >
       {children}
