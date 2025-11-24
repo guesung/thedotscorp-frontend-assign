@@ -24,6 +24,15 @@ export const Default: Story = {
       </Select>
     );
   },
+  parameters: {
+    layout: "padded",
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 250,
+      },
+    },
+  },
 };
 
 export const Disabled: Story = {
@@ -64,6 +73,15 @@ function DisabledOptionExample() {
 
 export const DisabledOption: Story = {
   render: () => <DisabledOptionExample />,
+  parameters: {
+    layout: "padded",
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 300,
+      },
+    },
+  },
 };
 
 function GroupedOptionsExample() {
@@ -100,6 +118,15 @@ function GroupedOptionsExample() {
 
 export const GroupedOptions: Story = {
   render: () => <GroupedOptionsExample />,
+  parameters: {
+    layout: "padded",
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 450,
+      },
+    },
+  },
 };
 
 function ColoredTextOptionExample() {
@@ -130,6 +157,15 @@ function ColoredTextOptionExample() {
 
 export const ColoredTextOption: Story = {
   render: () => <ColoredTextOptionExample />,
+  parameters: {
+    layout: "padded",
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 350,
+      },
+    },
+  },
 };
 
 function RichContentOptionExample() {
@@ -214,4 +250,13 @@ function RichContentOptionExample() {
 
 export const RichContentOption: Story = {
   render: () => <RichContentOptionExample />,
+  parameters: {
+    layout: "padded",
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 400,
+      },
+    },
+  },
 };
