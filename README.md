@@ -1,11 +1,8 @@
-# **커넥팅더닷츠 과제**
-
-## Select
+# 1. Select
 
 <img width="294" height="232" alt="image" src="https://github.com/user-attachments/assets/c6b45136-b5a5-4f05-9f38-1923a00329b1" />
 
-
-### 컴포넌트 구조 설계
+## 컴포넌트 구조 설계
 
 ### 1. 합성 컴포넌트 패턴
 
@@ -63,7 +60,7 @@ Select는 **선택값(`value`)만 제어**하고, 드롭다운 열림/닫힘, �
 
 추가로 접근성을 위한 ID 값들(`listboxId`, `labelId`)과 트리거 버튼의 ref(`triggerRef`)를 Context로 공유합니다.
 
-### 고민한 부분
+## 고민한 부분
 
 ### 1. 옵션 등록 방식
 
@@ -193,11 +190,11 @@ const selectedOption = useMemo(() => {
 
 ---
 
-## Modal
+## 2. Modal
 
 <img width="494" height="314" alt="image" src="https://github.com/user-attachments/assets/27452bfb-3d89-4900-85c4-6d36a9644225" />
 
-### 컴포넌트 구조 설계
+## 컴포넌트 구조 설계
 
 ### 1. 합성 컴포넌트 패턴
 
@@ -258,7 +255,7 @@ const [isOpen, setIsOpen] = useState(false);
 
 외부에서 제어하는 `isOpen`과 내부에서 제어하는 `shouldRender`를 분리한 이유는, 모달이 제거될 때 애니메이션이 종료된 후 내부에서 제어하는 shouldRender를 false로 변경해 모달을 언마운트하기 위함입니다.
 
-### 고민한 부분
+## 고민한 부분
 
 ### 1. 애니메이션 처리
 
