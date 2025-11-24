@@ -17,7 +17,7 @@ describe('Modal', () => {
     document.body.style.overflow = '';
   });
 
-  describe('Open/Close Control', () => {
+  describe('열기/닫기 제어', () => {
     it('모달이 isOpen={true}일 때 렌더링되어야 함', async () => {
       const onClose = vi.fn();
 
@@ -151,7 +151,7 @@ describe('Modal', () => {
     });
   });
 
-  describe('ESC Key and Backdrop Click', () => {
+  describe('ESC 키 및 배경 클릭', () => {
     it('ESC 키로 모달을 닫을 수 있어야 함', async () => {
       const user = userEvent.setup();
       const onClose = vi.fn();
@@ -302,7 +302,7 @@ describe('Modal', () => {
     });
   });
 
-  describe('Focus Management and Focus Trap', () => {
+  describe('포커스 관리 및 포커스 트랩', () => {
     it('모달이 열릴 때 첫 번째 포커스 가능한 요소에 포커스가 이동해야 함', async () => {
       const user = userEvent.setup();
 
@@ -540,7 +540,7 @@ describe('Modal', () => {
     });
   });
 
-  describe('ARIA Attributes', () => {
+  describe('ARIA 속성', () => {
     it('ModalContent에 role="dialog"가 있어야 함', async () => {
       render(
         <Modal isOpen={true} onClose={vi.fn()}>
@@ -667,7 +667,7 @@ describe('Modal', () => {
     });
   });
 
-  describe('Animation', () => {
+  describe('애니메이션', () => {
     it('모달이 열릴 때 isAnimating 상태가 올바르게 전환되어야 함', async () => {
       function TestModal() {
         const [isOpen, setIsOpen] = useState(false);
@@ -779,7 +779,7 @@ describe('Modal', () => {
     });
   });
 
-  describe('Body Scroll Lock', () => {
+  describe('바디 스크롤 잠금', () => {
     it('모달이 열릴 때 document.body.style.overflow가 "hidden"으로 설정되어야 함', async () => {
       const user = userEvent.setup();
 
@@ -840,7 +840,7 @@ describe('Modal', () => {
     });
   });
 
-  describe('Portal Rendering', () => {
+  describe('포털 렌더링', () => {
     it('모달이 document.body에 포털로 렌더링되어야 함', async () => {
       render(
         <Modal isOpen={true} onClose={vi.fn()}>
@@ -888,7 +888,7 @@ describe('Modal', () => {
     });
   });
 
-  describe('Close Button', () => {
+  describe('닫기 버튼', () => {
     it('CloseButton 클릭 시 onClose가 호출되어야 함', async () => {
       const user = userEvent.setup();
       const onClose = vi.fn();
@@ -960,7 +960,7 @@ describe('Modal', () => {
     });
   });
 
-  describe('Component Integration', () => {
+  describe('컴포넌트 통합', () => {
     it('전체 모달 구조(Header, Body, Footer, CloseButton)가 올바르게 렌더링되어야 함', async () => {
       render(
         <Modal isOpen={true} onClose={vi.fn()}>

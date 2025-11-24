@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import Select from './Select';
 
 describe('Select', () => {
-  describe('Select with react-hook-form', () => {
+  describe('react-hook-form 연동', () => {
     it('Controller를 통해 값이 올바르게 제어되어야 함', async () => {
       const user = userEvent.setup();
       const onSubmit = vi.fn();
@@ -358,7 +358,7 @@ describe('Select', () => {
     });
   });
 
-  describe('keyboard navigation', () => {
+  describe('키보드 네비게이션', () => {
     it('ArrowDown 키로 드롭다운을 열고 다음 옵션으로 이동해야 함', async () => {
       const user = userEvent.setup();
       const TestComponent = () => {
@@ -528,7 +528,7 @@ describe('Select', () => {
     });
   });
 
-  describe('focus management', () => {
+  describe('포커스 관리', () => {
     it('옵션 선택 후 focus가 trigger로 돌아가야 함', async () => {
       const user = userEvent.setup();
       const TestComponent = () => {
@@ -736,7 +736,7 @@ describe('Select', () => {
     });
   });
 
-  describe('variant: default', () => {
+  describe('기본 variant', () => {
     it('default variant일 때 정상적으로 동작해야 함', async () => {
       const user = userEvent.setup();
       const TestComponent = () => {
@@ -767,7 +767,7 @@ describe('Select', () => {
     });
   });
 
-  describe('variant: disabled', () => {
+  describe('비활성화 variant', () => {
     it('disabled variant일 때 trigger가 비활성화되어야 함', () => {
       const TestComponent = () => {
         const [value, setValue] = useState<string | undefined>(undefined);
@@ -865,7 +865,7 @@ describe('Select', () => {
     });
   });
 
-  describe('disabled option', () => {
+  describe('비활성화된 옵션', () => {
     it('disabled option은 클릭해도 선택되지 않아야 함', async () => {
       const user = userEvent.setup();
       const onChange = vi.fn();
@@ -1021,7 +1021,7 @@ describe('Select', () => {
     });
   });
 
-  describe('grouped options', () => {
+  describe('그룹화된 옵션', () => {
     it('SelectGroup을 사용하여 옵션을 그룹화할 수 있어야 함', async () => {
       const user = userEvent.setup();
       const TestComponent = () => {
