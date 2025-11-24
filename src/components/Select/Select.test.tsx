@@ -25,17 +25,14 @@ describe('Select', () => {
 
       render(<TestComponent />);
 
-      // Label 확인
       const label = screen.getByText('과일 선택');
       expect(label).toBeInTheDocument();
       expect(label.tagName).toBe('LABEL');
 
-      // Trigger 확인
       const trigger = screen.getByRole('combobox');
       expect(trigger).toBeInTheDocument();
       expect(trigger).toHaveTextContent('선택하세요');
 
-      // List는 닫혀있어야 함
       const listbox = screen.queryByRole('listbox');
       expect(listbox).not.toBeInTheDocument();
     });
@@ -62,13 +59,11 @@ describe('Select', () => {
       const trigger = screen.getByRole('combobox');
       await user.click(trigger);
 
-      // List가 열려야 함
       await waitFor(() => {
         const listbox = screen.getByRole('listbox');
         expect(listbox).toBeInTheDocument();
       });
 
-      // 옵션들이 보여야 함
       expect(screen.getByRole('option', { name: '사과' })).toBeInTheDocument();
       expect(screen.getByRole('option', { name: '바나나' })).toBeInTheDocument();
     });
@@ -104,17 +99,14 @@ describe('Select', () => {
       const trigger = screen.getByRole('combobox');
       await user.click(trigger);
 
-      // 옵션 선택
       const appleOption = screen.getByRole('option', { name: '사과' });
       await user.click(appleOption);
 
-      // trigger에 선택된 값이 표시되어야 함
       await waitFor(() => {
         expect(trigger).toHaveTextContent('사과');
         expect(onChange).toHaveBeenCalledWith('apple');
       });
 
-      // list가 닫혀야 함
       await waitFor(() => {
         expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
       });
@@ -176,21 +168,17 @@ describe('Select', () => {
       const trigger = screen.getByRole('combobox');
       trigger.focus();
 
-      // ArrowDown으로 드롭다운 열기
       await user.keyboard('{ArrowDown}');
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument();
       });
 
-      // 첫 번째 옵션이 하이라이트되어야 함
       const appleOption = screen.getByRole('option', { name: '사과' });
       expect(appleOption).toHaveAttribute('aria-selected', 'false');
 
-      // 다시 ArrowDown으로 다음 옵션으로 이동
       await user.keyboard('{ArrowDown}');
 
-      // 두 번째 옵션이 하이라이트되어야 함
       await waitFor(() => {
         const bananaOption = screen.getByRole('option', { name: '바나나' });
         expect(bananaOption).toHaveClass('bg-primary-500');
@@ -220,17 +208,14 @@ describe('Select', () => {
       const trigger = screen.getByRole('combobox');
       trigger.focus();
 
-      // 드롭다운 열기
       await user.keyboard('{ArrowDown}');
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument();
       });
 
-      // 두 번째 옵션으로 이동
       await user.keyboard('{ArrowDown}');
 
-      // ArrowUp으로 이전 옵션으로 이동
       await user.keyboard('{ArrowUp}');
 
       await waitFor(() => {
@@ -267,14 +252,12 @@ describe('Select', () => {
       const trigger = screen.getByRole('combobox');
       trigger.focus();
 
-      // 드롭다운 열기
       await user.keyboard('{ArrowDown}');
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument();
       });
 
-      // Enter로 선택
       await user.keyboard('{Enter}');
 
       await waitFor(() => {
@@ -310,14 +293,12 @@ describe('Select', () => {
         expect(screen.getByRole('listbox')).toBeInTheDocument();
       });
 
-      // Escape로 닫기
       await user.keyboard('{Escape}');
 
       await waitFor(() => {
         expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
       });
 
-      // focus가 trigger로 돌아가야 함
       expect(trigger).toHaveFocus();
     });
   });
@@ -606,7 +587,6 @@ describe('Select', () => {
       const trigger = screen.getByRole('combobox');
       await user.click(trigger);
 
-      // 드롭다운이 열리지 않아야 함
       expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
     });
 
@@ -633,7 +613,6 @@ describe('Select', () => {
 
       await user.keyboard('{ArrowDown}');
 
-      // 드롭다운이 열리지 않아야 함
       expect(screen.queryByRole('listbox')).not.toBeInTheDocument();
     });
 
@@ -697,7 +676,6 @@ describe('Select', () => {
 
       await user.click(disabledOption);
 
-      // 값이 변경되지 않아야 함
       expect(onChange).not.toHaveBeenCalled();
       expect(trigger).toHaveTextContent('선택하세요');
     });
@@ -727,21 +705,17 @@ describe('Select', () => {
       const trigger = screen.getByRole('combobox');
       trigger.focus();
 
-      // 드롭다운 열기
       await user.keyboard('{ArrowDown}');
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument();
       });
 
-      // 첫 번째 옵션(사과)이 하이라이트
       const appleOption = screen.getByRole('option', { name: '사과' });
       expect(appleOption).toHaveClass('bg-primary-500');
 
-      // ArrowDown으로 다음 옵션으로 이동 (disabled 옵션 건너뛰기)
       await user.keyboard('{ArrowDown}');
 
-      // 세 번째 옵션(오렌지)이 하이라이트되어야 함 (바나나 건너뛰기)
       await waitFor(() => {
         const orangeOption = screen.getByRole('option', { name: '오렌지' });
         expect(orangeOption).toHaveClass('bg-primary-500');
@@ -779,18 +753,15 @@ describe('Select', () => {
       const trigger = screen.getByRole('combobox');
       trigger.focus();
 
-      // 드롭다운 열기
       await user.keyboard('{ArrowDown}');
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument();
       });
 
-      // 첫 번째 옵션(사과)이 하이라이트됨
       const appleOption = screen.getByRole('option', { name: '사과' });
       expect(appleOption).toHaveClass('bg-primary-500');
 
-      // ArrowDown으로 다음 옵션으로 이동 (disabled 옵션 건너뛰고 오렌지로 이동)
       await user.keyboard('{ArrowDown}');
 
       await waitFor(() => {
@@ -798,20 +769,12 @@ describe('Select', () => {
         expect(orangeOption).toHaveClass('bg-primary-500');
       });
 
-      // Enter 키로 오렌지 선택
       await user.keyboard('{Enter}');
 
-      // 오렌지가 선택되어야 함 (정상 동작)
       await waitFor(() => {
         expect(onChange).toHaveBeenCalledWith('orange');
         expect(trigger).toHaveTextContent('오렌지');
       });
-
-      // 참고: disabled 옵션은 키보드 네비게이션에서 건너뛰어지므로,
-      // 실제로는 disabled 옵션에 하이라이트될 수 없음
-      // Enter 키 처리 로직에 disabled 체크가 추가되어 있어,
-      // 만약 어떤 이유로 disabled 옵션이 하이라이트된 상태에서 Enter를 누르면
-      // 선택되지 않도록 보호됨
     });
   });
 
@@ -849,11 +812,9 @@ describe('Select', () => {
         expect(listbox).toBeInTheDocument();
       });
 
-      // 그룹 레이블 확인
       expect(screen.getByText('과일')).toBeInTheDocument();
       expect(screen.getByText('채소')).toBeInTheDocument();
 
-      // 그룹 내 옵션들 확인
       expect(screen.getByRole('option', { name: '사과' })).toBeInTheDocument();
       expect(screen.getByRole('option', { name: '바나나' })).toBeInTheDocument();
       expect(screen.getByRole('option', { name: '당근' })).toBeInTheDocument();
@@ -893,7 +854,6 @@ describe('Select', () => {
       const trigger = screen.getByRole('combobox');
       await user.click(trigger);
 
-      // 그룹 내 옵션 선택
       const carrotOption = screen.getByRole('option', { name: '당근' });
       await user.click(carrotOption);
 
@@ -930,30 +890,24 @@ describe('Select', () => {
       const trigger = screen.getByRole('combobox');
       trigger.focus();
 
-      // 드롭다운 열기
       await user.keyboard('{ArrowDown}');
 
       await waitFor(() => {
         expect(screen.getByRole('listbox')).toBeInTheDocument();
       });
 
-      // 첫 번째 옵션(사과)이 하이라이트
       const appleOption = screen.getByRole('option', { name: '사과' });
       expect(appleOption).toHaveClass('bg-primary-500');
 
-      // 다음 옵션으로 이동
       await user.keyboard('{ArrowDown}');
 
-      // 두 번째 옵션(바나나)이 하이라이트
       await waitFor(() => {
         const bananaOption = screen.getByRole('option', { name: '바나나' });
         expect(bananaOption).toHaveClass('bg-primary-500');
       });
 
-      // 다음 옵션으로 이동 (다른 그룹)
       await user.keyboard('{ArrowDown}');
 
-      // 세 번째 옵션(당근)이 하이라이트
       await waitFor(() => {
         const carrotOption = screen.getByRole('option', { name: '당근' });
         expect(carrotOption).toHaveClass('bg-primary-500');
@@ -1025,24 +979,19 @@ describe('Select', () => {
 
       render(<TestForm />);
 
-      // Trigger 클릭하여 드롭다운 열기
       const trigger = screen.getByRole('combobox');
       await user.click(trigger);
 
-      // 옵션 선택
       const appleOption = screen.getByRole('option', { name: '사과' });
       await user.click(appleOption);
 
-      // 값이 변경되었는지 확인
       await waitFor(() => {
         expect(trigger).toHaveTextContent('사과');
       });
 
-      // 폼 제출
       const submitButton = screen.getByRole('button', { name: '제출' });
       await user.click(submitButton);
 
-      // 제출된 값 확인
       expect(onSubmit).toHaveBeenCalledWith({ fruit: 'apple' }, expect.any(Object));
     });
 
@@ -1087,11 +1036,9 @@ describe('Select', () => {
 
       render(<TestForm />);
 
-      // 값 없이 제출
       const submitButton = screen.getByRole('button', { name: '제출' });
       await user.click(submitButton);
 
-      // 에러 메시지 확인
       await waitFor(() => {
         expect(screen.getByText('과일을 선택해주세요')).toBeInTheDocument();
         expect(onError).toHaveBeenCalled();
@@ -1132,15 +1079,12 @@ describe('Select', () => {
 
       render(<TestForm />);
 
-      // 초기값 확인
       const trigger = screen.getByRole('combobox');
       expect(trigger).toHaveTextContent('사과');
 
-      // 리셋 버튼 클릭
       const resetButton = screen.getByRole('button', { name: '리셋' });
       await user.click(resetButton);
 
-      // 값이 리셋되었는지 확인
       await waitFor(() => {
         expect(trigger).toHaveTextContent('선택하세요');
       });
@@ -1157,7 +1101,6 @@ describe('Select', () => {
 
         const fruitValue = watch('fruit');
 
-        // 값이 변경될 때마다 콜백 호출
         useEffect(() => {
           if (fruitValue) {
             onValueChange(fruitValue);
@@ -1184,13 +1127,11 @@ describe('Select', () => {
 
       render(<TestForm />);
 
-      // 옵션 선택
       const trigger = screen.getByRole('combobox');
       await user.click(trigger);
       const bananaOption = screen.getByRole('option', { name: '바나나' });
       await user.click(bananaOption);
 
-      // watch 콜백이 호출되었는지 확인
       await waitFor(() => {
         expect(onValueChange).toHaveBeenCalledWith('banana');
       });
