@@ -6,6 +6,7 @@ import {
 } from "react";
 import { useModalContext } from "./ModalRoot";
 import { useFocusTrap, getFocusableElements } from "../../hooks/useFocusTrap";
+import { useKeyboardEvent } from "../../hooks/useKeyboardEvent";
 
 interface ModalContentProps extends PropsWithChildren {
   className?: string;
@@ -18,17 +19,7 @@ export function ModalContent({ children, className }: ModalContentProps) {
   const previousActiveElementRef = useRef<HTMLElement | null>(null);
 
   useFocusTrap(contentRef);
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, [onClose]);
+  useKeyboardEvent("Escape", onClose);
 
   useEffect(() => {
     previousActiveElementRef.current = document.activeElement as HTMLElement;
