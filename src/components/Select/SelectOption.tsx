@@ -28,9 +28,11 @@ export function SelectOption({
   const isSelected = value === selectedValue;
 
   useEffect(() => {
+    if (options.find((option) => option.value === value)) return;
+
     const label = nodeToString(children);
     registerOption({ value, label, disabled });
-  }, [value, children, disabled, registerOption]);
+  }, [value, children, disabled, registerOption, options]);
 
   const handleSelectOptionClick = () => {
     if (disabled) return;
