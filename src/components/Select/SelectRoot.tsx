@@ -29,7 +29,7 @@ interface SelectContextValue {
   isOpen: boolean; // DropDown 열림 여부
   setIsOpen: (open: boolean) => void;
   selectedValue?: string; // 선택된 값
-  setSelectedValue: (value: string) => void;
+  setSelectedValue: (value: string | undefined) => void;
   highlightedIndex: number; // 하이라이트된 옵션 인덱스
   setHighlightedIndex: (index: number) => void;
   options: SelectOption[]; // 옵션 목록
@@ -54,19 +54,18 @@ export function useSelectContext() {
 
 interface SelectRootProps extends PropsWithChildren {
   variant?: SelectVariant;
-  defaultSelectedValue?: string;
+  value: string | undefined;
+  onChange: (value: string | undefined) => void;
   width?: string;
 }
 
 export function SelectRoot({
   children,
   variant = "default",
-  defaultSelectedValue,
+  value,
+  onChange,
   width = "16rem",
 }: SelectRootProps) {
-  const [selectedValue, setSelectedValue] = useState<string | undefined>(
-    defaultSelectedValue
-  );
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
   const [options, setOptions] = useState<SelectOption[]>([]);
@@ -85,17 +84,24 @@ export function SelectRoot({
     []
   );
 
+  const handleSetSelectedValue = useCallback(
+    (newValue: string | undefined) => {
+      onChange(newValue);
+    },
+    [onChange]
+  );
+
   const selectedOption = useMemo(() => {
-    return options.find((option) => option.value === selectedValue)?.children;
-  }, [selectedValue, options]);
+    return options.find((option) => option.value === value)?.children;
+  }, [value, options]);
 
   return (
     <SelectContext.Provider
       value={{
         isOpen,
         setIsOpen,
-        selectedValue,
-        setSelectedValue,
+        selectedValue: value,
+        setSelectedValue: handleSetSelectedValue,
         highlightedIndex,
         setHighlightedIndex,
         options,

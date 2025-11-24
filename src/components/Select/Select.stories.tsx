@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import Select from "./Select";
 
@@ -12,8 +13,9 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   render: function Default() {
+    const [value, setValue] = useState<string | undefined>(undefined);
     return (
-      <Select variant="default">
+      <Select variant="default" value={value} onChange={setValue}>
         <Select.Label>과일 선택</Select.Label>
         <Select.Trigger>선택하세요</Select.Trigger>
         <Select.List>
@@ -37,8 +39,9 @@ export const Default: Story = {
 
 export const Disabled: Story = {
   render: () => {
+    const [value, setValue] = useState<string | undefined>(undefined);
     return (
-      <Select variant="disabled">
+      <Select variant="disabled" value={value} onChange={setValue}>
         <Select.Label>과일 선택</Select.Label>
         <Select.Trigger>선택하세요</Select.Trigger>
         <Select.List>
@@ -52,8 +55,9 @@ export const Disabled: Story = {
 };
 
 function DisabledOptionExample() {
+  const [value, setValue] = useState<string | undefined>(undefined);
   return (
-    <Select>
+    <Select value={value} onChange={setValue}>
       <Select.Label>과일 선택 (일부 품절)</Select.Label>
       <Select.Trigger>선택하세요</Select.Trigger>
       <Select.List>
@@ -85,8 +89,9 @@ export const DisabledOption: Story = {
 };
 
 function GroupedOptionsExample() {
+  const [value, setValue] = useState<string | undefined>(undefined);
   return (
-    <Select>
+    <Select value={value} onChange={setValue}>
       <Select.Label>음식 선택</Select.Label>
       <Select.Trigger>선택하세요</Select.Trigger>
       <Select.List maxHeight="20rem">
@@ -130,8 +135,9 @@ export const GroupedOptions: Story = {
 };
 
 function ColoredTextOptionExample() {
+  const [value, setValue] = useState<string | undefined>(undefined);
   return (
-    <Select>
+    <Select value={value} onChange={setValue}>
       <Select.Label>상품 선택 (상태 표시)</Select.Label>
       <Select.Trigger>선택하세요</Select.Trigger>
       <Select.List>
@@ -169,8 +175,9 @@ export const ColoredTextOption: Story = {
 };
 
 function RichContentOptionExample() {
+  const [value, setValue] = useState<string | undefined>(undefined);
   return (
-    <Select width="20rem">
+    <Select width="20rem" value={value} onChange={setValue}>
       <Select.Label>상품 선택 (상세 정보 포함)</Select.Label>
       <Select.Trigger>선택하세요</Select.Trigger>
       <Select.List maxHeight="25rem">
