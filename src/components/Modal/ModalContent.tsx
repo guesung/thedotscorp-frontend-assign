@@ -1,5 +1,5 @@
-import { useRef, type MouseEvent, type PropsWithChildren } from "react";
-import { useFocusTrap } from "@/hooks/useFocusTrap";
+import { useEffect, type MouseEvent, type PropsWithChildren } from "react";
+import { useFocusTrap, getFocusableElements } from "@/hooks/useFocusTrap";
 import { useKeyboardEvent } from "@/hooks/useKeyboardEvent";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useModalContext } from "./ModalRoot";
@@ -10,13 +10,23 @@ interface ModalContentProps extends PropsWithChildren {
 }
 
 export function ModalContent({ children, className }: ModalContentProps) {
-  const { onClose, titleId, descriptionId, isAnimating } = useModalContext();
-
-  const contentRef = useRef<HTMLDivElement>(null);
+  const { onClose, titleId, descriptionId, isAnimating, contentRef } =
+    useModalContext();
 
   useFocusTrap(contentRef);
   useKeyboardEvent("Escape", onClose);
   useBodyScrollLock();
+
+  useEffect(() => {
+    if (!contentRef.current) return;
+
+    const focusableElements = getFocusableElements(contentRef.current);
+    if (focusableElements.length > 0) {
+      focusableElements[0].focus();
+    } else {
+      contentRef.current.focus();
+    }
+  }, [contentRef]);
 
   return (
     <div

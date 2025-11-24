@@ -4,6 +4,7 @@ import {
   useId,
   useState,
   useEffect,
+  useRef,
   type PropsWithChildren,
 } from "react";
 import { ModalPortal } from "./ModalPortal";
@@ -15,6 +16,7 @@ interface ModalContextValue {
   titleId: string;
   descriptionId: string;
   isAnimating: boolean;
+  contentRef: React.RefObject<HTMLDivElement | null>;
 }
 
 const ModalContext = createContext<ModalContextValue | null>(null);
@@ -48,9 +50,13 @@ export function ModalRoot({
 
   const [shouldRender, setShouldRender] = useState(isOpen); // 모달을 렌더링 할지 여부
   const [isAnimating, setIsAnimating] = useState(false); // 모달을 애니메이션 중인지 여부
+  const contentRef = useRef<HTMLDivElement | null>(null);
+  const previousActiveElementRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     if (isOpen) {
+      previousActiveElementRef.current = document.activeElement as HTMLElement;
+
       setShouldRender(true);
       requestAnimationFrame(() => {
         requestAnimationFrame(() => {
@@ -61,6 +67,10 @@ export function ModalRoot({
       setIsAnimating(false);
       const timer = setTimeout(() => {
         setShouldRender(false);
+        if (previousActiveElementRef.current) {
+          previousActiveElementRef.current?.focus();
+          previousActiveElementRef.current = null;
+        }
       }, 200);
       return () => clearTimeout(timer);
     }
@@ -78,6 +88,7 @@ export function ModalRoot({
         titleId,
         descriptionId,
         isAnimating,
+        contentRef,
       }}
     >
       <ModalPortal container={portalContainer}>
