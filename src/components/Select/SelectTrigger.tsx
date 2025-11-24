@@ -1,5 +1,5 @@
-import { type KeyboardEvent, type ReactNode } from "react";
-import { useSelectContext } from "./SelectRoot";
+import { type KeyboardEvent, type ReactNode } from 'react';
+import { useSelectContext } from './SelectRoot';
 
 interface SelectTriggerProps {
   children: ReactNode;
@@ -21,17 +21,12 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
     selectedOption,
   } = useSelectContext();
 
-  const findNextEnabledIndex = (
-    currentIndex: number,
-    direction: "up" | "down",
-  ) => {
+  const findNextEnabledIndex = (currentIndex: number, direction: 'up' | 'down') => {
     const optionCount = options.length;
     let nextIndex = currentIndex;
 
     for (let i = 0; i < optionCount; i++) {
-      nextIndex =
-        (nextIndex + (direction === "down" ? 1 : -1) + optionCount) %
-        optionCount;
+      nextIndex = (nextIndex + (direction === 'down' ? 1 : -1) + optionCount) % optionCount;
       if (options[nextIndex] && !options[nextIndex].disabled) {
         return nextIndex;
       }
@@ -39,15 +34,13 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
     return currentIndex;
   };
 
-  const isDisabled = variant === "disabled";
+  const isDisabled = variant === 'disabled';
 
   const handleOpen = () => {
     if (isDisabled) return;
 
     setIsOpen(true);
-    const selectedIndex = options.findIndex(
-      (option) => option.value === selectedValue,
-    );
+    const selectedIndex = options.findIndex(option => option.value === selectedValue);
     if (selectedIndex !== -1) {
       setHighlightedIndex(selectedIndex);
     }
@@ -57,21 +50,21 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
     if (isDisabled) return;
 
     switch (e.key) {
-      case "ArrowDown":
+      case 'ArrowDown':
         e.preventDefault();
         if (isOpen) {
-          setHighlightedIndex(findNextEnabledIndex(highlightedIndex, "down"));
+          setHighlightedIndex(findNextEnabledIndex(highlightedIndex, 'down'));
         } else {
           handleOpen();
         }
         break;
-      case "ArrowUp":
+      case 'ArrowUp':
         e.preventDefault();
         if (isOpen) {
-          setHighlightedIndex(findNextEnabledIndex(highlightedIndex, "up"));
+          setHighlightedIndex(findNextEnabledIndex(highlightedIndex, 'up'));
         }
         break;
-      case "Enter":
+      case 'Enter':
         e.preventDefault();
         if (isOpen && options[highlightedIndex]) {
           setSelectedValue(options[highlightedIndex].value);
@@ -81,7 +74,7 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
           handleOpen();
         }
         break;
-      case "Escape":
+      case 'Escape':
         e.preventDefault();
         setIsOpen(false);
         triggerRef.current?.focus();
@@ -119,11 +112,11 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
       onKeyDown={handleKeyDown}
       className={`w-full px-3 py-2 text-left rounded-md shadow-sm focus:outline-none ${
         isDisabled
-          ? "bg-gray-100 border border-gray-200 text-gray-400 cursor-not-allowed"
-          : "bg-white border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
+          ? 'bg-gray-100 border border-gray-200 text-gray-400 cursor-not-allowed'
+          : 'bg-white border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500'
       }`}
     >
-      {selectedOption || children || "선택하세요"}
+      {selectedOption || children || '선택하세요'}
     </button>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
 export function useKeyboardEvent(key: string, handler: () => void) {
   useEffect(() => {
@@ -8,7 +8,7 @@ export function useKeyboardEvent(key: string, handler: () => void) {
       }
     };
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [key, handler]);
 }

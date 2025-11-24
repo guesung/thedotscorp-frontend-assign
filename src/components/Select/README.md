@@ -71,11 +71,8 @@ Select는 **선택값(`value`)만 제어**하고, 드롭다운 열림/닫힘, �
 ```tsx
 // SelectRoot.tsx - children을 파싱하여 옵션 목록 수집
 const options = useMemo(() => {
-  const collectOptions = (
-    children: ReactNode,
-    collected: SelectOptionData[] = []
-  ): SelectOptionData[] => {
-    Children.forEach(children, (child) => {
+  const collectOptions = (children: ReactNode, collected: SelectOptionData[] = []): SelectOptionData[] => {
+    Children.forEach(children, child => {
       if (!isValidElement(child)) return;
 
       const props = child.props as PropsWithChildren;
@@ -117,16 +114,12 @@ disabled된 옵션은 키보드 네비게이션에서 건너뛰도록 구현했�
 
 ```tsx
 // SelectTrigger.tsx
-const findNextEnabledIndex = (
-  currentIndex: number,
-  direction: "up" | "down"
-) => {
+const findNextEnabledIndex = (currentIndex: number, direction: 'up' | 'down') => {
   const optionCount = options.length;
   let nextIndex = currentIndex;
 
   for (let i = 0; i < optionCount; i++) {
-    nextIndex =
-      (nextIndex + (direction === "down" ? 1 : -1) + optionCount) % optionCount;
+    nextIndex = (nextIndex + (direction === 'down' ? 1 : -1) + optionCount) % optionCount;
     if (options[nextIndex] && !options[nextIndex].disabled) {
       return nextIndex;
     }
@@ -148,7 +141,7 @@ useEffect(() => {
   const optionElement = document.getElementById(optionId);
 
   optionElement?.scrollIntoView({
-    block: highlightedIndex === 0 ? "end" : "nearest",
+    block: highlightedIndex === 0 ? 'end' : 'nearest',
   });
 }, [highlightedIndex, isOpen, listboxId]);
 ```
@@ -184,6 +177,6 @@ useEffect(() => {
 ```tsx
 // SelectRoot.tsx
 const selectedOption = useMemo(() => {
-  return options.find((option) => option.value === selectedValue)?.children;
+  return options.find(option => option.value === selectedValue)?.children;
 }, [selectedValue, options]);
 ```

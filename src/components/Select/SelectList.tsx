@@ -1,17 +1,16 @@
-import { useEffect, useRef, type PropsWithChildren } from "react";
-import { useSelectContext } from "./SelectRoot";
+import { useEffect, useRef, type PropsWithChildren } from 'react';
+import { useSelectContext } from './SelectRoot';
 
 interface SelectListProps extends PropsWithChildren {
   maxHeight?: string;
 }
 
-export function SelectList({ children, maxHeight = "15rem" }: SelectListProps) {
+export function SelectList({ children, maxHeight = '15rem' }: SelectListProps) {
   const { isOpen, listboxId, labelId, highlightedIndex } = useSelectContext();
   const listboxRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
-    if (!isOpen || highlightedIndex === undefined || !listboxRef.current)
-      return;
+    if (!isOpen || highlightedIndex === undefined || !listboxRef.current) return;
 
     const optionId = `${listboxId}-option-${highlightedIndex}`;
     const optionElement = document.getElementById(optionId);

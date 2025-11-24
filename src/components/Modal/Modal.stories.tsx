@@ -1,12 +1,12 @@
-import { useState } from "react";
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import Modal from "./Modal";
+import { useState } from 'react';
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import Modal from './Modal';
 
 const meta: Meta = {
-  title: "Components/Modal",
-  tags: ["autodocs"],
+  title: 'Components/Modal',
+  tags: ['autodocs'],
   parameters: {
-    layout: "centered",
+    layout: 'centered',
   },
 };
 
@@ -30,15 +30,10 @@ export const Default: Story = {
           <Modal.Content>
             <Modal.Header>모달 제목</Modal.Header>
             <Modal.Body>
-              <p className="text-gray-600">
-                모달 본문 내용입니다. 여기에 원하는 콘텐츠를 넣을 수 있습니다.
-              </p>
+              <p className="text-gray-600">모달 본문 내용입니다. 여기에 원하는 콘텐츠를 넣을 수 있습니다.</p>
             </Modal.Body>
             <Modal.Footer>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
-              >
+              <button onClick={() => setIsOpen(false)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
                 취소
               </button>
               <button
@@ -73,9 +68,7 @@ export const WithCloseButton: Story = {
             <Modal.CloseButton />
             <Modal.Header>알림</Modal.Header>
             <Modal.Body>
-              <p className="text-gray-600">
-                오른쪽 상단의 X 버튼으로 닫을 수 있습니다.
-              </p>
+              <p className="text-gray-600">오른쪽 상단의 X 버튼으로 닫을 수 있습니다.</p>
             </Modal.Body>
             <Modal.Footer>
               <button
@@ -105,17 +98,12 @@ export const NoCloseOnOverlayClick: Story = {
           모달 열기
         </button>
 
-        <Modal
-          isOpen={isOpen}
-          onClose={() => setIsOpen(false)}
-          closeOnOverlayClick={false}
-        >
+        <Modal isOpen={isOpen} onClose={() => setIsOpen(false)} closeOnOverlayClick={false}>
           <Modal.Content>
             <Modal.Header>중요 알림</Modal.Header>
             <Modal.Body>
               <p className="text-gray-600">
-                이 모달은 배경을 클릭해도 닫히지 않습니다. 버튼을 클릭하거나 ESC
-                키를 눌러야 닫힙니다.
+                이 모달은 배경을 클릭해도 닫히지 않습니다. 버튼을 클릭하거나 ESC 키를 눌러야 닫힙니다.
               </p>
             </Modal.Body>
             <Modal.Footer>
@@ -153,19 +141,14 @@ export const LongContent: Story = {
               <div className="space-y-4 text-gray-600">
                 {Array.from({ length: 10 }, (_, i) => (
                   <p key={i}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                    ullamco laboris.
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris.
                   </p>
                 ))}
               </div>
             </Modal.Body>
             <Modal.Footer>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
-              >
+              <button onClick={() => setIsOpen(false)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
                 거절
               </button>
               <button
@@ -201,10 +184,7 @@ export const WithForm: Story = {
             <Modal.Body>
               <form className="space-y-4">
                 <div>
-                  <label
-                    htmlFor="email"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
+                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                     이메일
                   </label>
                   <input
@@ -215,10 +195,7 @@ export const WithForm: Story = {
                   />
                 </div>
                 <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-sm font-medium text-gray-700 mb-1"
-                  >
+                  <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                     비밀번호
                   </label>
                   <input
@@ -231,10 +208,7 @@ export const WithForm: Story = {
               </form>
             </Modal.Body>
             <Modal.Footer>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded"
-              >
+              <button onClick={() => setIsOpen(false)} className="px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
                 취소
               </button>
               <button

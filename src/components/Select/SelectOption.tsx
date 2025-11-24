@@ -1,27 +1,16 @@
-import { type PropsWithChildren } from "react";
-import { useSelectContext } from "./SelectRoot";
+import { type PropsWithChildren } from 'react';
+import { useSelectContext } from './SelectRoot';
 
 export interface SelectOptionProps extends PropsWithChildren {
   value: string;
   disabled?: boolean;
 }
 
-export function SelectOption({
-  children,
-  value,
-  disabled = false,
-}: SelectOptionProps) {
-  const {
-    setSelectedValue,
-    setIsOpen,
-    highlightedIndex,
-    options,
-    triggerRef,
-    listboxId,
-    selectedValue,
-  } = useSelectContext();
+export function SelectOption({ children, value, disabled = false }: SelectOptionProps) {
+  const { setSelectedValue, setIsOpen, highlightedIndex, options, triggerRef, listboxId, selectedValue } =
+    useSelectContext();
 
-  const index = options.findIndex((option) => option.value === value);
+  const index = options.findIndex(option => option.value === value);
   const isHighlighted = index === highlightedIndex;
   const isSelected = value === selectedValue;
 
@@ -41,10 +30,10 @@ export function SelectOption({
       onClick={handleSelectOptionClick}
       className={`px-3 py-2 ${
         disabled
-          ? "text-gray-400 cursor-not-allowed"
+          ? 'text-gray-400 cursor-not-allowed'
           : isHighlighted
-          ? "bg-primary-500 text-white cursor-pointer"
-          : "hover:bg-gray-100 cursor-pointer"
+          ? 'bg-primary-500 text-white cursor-pointer'
+          : 'hover:bg-gray-100 cursor-pointer'
       }`}
     >
       {children}

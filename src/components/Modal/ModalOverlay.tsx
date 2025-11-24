@@ -1,17 +1,13 @@
-import type { PropsWithChildren } from "react";
-import { useModalContext } from "./ModalRoot";
-import { cn } from "@/utils/cn";
+import type { PropsWithChildren } from 'react';
+import { useModalContext } from './ModalRoot';
+import { cn } from '@/utils/cn';
 
 interface ModalOverlayProps extends PropsWithChildren {
   closeOnClick?: boolean;
   className?: string;
 }
 
-export function ModalOverlay({
-  children,
-  closeOnClick = true,
-  className,
-}: ModalOverlayProps) {
+export function ModalOverlay({ children, closeOnClick = true, className }: ModalOverlayProps) {
   const { onClose, isAnimating } = useModalContext();
 
   const handleClick = () => {
@@ -23,8 +19,8 @@ export function ModalOverlay({
   return (
     <div
       className={cn(
-        "fixed inset-0 bg-overlay flex items-center justify-center z-modal transition-opacity duration ease-out",
-        isAnimating ? "opacity-100" : "opacity-0",
+        'fixed inset-0 bg-overlay flex items-center justify-center z-modal transition-opacity duration ease-out',
+        isAnimating ? 'opacity-100' : 'opacity-0',
         className,
       )}
       onClick={handleClick}

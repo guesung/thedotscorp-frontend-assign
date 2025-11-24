@@ -1,15 +1,6 @@
-import {
-  createContext,
-  useContext,
-  useId,
-  useState,
-  useEffect,
-  useRef,
-  useMemo,
-  type PropsWithChildren,
-} from "react";
-import { ModalPortal } from "./ModalPortal";
-import { ModalOverlay } from "./ModalOverlay";
+import { createContext, useContext, useId, useState, useEffect, useRef, useMemo, type PropsWithChildren } from 'react';
+import { ModalPortal } from './ModalPortal';
+import { ModalOverlay } from './ModalOverlay';
 
 interface ModalContextValue {
   isOpen: boolean;
@@ -26,7 +17,7 @@ const ModalContext = createContext<ModalContextValue | null>(null);
 export function useModalContext() {
   const context = useContext(ModalContext);
   if (!context) {
-    throw new Error("Modal 컴포넌트 내부에서 사용해야 합니다.");
+    throw new Error('Modal 컴포넌트 내부에서 사용해야 합니다.');
   }
   return context;
 }
@@ -96,9 +87,7 @@ export function ModalRoot({
   return (
     <ModalContext.Provider value={contextValue}>
       <ModalPortal container={portalContainer}>
-        <ModalOverlay closeOnClick={closeOnOverlayClick}>
-          {children}
-        </ModalOverlay>
+        <ModalOverlay closeOnClick={closeOnOverlayClick}>{children}</ModalOverlay>
       </ModalPortal>
     </ModalContext.Provider>
   );

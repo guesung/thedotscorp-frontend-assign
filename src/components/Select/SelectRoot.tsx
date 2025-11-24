@@ -13,10 +13,10 @@ import {
   type PropsWithChildren,
   type ReactNode,
   type RefObject,
-} from "react";
-import { SelectOption, type SelectOptionProps } from "./SelectOption";
+} from 'react';
+import { SelectOption, type SelectOptionProps } from './SelectOption';
 
-type SelectVariant = "default" | "disabled";
+type SelectVariant = 'default' | 'disabled';
 
 interface SelectOptionData {
   value: string;
@@ -45,7 +45,7 @@ const SelectContext = createContext<SelectContextValue | null>(null);
 export function useSelectContext() {
   const context = useContext(SelectContext);
   if (!context) {
-    throw new Error("Select 컴포넌트 내부에서 사용해야 합니다.");
+    throw new Error('Select 컴포넌트 내부에서 사용해야 합니다.');
   }
   return context;
 }
@@ -66,147 +66,128 @@ interface SelectRootProps extends PropsWithChildren {
   width?: string;
 }
 
-export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(
-  function SelectRoot(
-    { children, variant = "default", value, onChange, width = "16rem" },
-    ref
-  ) {
-    const [isOpen, setIsOpen] = useState(false);
-    const [highlightedIndex, setHighlightedIndex] = useState(0);
-    const triggerRef = useRef<HTMLButtonElement>(null);
-    const id = useId();
-    const listboxId = `${id}-listbox`;
-    const labelId = `${id}-label`;
+export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function SelectRoot(
+  { children, variant = 'default', value, onChange, width = '16rem' },
+  ref
+) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [highlightedIndex, setHighlightedIndex] = useState(0);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const id = useId();
+  const listboxId = `${id}-listbox`;
+  const labelId = `${id}-label`;
 
-    const options = useMemo(() => {
-      const collectOptions = (
-        children: ReactNode,
-        collected: SelectOptionData[] = []
-      ): SelectOptionData[] => {
-        Children.forEach(children, (child) => {
-          if (!isValidElement(child)) return;
+  const options = useMemo(() => {
+    const collectOptions = (children: ReactNode, collected: SelectOptionData[] = []): SelectOptionData[] => {
+      Children.forEach(children, child => {
+        if (!isValidElement(child)) return;
 
-          const props = child.props as PropsWithChildren;
+        const props = child.props as PropsWithChildren;
 
-          if (child.type === SelectOption) {
-            const optionProps = props as SelectOptionProps;
-            collected.push({
-              value: optionProps.value,
-              children: optionProps.children,
-              disabled: optionProps.disabled ?? false,
-            });
-            return;
+        if (child.type === SelectOption) {
+          const optionProps = props as SelectOptionProps;
+          collected.push({
+            value: optionProps.value,
+            children: optionProps.children,
+            disabled: optionProps.disabled ?? false,
+          });
+          return;
+        }
+
+        if (props.children) {
+          collectOptions(props.children, collected);
+        }
+      });
+      return collected;
+    };
+
+    return collectOptions(children);
+  }, [children]);
+
+  const handleSetSelectedValue = useCallback(
+    (newValue: string | undefined) => {
+      onChange(newValue);
+    },
+    [onChange]
+  );
+
+  const selectedOption = useMemo(() => {
+    return options.find(option => option.value === value)?.children;
+  }, [value, options]);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      open: () => {
+        if (variant !== 'disabled') {
+          setIsOpen(true);
+          const selectedIndex = options.findIndex(option => option.value === value);
+          if (selectedIndex !== -1) {
+            setHighlightedIndex(selectedIndex);
           }
-
-          if (props.children) {
-            collectOptions(props.children, collected);
-          }
-        });
-        return collected;
-      };
-
-      return collectOptions(children);
-    }, [children]);
-
-    const handleSetSelectedValue = useCallback(
-      (newValue: string | undefined) => {
-        onChange(newValue);
+        }
       },
-      [onChange]
-    );
-
-    const selectedOption = useMemo(() => {
-      return options.find((option) => option.value === value)?.children;
-    }, [value, options]);
-
-    useImperativeHandle(
-      ref,
-      () => ({
-        open: () => {
-          if (variant !== "disabled") {
+      close: () => {
+        setIsOpen(false);
+        triggerRef.current?.focus();
+      },
+      toggle: () => {
+        if (variant !== 'disabled') {
+          if (isOpen) {
+            setIsOpen(false);
+            triggerRef.current?.focus();
+          } else {
             setIsOpen(true);
-            const selectedIndex = options.findIndex(
-              (option) => option.value === value
-            );
+            const selectedIndex = options.findIndex(option => option.value === value);
             if (selectedIndex !== -1) {
               setHighlightedIndex(selectedIndex);
             }
           }
-        },
-        close: () => {
-          setIsOpen(false);
-          triggerRef.current?.focus();
-        },
-        toggle: () => {
-          if (variant !== "disabled") {
-            if (isOpen) {
-              setIsOpen(false);
-              triggerRef.current?.focus();
-            } else {
-              setIsOpen(true);
-              const selectedIndex = options.findIndex(
-                (option) => option.value === value
-              );
-              if (selectedIndex !== -1) {
-                setHighlightedIndex(selectedIndex);
-              }
-            }
+        }
+      },
+      focus: () => {
+        triggerRef.current?.focus();
+      },
+      blur: () => {
+        triggerRef.current?.blur();
+      },
+      selectValue: (newValue: string) => {
+        if (variant !== 'disabled') {
+          const option = options.find(opt => opt.value === newValue);
+          if (option && !option.disabled) {
+            handleSetSelectedValue(newValue);
+            setIsOpen(false);
+            triggerRef.current?.focus();
           }
-        },
-        focus: () => {
-          triggerRef.current?.focus();
-        },
-        blur: () => {
-          triggerRef.current?.blur();
-        },
-        selectValue: (newValue: string) => {
-          if (variant !== "disabled") {
-            const option = options.find((opt) => opt.value === newValue);
-            if (option && !option.disabled) {
-              handleSetSelectedValue(newValue);
-              setIsOpen(false);
-              triggerRef.current?.focus();
-            }
-          }
-        },
-      }),
-      [variant, isOpen, options, value, handleSetSelectedValue]
-    );
+        }
+      },
+    }),
+    [variant, isOpen, options, value, handleSetSelectedValue]
+  );
 
-    const contextValue = useMemo(
-      () => ({
-        isOpen,
-        setIsOpen,
-        selectedValue: value,
-        setSelectedValue: handleSetSelectedValue,
-        highlightedIndex,
-        setHighlightedIndex,
-        options,
-        selectedOption,
-        triggerRef,
-        listboxId,
-        labelId,
-        variant,
-      }),
-      [
-        isOpen,
-        value,
-        handleSetSelectedValue,
-        highlightedIndex,
-        options,
-        selectedOption,
-        listboxId,
-        labelId,
-        variant,
-      ]
-    );
+  const contextValue = useMemo(
+    () => ({
+      isOpen,
+      setIsOpen,
+      selectedValue: value,
+      setSelectedValue: handleSetSelectedValue,
+      highlightedIndex,
+      setHighlightedIndex,
+      options,
+      selectedOption,
+      triggerRef,
+      listboxId,
+      labelId,
+      variant,
+    }),
+    [isOpen, value, handleSetSelectedValue, highlightedIndex, options, selectedOption, listboxId, labelId, variant]
+  );
 
-    return (
-      <SelectContext.Provider value={contextValue}>
-        <div className="relative" style={{ width }}>
-          {children}
-        </div>
-      </SelectContext.Provider>
-    );
-  }
-);
+  return (
+    <SelectContext.Provider value={contextValue}>
+      <div className="relative" style={{ width }}>
+        {children}
+      </div>
+    </SelectContext.Provider>
+  );
+});

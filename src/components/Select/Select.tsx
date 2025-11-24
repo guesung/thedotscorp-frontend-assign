@@ -1,9 +1,9 @@
-import { SelectGroup } from "./SelectGroup";
-import { SelectLabel } from "./SelectLabel";
-import { SelectList } from "./SelectList";
-import { SelectOption } from "./SelectOption";
-import { SelectRoot } from "./SelectRoot";
-import { SelectTrigger } from "./SelectTrigger";
+import { SelectGroup } from './SelectGroup';
+import { SelectLabel } from './SelectLabel';
+import { SelectList } from './SelectList';
+import { SelectOption } from './SelectOption';
+import { SelectRoot } from './SelectRoot';
+import { SelectTrigger } from './SelectTrigger';
 
 const Select = Object.assign(SelectRoot, {
   Label: SelectLabel,

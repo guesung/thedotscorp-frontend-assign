@@ -1,4 +1,4 @@
-import { useId, type PropsWithChildren } from "react";
+import { useId, type PropsWithChildren } from 'react';
 
 interface SelectGroupProps extends PropsWithChildren {
   label: string;

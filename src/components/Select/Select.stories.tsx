@@ -1,12 +1,12 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useRef, useState } from "react";
-import Select from "./Select";
-import type { SelectHandle } from "./SelectRoot";
+import type { Meta, StoryObj } from '@storybook/react-vite';
+import { useRef, useState } from 'react';
+import Select from './Select';
+import type { SelectHandle } from './SelectRoot';
 
 const meta = {
-  title: "Components/Select",
+  title: 'Components/Select',
   component: Select,
-  tags: ["autodocs"],
+  tags: ['autodocs'],
 } satisfies Meta<typeof Select>;
 
 export default meta;
@@ -30,7 +30,7 @@ function DefaultExample() {
 export const Default: Story = {
   render: () => <DefaultExample />,
   parameters: {
-    layout: "padded",
+    layout: 'padded',
     docs: {
       story: {
         inline: false,
@@ -83,7 +83,7 @@ function DisabledOptionExample() {
 export const DisabledOption: Story = {
   render: () => <DisabledOptionExample />,
   parameters: {
-    layout: "padded",
+    layout: 'padded',
     docs: {
       story: {
         inline: false,
@@ -129,7 +129,7 @@ function GroupedOptionsExample() {
 export const GroupedOptions: Story = {
   render: () => <GroupedOptionsExample />,
   parameters: {
-    layout: "padded",
+    layout: 'padded',
     docs: {
       story: {
         inline: false,
@@ -169,7 +169,7 @@ function ColoredTextOptionExample() {
 export const ColoredTextOption: Story = {
   render: () => <ColoredTextOptionExample />,
   parameters: {
-    layout: "padded",
+    layout: 'padded',
     docs: {
       story: {
         inline: false,
@@ -199,9 +199,7 @@ function RichContentOptionExample() {
           <div className="flex items-center justify-between w-full">
             <span>유기농 바나나</span>
             <div className="flex items-center gap-2 ml-2">
-              <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-medium">
-                할인
-              </span>
+              <span className="bg-green-100 text-green-700 px-2 py-0.5 rounded text-xs font-medium">할인</span>
               <span className="text-gray-400 text-xs line-through">₩8,000</span>
               <span className="text-gray-500 text-xs">₩6,000</span>
             </div>
@@ -211,9 +209,7 @@ function RichContentOptionExample() {
           <div className="flex items-center justify-between w-full">
             <span>신선한 오렌지</span>
             <div className="flex items-center gap-2 ml-2">
-              <span className="text-primary-500 font-semibold text-sm">
-                신상품
-              </span>
+              <span className="text-primary-500 font-semibold text-sm">신상품</span>
               <span className="text-gray-500 text-xs">₩12,000</span>
             </div>
           </div>
@@ -222,12 +218,8 @@ function RichContentOptionExample() {
           <div className="flex items-center justify-between w-full">
             <span>프리미엄 포도</span>
             <div className="flex items-center gap-2 ml-2">
-              <span className="text-purple-500 font-semibold text-sm">
-                특가
-              </span>
-              <span className="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded text-xs font-medium">
-                재고부족
-              </span>
+              <span className="text-purple-500 font-semibold text-sm">특가</span>
+              <span className="bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded text-xs font-medium">재고부족</span>
               <span className="text-gray-500 text-xs">₩20,000</span>
             </div>
           </div>
@@ -236,12 +228,8 @@ function RichContentOptionExample() {
           <div className="flex items-center justify-between w-full">
             <span>열대 망고</span>
             <div className="flex items-center gap-2 ml-2">
-              <span className="text-orange-500 font-semibold text-sm">
-                베스트
-              </span>
-              <span className="bg-primary-100 text-primary-700 px-2 py-0.5 rounded text-xs font-medium">
-                무료배송
-              </span>
+              <span className="text-orange-500 font-semibold text-sm">베스트</span>
+              <span className="bg-primary-100 text-primary-700 px-2 py-0.5 rounded text-xs font-medium">무료배송</span>
               <span className="text-gray-500 text-xs">₩18,000</span>
             </div>
           </div>
@@ -263,7 +251,7 @@ function RichContentOptionExample() {
 export const RichContentOption: Story = {
   render: () => <RichContentOptionExample />,
   parameters: {
-    layout: "padded",
+    layout: 'padded',
     docs: {
       story: {
         inline: false,
@@ -303,21 +291,21 @@ function ImperativeHandleExample() {
         </button>
         <button
           type="button"
-          onClick={() => selectRef.current?.selectValue("apple")}
+          onClick={() => selectRef.current?.selectValue('apple')}
           className="px-3 py-1.5 bg-purple-500 text-white rounded-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
         >
           사과 선택
         </button>
         <button
           type="button"
-          onClick={() => selectRef.current?.selectValue("banana")}
+          onClick={() => selectRef.current?.selectValue('banana')}
           className="px-3 py-1.5 bg-purple-500 text-white rounded-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
         >
           바나나 선택
         </button>
         <button
           type="button"
-          onClick={() => selectRef.current?.selectValue("orange")}
+          onClick={() => selectRef.current?.selectValue('orange')}
           className="px-3 py-1.5 bg-purple-500 text-white rounded-md hover:bg-purple-600 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2"
         >
           오렌지 선택
@@ -339,7 +327,7 @@ function ImperativeHandleExample() {
       </div>
       <div>
         <p className="text-sm text-gray-600 mb-2">
-          선택된 값: <span className="font-semibold">{value || "없음"}</span>
+          선택된 값: <span className="font-semibold">{value || '없음'}</span>
         </p>
         <Select ref={selectRef} value={value} onChange={setValue}>
           <Select.Label>과일 선택 (Imperative Handle)</Select.Label>
@@ -360,7 +348,7 @@ function ImperativeHandleExample() {
 export const ImperativeHandle: Story = {
   render: () => <ImperativeHandleExample />,
   parameters: {
-    layout: "padded",
+    layout: 'padded',
     docs: {
       story: {
         inline: false,

@@ -104,13 +104,12 @@ Modal이 열렸을 때 키보드 포커스가 Modal 내부에서만 순환하도
 
 ```tsx
 // useFocusTrap.ts
-export const FOCUSABLE_SELECTOR =
-  'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+export const FOCUSABLE_SELECTOR = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
 export function useFocusTrap(containerRef: RefObject<HTMLElement | null>) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key !== "Tab") return;
+      if (e.key !== 'Tab') return;
 
       const focusableElements = getFocusableElements(containerRef.current);
       const firstElement = focusableElements[0];
@@ -128,8 +127,8 @@ export function useFocusTrap(containerRef: RefObject<HTMLElement | null>) {
       }
     };
 
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
   }, [containerRef]);
 }
 ```
@@ -143,7 +142,7 @@ Modal이 열렸을 때 배경 콘텐츠가 스크롤되지 않도록 `useBodyScr
 export function useBodyScrollLock() {
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
 
     return () => {
       document.body.style.overflow = originalOverflow;
@@ -174,4 +173,3 @@ export function useBodyScrollLock() {
 ### 6. Portal 렌더링
 
 Modal이 DOM 트리 어디에 위치하든 상관없이 항상 `document.body`에 렌더링되도록 React Portal을 사용했습니다. 이를 통해 z-index 스택 컨텍스트 문제를 방지하고, 부모 요소의 `overflow: hidden` 영향 받지 않고, CSS 상속 문제 최소화의 효과가 있습니다.
-
