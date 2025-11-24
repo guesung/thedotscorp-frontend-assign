@@ -170,10 +170,7 @@ const selectedOption = useMemo(() => {
 
 ### 1. 합성 컴포넌트 패턴
 
-Modal도 Select와 동일하게 합성 컴포넌트 패턴을 사용합니다. 다만 Select와 달리 **제어 컴포넌트(Controlled Component)** 방식으로 설계하여, `isOpen`과 `onClose`를 외부에서 주입받습니다. 이렇게 설계한 이유는:
-
-- Modal의 열림/닫힘은 다양한 트리거(버튼 클릭, API 응답 등)에 의해 제어됩니다.
-- 부모 컴포넌트에서 Modal 상태에 따른 추가 로직을 처리해야 하는 경우가 많습니다.
+Modal도 Select와 동일하게 합성 컴포넌트 패턴을 사용합니다. 다만 Select와 달리 **제어 컴포넌트(Controlled Component)** 방식으로 설계해 `isOpen`과 `onClose`를 외부에서 주입받습니다. 이렇게 설계한 이유는 모달의 열림/닫힘은 버튼 클릭 외에도 라우팅, API 요청 등에 의해 제어되는 경우가 빈번하기 때문입니다.
 
 ```tsx
 // 사용 예시
@@ -195,16 +192,16 @@ const [isOpen, setIsOpen] = useState(false);
 
 ### 2. 컴포넌트 구성
 
-| 컴포넌트            | 역할                                             |
-| ------------------- | ------------------------------------------------ |
-| `Modal` (Root)      | 상태 관리, Context Provider, 애니메이션 제어     |
-| `Modal.Portal`      | `createPortal`을 사용하여 document.body에 렌더링 |
-| `Modal.Overlay`     | 배경 오버레이, 클릭 시 닫기 지원                 |
-| `Modal.Content`     | 실제 모달 콘텐츠 영역, 포커스 트랩 적용          |
-| `Modal.Header`      | 모달 헤더 영역                                   |
-| `Modal.Body`        | 모달 본문 영역                                   |
-| `Modal.Footer`      | 모달 푸터 영역 (버튼 등)                         |
-| `Modal.CloseButton` | 닫기 버튼                                        |
+| 컴포넌트            | 역할                                          |
+| ------------------- | --------------------------------------------- |
+| `Modal` (Root)      | 상태 관리, Context Provider, 애니메이션 제어  |
+| `Modal.Portal`      | `createPortal`을 사용해document.body에 렌더링 |
+| `Modal.Overlay`     | 배경 오버레이, 클릭 시 닫기 지원              |
+| `Modal.Content`     | 실제 모달 콘텐츠 영역, 포커스 트랩 적용       |
+| `Modal.Header`      | 모달 헤더 영역                                |
+| `Modal.Body`        | 모달 본문 영역                                |
+| `Modal.Footer`      | 모달 푸터 영역 (버튼 등)                      |
+| `Modal.CloseButton` | 닫기 버튼                                     |
 
 ### 3. 상태 관리
 
@@ -212,9 +209,12 @@ const [isOpen, setIsOpen] = useState(false);
 | --------------- | ------------ | -------------------------- |
 | `isOpen`        | `boolean`    | 모달 열림 여부 (외부 제어) |
 | `onClose`       | `() => void` | 모달 닫기 콜백             |
+| `shouldRender`  | `boolean`    | 모달 열림 여부 (내부 제어) |
 | `isAnimating`   | `boolean`    | 애니메이션 진행 중 여부    |
 | `titleId`       | `string`     | 제목 요소 ID (접근성)      |
 | `descriptionId` | `string`     | 설명 요소 ID (접근성)      |
+
+외부에서 제어하는 `isOpen`과 내부에서 제어하는 `shouldRender`를 분리한 이유는, 모달이 제거될 때 애니메이션이 종료된 후 내부에서 제어하는 shouldRender를 false로 변경해 모달을 언마운트하기 위함입니다.
 
 ### 고민한 부분
 
@@ -222,7 +222,7 @@ const [isOpen, setIsOpen] = useState(false);
 
 Modal을 열고 닫을 때 fade 애니메이션을 적용해야 합니다. 하지만 `isOpen`이 `false`가 되면 즉시 컴포넌트가 언마운트되어 닫히는 애니메이션이 보이지 않는 문제가 있습니다.
 
-이를 해결하기 위해 두 개의 상태를 분리했습니다:
+이를 해결하기 위해 두 개의 상태를 분리했습니다.
 
 - `shouldRender`: 실제로 DOM에 렌더링할지 여부
 - `isAnimating`: CSS transition을 트리거하는 상태
