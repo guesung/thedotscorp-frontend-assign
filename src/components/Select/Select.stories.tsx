@@ -1,5 +1,5 @@
-import { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useState } from "react";
 import Select from "./Select";
 
 const meta = {
@@ -9,23 +9,25 @@ const meta = {
 } satisfies Meta<typeof Select>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<typeof Select>;
+
+function DefaultExample() {
+  const [value, setValue] = useState<string | undefined>(undefined);
+  return (
+    <Select variant="default" value={value} onChange={setValue}>
+      <Select.Label>과일 선택</Select.Label>
+      <Select.Trigger>선택하세요</Select.Trigger>
+      <Select.List>
+        <Select.Option value="apple">사과</Select.Option>
+        <Select.Option value="banana">바나나</Select.Option>
+        <Select.Option value="orange">오렌지</Select.Option>
+      </Select.List>
+    </Select>
+  );
+}
 
 export const Default: Story = {
-  render: function Default() {
-    const [value, setValue] = useState<string | undefined>(undefined);
-    return (
-      <Select variant="default" value={value} onChange={setValue}>
-        <Select.Label>과일 선택</Select.Label>
-        <Select.Trigger>선택하세요</Select.Trigger>
-        <Select.List>
-          <Select.Option value="apple">사과</Select.Option>
-          <Select.Option value="banana">바나나</Select.Option>
-          <Select.Option value="orange">오렌지</Select.Option>
-        </Select.List>
-      </Select>
-    );
-  },
+  render: () => <DefaultExample />,
   parameters: {
     layout: "padded",
     docs: {
@@ -37,21 +39,23 @@ export const Default: Story = {
   },
 };
 
+function DisabledExample() {
+  const [value, setValue] = useState<string | undefined>(undefined);
+  return (
+    <Select variant="disabled" value={value} onChange={setValue}>
+      <Select.Label>과일 선택</Select.Label>
+      <Select.Trigger>선택하세요</Select.Trigger>
+      <Select.List>
+        <Select.Option value="apple">사과</Select.Option>
+        <Select.Option value="banana">바나나</Select.Option>
+        <Select.Option value="orange">오렌지</Select.Option>
+      </Select.List>
+    </Select>
+  );
+}
+
 export const Disabled: Story = {
-  render: () => {
-    const [value, setValue] = useState<string | undefined>(undefined);
-    return (
-      <Select variant="disabled" value={value} onChange={setValue}>
-        <Select.Label>과일 선택</Select.Label>
-        <Select.Trigger>선택하세요</Select.Trigger>
-        <Select.List>
-          <Select.Option value="apple">사과</Select.Option>
-          <Select.Option value="banana">바나나</Select.Option>
-          <Select.Option value="orange">오렌지</Select.Option>
-        </Select.List>
-      </Select>
-    );
-  },
+  render: () => <DisabledExample />,
 };
 
 function DisabledOptionExample() {
