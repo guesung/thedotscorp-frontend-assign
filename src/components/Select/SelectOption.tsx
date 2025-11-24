@@ -1,7 +1,7 @@
-import { useEffect, type PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 import { useSelectContext } from "./SelectRoot";
 
-interface SelectOptionProps extends PropsWithChildren {
+export interface SelectOptionProps extends PropsWithChildren {
   value: string;
   disabled?: boolean;
 }
@@ -16,7 +16,6 @@ export function SelectOption({
     setIsOpen,
     highlightedIndex,
     options,
-    registerOption,
     triggerRef,
     listboxId,
     selectedValue,
@@ -25,12 +24,6 @@ export function SelectOption({
   const index = options.findIndex((option) => option.value === value);
   const isHighlighted = index === highlightedIndex;
   const isSelected = value === selectedValue;
-
-  useEffect(() => {
-    if (options.find((option) => option.value === value)) return;
-
-    registerOption({ value, children, disabled });
-  }, [value, children, disabled, registerOption, options]);
 
   const handleSelectOptionClick = () => {
     if (disabled) return;

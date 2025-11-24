@@ -1,6 +1,8 @@
 import {
+  Children,
   createContext,
   forwardRef,
+  isValidElement,
   useCallback,
   useContext,
   useId,
@@ -12,19 +14,15 @@ import {
   type ReactNode,
   type RefObject,
 } from "react";
+import { SelectOption, type SelectOptionProps } from "./SelectOption";
+import { SelectGroup } from "./SelectGroup";
 
 type SelectVariant = "default" | "disabled";
 
-interface SelectOption {
+interface SelectOptionData {
   value: string;
   children: ReactNode;
   disabled: boolean;
-}
-
-interface RegisterOptionProps {
-  value: string;
-  children: ReactNode;
-  disabled?: boolean;
 }
 
 interface SelectContextValue {
@@ -34,8 +32,7 @@ interface SelectContextValue {
   setSelectedValue: (value: string | undefined) => void;
   highlightedIndex: number; // 하이라이트된 옵션 인덱스
   setHighlightedIndex: (index: number) => void;
-  options: SelectOption[]; // 옵션 목록
-  registerOption: (props: RegisterOptionProps) => void;
+  options: SelectOptionData[]; // 옵션 목록
   selectedOption?: ReactNode; // 선택된 옵션의 children
   triggerRef: RefObject<HTMLButtonElement | null>;
   listboxId: string; // 리스트 박스(Popup) ID
@@ -77,23 +74,39 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(
   ) {
     const [isOpen, setIsOpen] = useState(false);
     const [highlightedIndex, setHighlightedIndex] = useState(0);
-    const [options, setOptions] = useState<SelectOption[]>([]);
     const triggerRef = useRef<HTMLButtonElement>(null);
     const id = useId();
     const listboxId = `${id}-listbox`;
     const labelId = `${id}-label`;
 
-    const registerOption = useCallback(
-      ({ value, children, disabled = false }: RegisterOptionProps) => {
-        setOptions((prev) => {
-          const exists = prev.some((option) => option.value === value);
-          return exists
-            ? prev
-            : [...prev, { value: value, children, disabled }];
+    const options = useMemo(() => {
+      const collectOptions = (
+        children: ReactNode,
+        collected: SelectOptionData[] = []
+      ): SelectOptionData[] => {
+        Children.forEach(children, (child) => {
+          if (!isValidElement(child)) return;
+
+          const props = child.props as PropsWithChildren;
+
+          if (child.type === SelectOption) {
+            const optionProps = props as SelectOptionProps;
+            collected.push({
+              value: optionProps.value,
+              children: optionProps.children,
+              disabled: optionProps.disabled ?? false,
+            });
+          } else if (child.type === SelectGroup && props.children) {
+            collectOptions(props.children, collected);
+          } else if (props.children) {
+            collectOptions(props.children, collected);
+          }
         });
-      },
-      []
-    );
+        return collected;
+      };
+
+      return collectOptions(children);
+    }, [children]);
 
     const handleSetSelectedValue = useCallback(
       (newValue: string | undefined) => {
@@ -169,7 +182,6 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(
         highlightedIndex,
         setHighlightedIndex,
         options,
-        registerOption,
         selectedOption,
         triggerRef,
         listboxId,
@@ -182,7 +194,6 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(
         handleSetSelectedValue,
         highlightedIndex,
         options,
-        registerOption,
         selectedOption,
         listboxId,
         labelId,
