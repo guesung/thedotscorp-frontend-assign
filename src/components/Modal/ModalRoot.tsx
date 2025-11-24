@@ -46,8 +46,8 @@ export function ModalRoot({
   const titleId = `${id}-title`;
   const descriptionId = `${id}-description`;
 
-  const [shouldRender, setShouldRender] = useState(isOpen);
-  const [isAnimating, setIsAnimating] = useState(false);
+  const [shouldRender, setShouldRender] = useState(isOpen); // 모달을 렌더링 할지 여부
+  const [isAnimating, setIsAnimating] = useState(false); // 모달을 애니메이션 중인지 여부
 
   useEffect(() => {
     if (isOpen) {
