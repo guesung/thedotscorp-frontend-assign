@@ -17,9 +17,7 @@ export const Default: Story = {
         <Select.Label>과일 선택</Select.Label>
         <Select.Trigger>선택하세요</Select.Trigger>
         <Select.List>
-          <Select.Option value="apple">
-            사과 <span className="text-red-500">●</span>
-          </Select.Option>
+          <Select.Option value="apple">사과</Select.Option>
           <Select.Option value="banana">바나나</Select.Option>
           <Select.Option value="orange">오렌지</Select.Option>
         </Select.List>
@@ -142,6 +140,7 @@ function RichContentOptionExample() {
       <Select.List maxHeight="25rem">
         <Select.Option value="premium-apple">
           <div className="flex items-center justify-between w-full">
+            <span>프리미엄 사과</span>
             <div className="flex items-center gap-2 ml-2">
               <span className="text-red-500 font-semibold text-sm">인기</span>
               <span className="text-gray-500 text-xs">₩15,000</span>
