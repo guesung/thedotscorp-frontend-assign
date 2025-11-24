@@ -3,7 +3,7 @@ import { useFocusTrap, getFocusableElements } from "@/hooks/useFocusTrap";
 import { useKeyboardEvent } from "@/hooks/useKeyboardEvent";
 import { useBodyScrollLock } from "@/hooks/useBodyScrollLock";
 import { useModalContext } from "./ModalRoot";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 interface ModalContentProps extends PropsWithChildren {
   className?: string;
@@ -39,7 +39,7 @@ export function ModalContent({ children, className }: ModalContentProps) {
       className={cn(
         "bg-white rounded-lg shadow-xl max-w-md w-full mx-4 focus:outline-none transition-opacity duration-200 ease-out",
         isAnimating ? "opacity-100" : "opacity-0",
-        className,
+        className
       )}
       onClick={(e: MouseEvent) => {
         e.stopPropagation();

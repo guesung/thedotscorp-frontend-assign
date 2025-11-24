@@ -1,7 +1,8 @@
 import type { ButtonHTMLAttributes } from "react";
 import { useModalContext } from "./ModalRoot";
-import { cn } from "@/lib/utils";
+
 import CloseIconSvg from "@/assets/icons/close.svg?react";
+import { cn } from "@/utils/cn";
 
 interface ModalCloseButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -22,7 +23,7 @@ export function ModalCloseButton({
       aria-label="닫기"
       className={cn(
         "absolute top-4 right-4 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300 rounded",
-        className,
+        className
       )}
       {...props}
     >

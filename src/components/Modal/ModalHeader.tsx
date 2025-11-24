@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 import { useModalContext } from "./ModalRoot";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 interface ModalHeaderProps extends PropsWithChildren {
   className?: string;

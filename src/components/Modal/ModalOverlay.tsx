@@ -1,6 +1,6 @@
 import type { PropsWithChildren } from "react";
 import { useModalContext } from "./ModalRoot";
-import { cn } from "@/lib/utils";
+import { cn } from "@/utils/cn";
 
 interface ModalOverlayProps extends PropsWithChildren {
   closeOnClick?: boolean;
@@ -25,7 +25,7 @@ export function ModalOverlay({
       className={cn(
         "fixed inset-0 bg-overlay flex items-center justify-center z-modal transition-opacity duration ease-out",
         isAnimating ? "opacity-100" : "opacity-0",
-        className,
+        className
       )}
       onClick={handleClick}
       aria-hidden="true"
