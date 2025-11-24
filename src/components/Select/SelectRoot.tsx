@@ -34,7 +34,7 @@ interface SelectContextValue {
   setHighlightedIndex: (index: number) => void;
   options: SelectOption[]; // 옵션 목록
   registerOption: (props: RegisterOptionProps) => void;
-  selectedChildren?: ReactNode; // 선택된 옵션의 children
+  selectedOption?: ReactNode; // 선택된 옵션의 children
   triggerRef: RefObject<HTMLButtonElement | null>;
   listboxId: string; // 리스트 박스(Popup) ID
   labelId: string; // 라벨 ID
@@ -85,7 +85,7 @@ export function SelectRoot({
     []
   );
 
-  const selectedChildren = useMemo(() => {
+  const selectedOption = useMemo(() => {
     return options.find((option) => option.value === selectedValue)?.children;
   }, [selectedValue, options]);
 
@@ -100,7 +100,7 @@ export function SelectRoot({
         setHighlightedIndex,
         options,
         registerOption,
-        selectedChildren,
+        selectedOption,
         triggerRef,
         listboxId,
         labelId,

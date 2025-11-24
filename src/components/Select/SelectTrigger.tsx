@@ -18,7 +18,7 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
     labelId,
     variant,
     selectedValue,
-    selectedChildren,
+    selectedOption,
   } = useSelectContext();
 
   const findNextEnabledIndex = (
@@ -123,7 +123,7 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
           : "bg-white border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
       }`}
     >
-      {selectedChildren || children || "선택하세요"}
+      {selectedOption || children || "선택하세요"}
     </button>
   );
 }
