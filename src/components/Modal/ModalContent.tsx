@@ -4,9 +4,9 @@ import {
   type MouseEvent,
   type PropsWithChildren,
 } from "react";
-import { useModalContext } from "./ModalRoot";
-import { useFocusTrap, getFocusableElements } from "../../hooks/useFocusTrap";
+import { useFocusTrap } from "../../hooks/useFocusTrap";
 import { useKeyboardEvent } from "../../hooks/useKeyboardEvent";
+import { useModalContext } from "./ModalRoot";
 
 interface ModalContentProps extends PropsWithChildren {
   className?: string;
@@ -16,25 +16,9 @@ export function ModalContent({ children, className }: ModalContentProps) {
   const { onClose, titleId, descriptionId, isAnimating } = useModalContext();
 
   const contentRef = useRef<HTMLDivElement>(null);
-  const previousActiveElementRef = useRef<HTMLElement | null>(null);
 
   useFocusTrap(contentRef);
   useKeyboardEvent("Escape", onClose);
-
-  useEffect(() => {
-    previousActiveElementRef.current = document.activeElement as HTMLElement;
-
-    const focusableElements = getFocusableElements(contentRef.current);
-    if (focusableElements.length > 0) {
-      focusableElements[0].focus();
-    } else {
-      contentRef.current?.focus();
-    }
-
-    return () => {
-      previousActiveElementRef.current?.focus();
-    };
-  }, []);
 
   useEffect(() => {
     const originalOverflow = document.body.style.overflow;
