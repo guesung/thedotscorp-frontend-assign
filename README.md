@@ -66,26 +66,41 @@ Select는 **선택값(`value`)만 제어**하고, 드롭다운 열림/닫힘, �
 
 합성 컴포넌트 패턴에서 키보드 네비게이션을 구현하려면 전체 옵션 목록을 알아야 합니다. 하지만 자식 컴포넌트가 동적으로 렌더링되기 때문에 부모가 자식의 정보를 직접 알 수 없습니다.
 
-이를 해결하기 위해 자기 등록 패턴을 적용했습니다.
+이를 해결하기 위해 `children`을 재귀적으로 파싱해 옵션 목록을 수집하는 방식을 적용했습니다.
 
 ```tsx
-// SelectRoot.tsx - 옵션 등록 함수 제공
-const registerOption = useCallback(
-  ({ value, children, disabled = false }: RegisterOptionProps) => {
-    setOptions((prev) => {
-      const exists = prev.some((option) => option.value === value);
-      return exists ? prev : [...prev, { value, children, disabled }];
-    });
-  },
-  []
-);
+// SelectRoot.tsx - children을 파싱하여 옵션 목록 수집
+const options = useMemo(() => {
+  const collectOptions = (
+    children: ReactNode,
+    collected: SelectOptionData[] = []
+  ): SelectOptionData[] => {
+    Children.forEach(children, (child) => {
+      if (!isValidElement(child)) return;
 
-// SelectOption.tsx - 마운트 시 자신을 등록
-useEffect(() => {
-  if (options.find((option) => option.value === value)) return;
-  registerOption({ value, children, disabled });
-}, [value, children, disabled, registerOption, options]);
+      const props = child.props as PropsWithChildren;
+
+      if (child.type === SelectOption) {
+        const optionProps = props as SelectOptionProps;
+        collected.push({
+          value: optionProps.value,
+          children: optionProps.children,
+          disabled: optionProps.disabled ?? false,
+        });
+      } else if (child.type === SelectGroup && props.children) {
+        collectOptions(props.children, collected);
+      } else if (props.children) {
+        collectOptions(props.children, collected);
+      }
+    });
+    return collected;
+  };
+
+  return collectOptions(children);
+}, [children]);
 ```
+
+`children` prop이 변경될 때마다 옵션 목록을 재계산하므로, 동적으로 옵션이 추가되거나 제거되는 경우에도 올바르게 동작합니다. 또한 `SelectGroup`을 통한 중첩 구조도 재귀적으로 처리할 수 있습니다.
 
 ### 2. 키보드 접근성
 
