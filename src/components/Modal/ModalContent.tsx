@@ -1,11 +1,7 @@
-import {
-  useEffect,
-  useRef,
-  type MouseEvent,
-  type PropsWithChildren,
-} from "react";
+import { useRef, type MouseEvent, type PropsWithChildren } from "react";
 import { useFocusTrap } from "../../hooks/useFocusTrap";
 import { useKeyboardEvent } from "../../hooks/useKeyboardEvent";
+import { useBodyScrollLock } from "../../hooks/useBodyScrollLock";
 import { useModalContext } from "./ModalRoot";
 
 interface ModalContentProps extends PropsWithChildren {
@@ -19,15 +15,7 @@ export function ModalContent({ children, className }: ModalContentProps) {
 
   useFocusTrap(contentRef);
   useKeyboardEvent("Escape", onClose);
-
-  useEffect(() => {
-    const originalOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-
-    return () => {
-      document.body.style.overflow = originalOverflow;
-    };
-  }, []);
+  useBodyScrollLock();
 
   const getAnimationClasses = () => {
     const baseTransition = "transition-opacity duration-200 ease-out";
