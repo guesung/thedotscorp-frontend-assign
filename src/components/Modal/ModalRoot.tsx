@@ -53,7 +53,9 @@ export function ModalRoot({
     if (isOpen) {
       setShouldRender(true);
       requestAnimationFrame(() => {
-        setIsAnimating(true);
+        requestAnimationFrame(() => {
+          setIsAnimating(true);
+        });
       });
     } else {
       setIsAnimating(false);

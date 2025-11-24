@@ -55,10 +55,9 @@ export function ModalContent({ children, className }: ModalContentProps) {
   }, []);
 
   const getAnimationClasses = () => {
-    const baseTransition = "transition-all duration-200 ease-out";
+    const baseTransition = "transition-opacity duration-200 ease-out";
     const opacityState = isAnimating ? "opacity-100" : "opacity-0";
-    const scaleState = isAnimating ? "scale-100" : "scale-95";
-    return `${baseTransition} ${opacityState} ${scaleState}`;
+    return `${baseTransition} ${opacityState}`;
   };
 
   return (
