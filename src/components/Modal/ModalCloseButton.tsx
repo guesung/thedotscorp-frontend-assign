@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes } from "react";
 import { useModalContext } from "./ModalRoot";
-import { CloseIcon } from "@/components/icons/close";
 import { cn } from "@/lib/utils";
+import CloseIconSvg from "@/assets/icons/close.svg?react";
 
 interface ModalCloseButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -26,7 +26,7 @@ export function ModalCloseButton({
       )}
       {...props}
     >
-      {children ?? <CloseIcon />}
+      {children ?? <CloseIconSvg className="h-5 w-5" />}
     </button>
   );
 }
