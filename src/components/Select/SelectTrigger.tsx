@@ -48,7 +48,9 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
     const selectedIndex = options.findIndex(
       (option) => option.value === selectedValue
     );
-    if (selectedIndex !== -1) setHighlightedIndex(selectedIndex);
+    if (selectedIndex !== -1) {
+      setHighlightedIndex(selectedIndex);
+    }
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
@@ -71,11 +73,7 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
         break;
       case "Enter":
         e.preventDefault();
-        if (
-          isOpen &&
-          options[highlightedIndex] &&
-          !options[highlightedIndex].disabled
-        ) {
+        if (isOpen && options[highlightedIndex]) {
           setSelectedValue(options[highlightedIndex].value);
           setIsOpen(false);
           triggerRef.current?.focus();
