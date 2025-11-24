@@ -4,19 +4,16 @@ import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import Modal from './Modal';
 
-// Helper function to get dialog element (handles aria-hidden parent)
 function getDialog() {
   return document.querySelector('[role="dialog"]') as HTMLElement | null;
 }
 
 describe('Modal', () => {
   beforeEach(() => {
-    // Reset body overflow before each test
     document.body.style.overflow = '';
   });
 
   afterEach(() => {
-    // Clean up body overflow after each test
     document.body.style.overflow = '';
   });
 
@@ -33,7 +30,6 @@ describe('Modal', () => {
         </Modal>,
       );
 
-      // 애니메이션 완료 대기
       await waitFor(
         () => {
           const dialog = getDialog();
@@ -62,7 +58,7 @@ describe('Modal', () => {
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
     });
 
-    it('onClose 콜백이 호출되어야 함', async () => {
+    it('닫기 버튼을 누르면 onClose 콜백이 호출되어야 함', async () => {
       const user = userEvent.setup();
       const onClose = vi.fn();
 
@@ -88,7 +84,6 @@ describe('Modal', () => {
 
       render(<TestModal />);
 
-      // 애니메이션 완료 대기
       await waitFor(
         () => {
           expect(getDialog()).toBeInTheDocument();
@@ -100,7 +95,6 @@ describe('Modal', () => {
       const closeButton = within(dialog!).getByText('닫기').closest('button')!;
       await user.click(closeButton);
 
-      // onClose가 호출되었는지 확인
       expect(onClose).toHaveBeenCalledTimes(1);
 
       await waitFor(
@@ -132,10 +126,8 @@ describe('Modal', () => {
 
       render(<TestModal />);
 
-      // 초기에는 모달이 닫혀있음
       expect(getDialog()).not.toBeInTheDocument();
 
-      // 모달 열기
       const openButton = screen.getByRole('button', { name: '모달 열기' });
       await user.click(openButton);
 
@@ -148,7 +140,6 @@ describe('Modal', () => {
         { timeout: 300 },
       );
 
-      // ESC로 닫기
       await user.keyboard('{Escape}');
 
       await waitFor(
@@ -212,7 +203,6 @@ describe('Modal', () => {
       const overlay = dialog?.parentElement;
       expect(overlay).toBeInTheDocument();
 
-      // Overlay 클릭 (aria-hidden이 있는 요소)
       if (overlay) {
         await user.click(overlay);
       }
@@ -246,17 +236,14 @@ describe('Modal', () => {
       const overlay = dialog?.parentElement;
       expect(overlay).toBeInTheDocument();
 
-      // Overlay 클릭
       if (overlay) {
         await user.click(overlay);
       }
 
-      // onClose가 호출되지 않아야 함
       await waitFor(() => {
         expect(onClose).not.toHaveBeenCalled();
       });
 
-      // 모달이 여전히 열려있어야 함
       expect(getDialog()).toBeInTheDocument();
     });
 
@@ -283,7 +270,6 @@ describe('Modal', () => {
       const dialog = getDialog();
       await user.click(dialog!);
 
-      // onClose가 호출되지 않아야 함
       expect(onClose).not.toHaveBeenCalled();
       expect(getDialog()).toBeInTheDocument();
     });
@@ -440,17 +426,14 @@ describe('Modal', () => {
         { timeout: 500 },
       );
 
-      // Tab 키로 다음 요소로 이동
       await user.tab();
       const secondButton = within(dialog!).getByText('두 번째 버튼').closest('button')!;
       expect(secondButton).toHaveFocus();
 
-      // Tab 키로 다음 요소로 이동
       await user.tab();
       const thirdButton = within(dialog!).getByText('세 번째 버튼').closest('button')!;
       expect(thirdButton).toHaveFocus();
 
-      // Tab 키로 다시 첫 번째 요소로 순환
       await user.tab();
       const firstButtonAgain = within(dialog!).getByText('첫 번째 버튼').closest('button')!;
       expect(firstButtonAgain).toHaveFocus();
@@ -501,12 +484,10 @@ describe('Modal', () => {
         { timeout: 500 },
       );
 
-      // Shift+Tab으로 마지막 요소로 이동
       await user.tab({ shift: true });
       const thirdButton = within(dialog!).getByText('세 번째 버튼').closest('button')!;
       expect(thirdButton).toHaveFocus();
 
-      // Shift+Tab으로 이전 요소로 이동
       await user.tab({ shift: true });
       const secondButton = within(dialog!).getByText('두 번째 버튼').closest('button')!;
       expect(secondButton).toHaveFocus();
@@ -548,10 +529,8 @@ describe('Modal', () => {
         { timeout: 300 },
       );
 
-      // ESC로 모달 닫기
       await user.keyboard('{Escape}');
 
-      // 애니메이션 완료 대기 (200ms)
       await waitFor(
         () => {
           expect(openButton).toHaveFocus();
@@ -713,7 +692,6 @@ describe('Modal', () => {
         openButton.click();
       });
 
-      // requestAnimationFrame이 두 번 호출되므로 약간의 지연 필요
       await waitFor(
         () => {
           const dialog = getDialog();
@@ -788,13 +766,10 @@ describe('Modal', () => {
         { timeout: 300 },
       );
 
-      // ESC로 모달 닫기
       await user.keyboard('{Escape}');
 
-      // 즉시는 아직 DOM에 남아있을 수 있음
       expect(getDialog()).toBeInTheDocument();
 
-      // 200ms 후 언마운트 확인
       await waitFor(
         () => {
           expect(getDialog()).not.toBeInTheDocument();
@@ -852,13 +827,10 @@ describe('Modal', () => {
 
       render(<TestModal />);
 
-      // 모달이 열려있을 때 overflow가 hidden
       expect(document.body.style.overflow).toBe('hidden');
 
-      // ESC로 모달 닫기
       await user.keyboard('{Escape}');
 
-      // 애니메이션 완료 후 overflow 복원 확인
       await waitFor(
         () => {
           expect(document.body.style.overflow).toBe('');
@@ -912,7 +884,6 @@ describe('Modal', () => {
         { timeout: 300 },
       );
 
-      // Cleanup
       document.body.removeChild(customContainer);
     });
   });
@@ -961,7 +932,6 @@ describe('Modal', () => {
         () => {
           const dialog = getDialog();
           const closeButton = within(dialog!).getByLabelText('닫기');
-          // SVG 아이콘이 렌더링되어야 함
           expect(closeButton.querySelector('svg')).toBeInTheDocument();
         },
         { timeout: 300 },
@@ -1063,19 +1033,16 @@ describe('Modal', () => {
         expect(emailInput).toHaveFocus();
       });
 
-      // Tab으로 다음 입력 필드로 이동
       await user.tab();
       const passwordInput = within(dialog!).getByPlaceholderText('비밀번호');
       expect(passwordInput).toHaveFocus();
 
-      // Tab으로 버튼으로 이동
       await user.tab();
       const form = dialog!.querySelector('form');
       const submitButton = form?.querySelector('button[type="submit"]') as HTMLButtonElement;
       expect(submitButton).toBeInTheDocument();
       expect(submitButton).toHaveFocus();
 
-      // Tab으로 다시 첫 번째 입력 필드로 순환
       await user.tab();
       const emailInputAgain = within(dialog!).getByPlaceholderText('이메일');
       expect(emailInputAgain).toHaveFocus();
@@ -1125,12 +1092,10 @@ describe('Modal', () => {
         { timeout: 500 },
       );
 
-      // Tab으로 다음 버튼으로 이동
       await user.tab();
       const deleteButton = within(dialog!).getByText('삭제').closest('button')!;
       expect(deleteButton).toHaveFocus();
 
-      // Tab으로 다시 첫 번째 버튼으로 순환
       await user.tab();
       const cancelButtonAgain = within(dialog!).getByText('취소').closest('button')!;
       expect(cancelButtonAgain).toHaveFocus();
