@@ -1,5 +1,5 @@
 {
-  "name": "thedotscorp-frontend-assign",
+  "name": "@guesung/ui",
   "version": "0.0.0",
   "description": "React 19 컴포넌트 라이브러리 - Select와 Modal 컴포넌트를 제공하는 TypeScript 기반 UI 라이브러리",
   "type": "module",
