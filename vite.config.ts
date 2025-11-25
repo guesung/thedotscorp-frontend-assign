@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react-swc';
 import tailwindcss from '@tailwindcss/vite';
 import svgr from 'vite-plugin-svgr';
 import path from 'path';
+import packageJson from './package.json';
 
 interface VitestConfigExport extends UserConfig {
   test: InlineConfig;
@@ -16,10 +17,30 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
+  },
+  build: {
+    lib: {
+      entry: './src/components/index.ts',
+      name: 'TheDotCorpFrontendAssign',
+      formats: ['es', 'cjs'],
+      fileName: format => `index.${format}.js`,
+    },
+    outDir: './dist',
+    rollupOptions: {
+      external: [...Object.keys(packageJson.peerDependencies)].flatMap(dependency => [
+        dependency,
+        new RegExp(`^${dependency}(/.*)?$`),
+      ]),
+      output: {
+        globals: {
+          react: 'React',
+          'react-dom': 'ReactDOM',
+        },
+      },
+    },
   },
 } as VitestConfigExport);
