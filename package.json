@@ -1,8 +1,45 @@
 {
-  "name": "connecting-the-dots-frontend-assign",
-  "private": true,
+  "name": "thedotscorp-frontend-assign",
   "version": "0.0.0",
+  "description": "React 19 컴포넌트 라이브러리 - Select와 Modal 컴포넌트를 제공하는 TypeScript 기반 UI 라이브러리",
   "type": "module",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.es.js",
+  "types": "./dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "keywords": [
+    "react",
+    "react-components",
+    "typescript",
+    "tailwindcss",
+    "select",
+    "modal",
+    "ui-library",
+    "component-library",
+    "compound-components",
+    "accessibility",
+    "a11y"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guesung/thedotscorp-frontend-assign.git"
+  },
+  "homepage": "https://github.com/guesung/thedotscorp-frontend-assign#readme",
+  "bugs": {
+    "url": "https://github.com/guesung/thedotscorp-frontend-assign/issues"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.es.js",
+      "require": "./dist/index.cjs.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
