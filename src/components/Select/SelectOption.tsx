@@ -18,6 +18,7 @@ export function SelectOption({ children, value, disabled = false, className }: S
 
   const handleSelectOptionClick = () => {
     if (disabled) return;
+
     setSelectedValue(value);
     setIsOpen(false);
     triggerRef.current?.focus();
