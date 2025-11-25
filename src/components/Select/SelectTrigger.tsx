@@ -37,32 +37,23 @@ export function SelectTrigger({ children, className }: SelectTriggerProps) {
   const handleKeyDown = (e: KeyboardEvent) => {
     if (isDisabled) return;
 
-    switch (e.key) {
-      case 'ArrowUp':
-      case 'ArrowDown':
-      case 'Enter':
-        e.preventDefault();
-        if (!isOpen) {
-          handleOpen();
-        }
-        break;
-      case 'Escape':
-        e.preventDefault();
-        if (isOpen) {
-          setIsOpen(false);
-          triggerRef.current?.focus();
-        }
-        break;
+    const shouldOpenSelect = e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'Enter';
+
+    if (shouldOpenSelect) {
+      e.preventDefault();
+      if (!isOpen) {
+        handleOpen();
+      }
+      return;
     }
   };
 
-  const activeOptionId =
-    isOpen && options[highlightedIndex] && !options[highlightedIndex].disabled
-      ? `${listboxId}-option-${highlightedIndex}`
-      : undefined;
+  const hasValidHighlightedOption = isOpen && options[highlightedIndex] && !options[highlightedIndex].disabled;
+  const activeOptionId = hasValidHighlightedOption ? `${listboxId}-option-${highlightedIndex}` : undefined;
 
   const handleClick = () => {
     if (isDisabled) return;
+
     if (isOpen) {
       setIsOpen(false);
     } else {
