@@ -23,6 +23,8 @@ export function SelectTrigger({ children, className }: SelectTriggerProps) {
     selectedOption,
   } = useSelectContext();
 
+  const isDisabled = variant === 'disabled';
+
   const findNextEnabledIndex = (currentIndex: number, direction: 'up' | 'down') => {
     const optionCount = options.length;
     let nextIndex = currentIndex;
@@ -35,8 +37,6 @@ export function SelectTrigger({ children, className }: SelectTriggerProps) {
     }
     return currentIndex;
   };
-
-  const isDisabled = variant === 'disabled';
 
   const handleOpen = () => {
     if (isDisabled) return;

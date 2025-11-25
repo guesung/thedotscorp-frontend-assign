@@ -78,11 +78,6 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function Sel
   const containerRef = useRef<HTMLDivElement>(null);
   const id = useId();
 
-  const handleClose = useCallback(() => {
-    setIsOpen(false);
-  }, []);
-
-  useClickOutside(containerRef, handleClose);
   const listboxId = `${id}-listbox`;
   const labelId = `${id}-label`;
 
@@ -113,6 +108,10 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function Sel
     return collectOptions(children);
   }, [children]);
 
+  const selectedOption = useMemo(() => {
+    return options.find(option => option.value === value)?.children;
+  }, [value, options]);
+
   const handleSetSelectedValue = useCallback(
     (newValue: string | undefined) => {
       onChange(newValue);
@@ -120,9 +119,11 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function Sel
     [onChange],
   );
 
-  const selectedOption = useMemo(() => {
-    return options.find(option => option.value === value)?.children;
-  }, [value, options]);
+  const handleClose = useCallback(() => {
+    setIsOpen(false);
+  }, []);
+
+  useClickOutside(containerRef, handleClose);
 
   useImperativeHandle(
     ref,
