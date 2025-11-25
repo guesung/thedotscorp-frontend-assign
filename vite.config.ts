@@ -42,6 +42,7 @@ export default defineConfig({
     },
     outDir: './dist',
     cssCodeSplit: false, // CSS를 하나의 파일로 번들링
+    minify: 'esbuild', // 또는 'terser' 또는 true
     rollupOptions: {
       external: [...Object.keys(packageJson.peerDependencies)].flatMap(dependency => [
         dependency,
