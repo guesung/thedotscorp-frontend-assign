@@ -41,11 +41,15 @@ export default defineConfig({
       fileName: format => `index.${format}.js`,
     },
     outDir: './dist',
+    cssCodeSplit: false, // CSS를 하나의 파일로 번들링
     rollupOptions: {
       external: [...Object.keys(packageJson.peerDependencies)].flatMap(dependency => [
         dependency,
         new RegExp(`^${dependency}(/.*)?$`),
       ]),
+      output: {
+        assetFileNames: 'index.css', // CSS 파일명 지정
+      },
     },
   },
 } as VitestConfigExport);
