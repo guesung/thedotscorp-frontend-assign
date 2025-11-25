@@ -86,10 +86,7 @@ export function ModalRoot({
     [isOpen, onClose, titleId, descriptionId, isAnimating],
   );
 
-  if (!shouldRender) {
-    return null;
-  }
-
+  if (!shouldRender) return null;
   return (
     <ModalContext.Provider value={contextValue}>
       <ModalPortal container={portalContainer}>
