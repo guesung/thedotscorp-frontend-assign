@@ -50,26 +50,28 @@ export function ModalRoot({
   const previousActiveElementRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
-    if (isOpen) {
-      previousActiveElementRef.current = document.activeElement as HTMLElement;
+    (function handleModalOpenAndClose() {
+      if (isOpen) {
+        previousActiveElementRef.current = document.activeElement as HTMLElement;
 
-      setShouldRender(true);
-      requestAnimationFrame(() => {
+        setShouldRender(true);
         requestAnimationFrame(() => {
-          setIsAnimating(true);
+          requestAnimationFrame(() => {
+            setIsAnimating(true);
+          });
         });
-      });
-    } else {
-      setIsAnimating(false);
-      const timer = setTimeout(() => {
-        setShouldRender(false);
-        if (previousActiveElementRef.current) {
-          previousActiveElementRef.current?.focus();
-          previousActiveElementRef.current = null;
-        }
-      }, ANIMATION_DURATION);
-      return () => clearTimeout(timer);
-    }
+      } else {
+        setIsAnimating(false);
+        const timer = setTimeout(() => {
+          setShouldRender(false);
+          if (previousActiveElementRef.current) {
+            previousActiveElementRef.current?.focus();
+            previousActiveElementRef.current = null;
+          }
+        }, ANIMATION_DURATION);
+        return () => clearTimeout(timer);
+      }
+    })();
   }, [isOpen]);
 
   const contextValue = useMemo(

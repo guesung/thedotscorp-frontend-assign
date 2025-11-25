@@ -11,30 +11,32 @@ export function SelectList({ children, className = '' }: SelectListProps) {
   const listboxRef = useRef<HTMLUListElement>(null);
 
   useEffect(() => {
-    if (!isOpen || highlightedIndex === undefined || !listboxRef.current) return;
+    (function scrollToHighlightedOption() {
+      if (!isOpen || highlightedIndex === undefined || !listboxRef.current) return;
 
-    const optionId = `${listboxId}-option-${highlightedIndex}`;
-    const optionElement = document.getElementById(optionId);
+      const optionId = `${listboxId}-option-${highlightedIndex}`;
+      const optionElement = document.getElementById(optionId);
 
-    if (optionElement && listboxRef.current) {
-      const listbox = listboxRef.current;
-      const optionTop = optionElement.offsetTop;
-      const optionHeight = optionElement.offsetHeight;
-      const listboxScrollTop = listbox.scrollTop;
-      const listboxHeight = listbox.clientHeight;
+      if (optionElement && listboxRef.current) {
+        const listbox = listboxRef.current;
+        const optionTop = optionElement.offsetTop;
+        const optionHeight = optionElement.offsetHeight;
+        const listboxScrollTop = listbox.scrollTop;
+        const listboxHeight = listbox.clientHeight;
 
-      const optionBottom = optionTop + optionHeight;
-      const visibleTop = listboxScrollTop;
-      const visibleBottom = listboxScrollTop + listboxHeight;
+        const optionBottom = optionTop + optionHeight;
+        const visibleTop = listboxScrollTop;
+        const visibleBottom = listboxScrollTop + listboxHeight;
 
-      if (highlightedIndex === 0) {
-        listbox.scrollTop = optionBottom - listboxHeight;
-      } else if (optionTop < visibleTop) {
-        listbox.scrollTop = optionTop;
-      } else if (optionBottom > visibleBottom) {
-        listbox.scrollTop = optionBottom - listboxHeight;
+        if (highlightedIndex === 0) {
+          listbox.scrollTop = optionBottom - listboxHeight;
+        } else if (optionTop < visibleTop) {
+          listbox.scrollTop = optionTop;
+        } else if (optionBottom > visibleBottom) {
+          listbox.scrollTop = optionBottom - listboxHeight;
+        }
       }
-    }
+    })();
   }, [highlightedIndex, isOpen, listboxId]);
 
   if (!isOpen) return null;

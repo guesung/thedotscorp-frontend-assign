@@ -17,14 +17,16 @@ export function ModalContent({ children, className }: ModalContentProps) {
   useBodyScrollLock();
 
   useEffect(() => {
-    if (!contentRef.current) return;
+    (function focusFirstElement() {
+      if (!contentRef.current) return;
 
-    const focusableElements = getFocusableElements(contentRef.current);
-    if (focusableElements.length > 0) {
-      focusableElements[0].focus();
-    } else {
-      contentRef.current.focus();
-    }
+      const focusableElements = getFocusableElements(contentRef.current);
+      if (focusableElements.length > 0) {
+        focusableElements[0].focus();
+      } else {
+        contentRef.current.focus();
+      }
+    })();
   }, [contentRef]);
 
   return (
