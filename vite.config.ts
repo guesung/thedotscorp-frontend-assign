@@ -4,6 +4,7 @@ import path from 'path';
 import { defineConfig, type InlineConfig, type UserConfig } from 'vite';
 import svgr from 'vite-plugin-svgr';
 import packageJson from './package.json';
+import dts from 'vite-plugin-dts';
 
 interface VitestConfigExport extends UserConfig {
   test: InlineConfig;
@@ -11,7 +12,17 @@ interface VitestConfigExport extends UserConfig {
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), tailwindcss(), svgr()],
+  plugins: [
+    react(),
+    tailwindcss(),
+    svgr(),
+    dts({
+      rollupTypes: true,
+      copyDtsFiles: false,
+      insertTypesEntry: false,
+      tsconfigPath: './tsconfig.app.json',
+    }),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -24,7 +35,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: './src/components/index.ts',
+      entry: './src/index.ts',
       name: 'TheDotCorpFrontendAssign',
       formats: ['es', 'cjs'],
       fileName: format => `index.${format}.js`,
