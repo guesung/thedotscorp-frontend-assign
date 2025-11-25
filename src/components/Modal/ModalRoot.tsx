@@ -29,6 +29,7 @@ interface ModalRootProps extends PropsWithChildren {
   onClose: () => void;
   closeOnOverlayClick?: boolean;
   portalContainer?: Element | null;
+  className?: string;
 }
 
 export function ModalRoot({
@@ -37,6 +38,7 @@ export function ModalRoot({
   onClose,
   closeOnOverlayClick = true,
   portalContainer = document.body,
+  className,
 }: ModalRootProps) {
   const id = useId();
   const titleId = `${id}-title`;
@@ -89,7 +91,9 @@ export function ModalRoot({
   return (
     <ModalContext.Provider value={contextValue}>
       <ModalPortal container={portalContainer}>
-        <ModalOverlay closeOnClick={closeOnOverlayClick}>{children}</ModalOverlay>
+        <ModalOverlay closeOnClick={closeOnOverlayClick} className={className}>
+          {children}
+        </ModalOverlay>
       </ModalPortal>
     </ModalContext.Provider>
   );

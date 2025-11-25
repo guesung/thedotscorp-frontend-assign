@@ -1,11 +1,13 @@
 import { type KeyboardEvent, type ReactNode } from 'react';
 import { useSelectContext } from './SelectRoot';
+import { cn } from '@/utils/cn';
 
 interface SelectTriggerProps {
   children: ReactNode;
+  className?: string;
 }
 
-export function SelectTrigger({ children }: SelectTriggerProps) {
+export function SelectTrigger({ children, className }: SelectTriggerProps) {
   const {
     isOpen,
     setIsOpen,
@@ -110,11 +112,13 @@ export function SelectTrigger({ children }: SelectTriggerProps) {
       disabled={isDisabled}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      className={`w-full px-3 py-2 text-left rounded-md shadow-sm focus:outline-none ${
+      className={cn(
+        'w-full px-3 py-2 text-left rounded-md shadow-sm focus:outline-none',
         isDisabled
           ? 'bg-gray-100 border border-gray-200 text-gray-400 cursor-not-allowed'
-          : 'bg-white border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500'
-      }`}
+          : 'bg-white border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-primary-500',
+        className,
+      )}
     >
       {selectedOption || children || '선택하세요'}
     </button>
