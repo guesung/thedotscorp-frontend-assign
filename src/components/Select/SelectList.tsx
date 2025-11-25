@@ -1,4 +1,4 @@
-import { useEffect, useRef, type PropsWithChildren } from 'react';
+import { useEffect, useRef, type KeyboardEvent, type PropsWithChildren } from 'react';
 import { useSelectContext } from './SelectRoot';
 import { cn } from '@/utils/cn';
 
@@ -7,8 +7,65 @@ interface SelectListProps extends PropsWithChildren {
 }
 
 export function SelectList({ children, className = '' }: SelectListProps) {
-  const { isOpen, listboxId, labelId, highlightedIndex } = useSelectContext();
+  const {
+    isOpen,
+    listboxId,
+    labelId,
+    highlightedIndex,
+    setHighlightedIndex,
+    options,
+    setSelectedValue,
+    setIsOpen,
+    triggerRef,
+  } = useSelectContext();
   const listboxRef = useRef<HTMLUListElement>(null);
+
+  const findNextEnabledIndex = (currentIndex: number, direction: 'up' | 'down') => {
+    const optionCount = options.length;
+    let nextIndex = currentIndex;
+
+    for (let i = 0; i < optionCount; i++) {
+      nextIndex = (nextIndex + (direction === 'down' ? 1 : -1) + optionCount) % optionCount;
+      if (options[nextIndex] && !options[nextIndex].disabled) {
+        return nextIndex;
+      }
+    }
+    return currentIndex;
+  };
+
+  const handleKeyDown = (e: KeyboardEvent<HTMLUListElement>) => {
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setHighlightedIndex(findNextEnabledIndex(highlightedIndex, 'down'));
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setHighlightedIndex(findNextEnabledIndex(highlightedIndex, 'up'));
+        break;
+      case 'Enter':
+        e.preventDefault();
+        if (options[highlightedIndex] && !options[highlightedIndex].disabled) {
+          setSelectedValue(options[highlightedIndex].value);
+          setIsOpen(false);
+          triggerRef.current?.focus();
+        }
+        break;
+      case 'Escape':
+        e.preventDefault();
+        setIsOpen(false);
+        triggerRef.current?.focus();
+        break;
+    }
+  };
+
+  useEffect(() => {
+    (function focusListbox() {
+      if (isOpen && listboxRef.current) {
+        listboxRef.current.focus();
+      }
+    })();
+  }, [isOpen]);
 
   useEffect(() => {
     (function scrollToHighlightedOption() {
@@ -46,6 +103,8 @@ export function SelectList({ children, className = '' }: SelectListProps) {
       id={listboxId}
       role="listbox"
       aria-labelledby={labelId}
+      tabIndex={0}
+      onKeyDown={handleKeyDown}
       className={cn(
         'absolute z-dropdown w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg overflow-auto max-h-60',
         className,

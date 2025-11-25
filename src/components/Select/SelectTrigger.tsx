@@ -14,7 +14,6 @@ export function SelectTrigger({ children, className }: SelectTriggerProps) {
     highlightedIndex,
     setHighlightedIndex,
     options,
-    setSelectedValue,
     triggerRef,
     listboxId,
     labelId,
@@ -24,19 +23,6 @@ export function SelectTrigger({ children, className }: SelectTriggerProps) {
   } = useSelectContext();
 
   const isDisabled = variant === 'disabled';
-
-  const findNextEnabledIndex = (currentIndex: number, direction: 'up' | 'down') => {
-    const optionCount = options.length;
-    let nextIndex = currentIndex;
-
-    for (let i = 0; i < optionCount; i++) {
-      nextIndex = (nextIndex + (direction === 'down' ? 1 : -1) + optionCount) % optionCount;
-      if (options[nextIndex] && !options[nextIndex].disabled) {
-        return nextIndex;
-      }
-    }
-    return currentIndex;
-  };
 
   const handleOpen = () => {
     if (isDisabled) return;
@@ -52,34 +38,20 @@ export function SelectTrigger({ children, className }: SelectTriggerProps) {
     if (isDisabled) return;
 
     switch (e.key) {
-      case 'ArrowDown':
-        e.preventDefault();
-        if (isOpen) {
-          setHighlightedIndex(findNextEnabledIndex(highlightedIndex, 'down'));
-        } else {
-          handleOpen();
-        }
-        break;
       case 'ArrowUp':
-        e.preventDefault();
-        if (isOpen) {
-          setHighlightedIndex(findNextEnabledIndex(highlightedIndex, 'up'));
-        }
-        break;
+      case 'ArrowDown':
       case 'Enter':
         e.preventDefault();
-        if (isOpen && options[highlightedIndex] && !options[highlightedIndex].disabled) {
-          setSelectedValue(options[highlightedIndex].value);
-          setIsOpen(false);
-          triggerRef.current?.focus();
-        } else if (!isOpen) {
+        if (!isOpen) {
           handleOpen();
         }
         break;
       case 'Escape':
         e.preventDefault();
-        setIsOpen(false);
-        triggerRef.current?.focus();
+        if (isOpen) {
+          setIsOpen(false);
+          triggerRef.current?.focus();
+        }
         break;
     }
   };
