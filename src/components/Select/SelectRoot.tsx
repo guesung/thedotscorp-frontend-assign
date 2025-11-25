@@ -74,10 +74,11 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function Sel
 ) {
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(0);
+
   const triggerRef = useRef<HTMLButtonElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
-  const id = useId();
 
+  const id = useId();
   const listboxId = `${id}-listbox`;
   const labelId = `${id}-label`;
 
@@ -111,13 +112,6 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function Sel
   const selectedOption = useMemo(() => {
     return options.find(option => option.value === value)?.children;
   }, [value, options]);
-
-  const handleSetSelectedValue = useCallback(
-    (newValue: string | undefined) => {
-      onChange(newValue);
-    },
-    [onChange],
-  );
 
   const handleClose = useCallback(() => {
     setIsOpen(false);
@@ -165,14 +159,14 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function Sel
         if (variant !== 'disabled') {
           const option = options.find(opt => opt.value === newValue);
           if (option && !option.disabled) {
-            handleSetSelectedValue(newValue);
+            onChange(newValue);
             setIsOpen(false);
             triggerRef.current?.focus();
           }
         }
       },
     }),
-    [variant, isOpen, options, value, handleSetSelectedValue],
+    [variant, isOpen, options, value, onChange],
   );
 
   const contextValue = useMemo(
@@ -180,7 +174,7 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function Sel
       isOpen,
       setIsOpen,
       selectedValue: value,
-      setSelectedValue: handleSetSelectedValue,
+      setSelectedValue: onChange,
       highlightedIndex,
       setHighlightedIndex,
       options,
@@ -190,7 +184,7 @@ export const SelectRoot = forwardRef<SelectHandle, SelectRootProps>(function Sel
       labelId,
       variant,
     }),
-    [isOpen, value, handleSetSelectedValue, highlightedIndex, options, selectedOption, listboxId, labelId, variant],
+    [isOpen, value, onChange, highlightedIndex, options, selectedOption, listboxId, labelId, variant],
   );
 
   return (
