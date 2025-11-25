@@ -61,7 +61,7 @@ export interface SelectHandle {
   selectValue: (value: string) => void;
 }
 
-interface SelectRootProps extends PropsWithChildren {
+export interface SelectRootProps extends PropsWithChildren {
   variant?: SelectVariant;
   value: string | undefined;
   onChange: (value: string | undefined) => void;
