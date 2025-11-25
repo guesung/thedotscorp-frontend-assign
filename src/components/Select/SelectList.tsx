@@ -86,7 +86,7 @@ export function SelectList({ children, className = '' }: SelectListProps) {
         const visibleBottom = listboxScrollTop + listboxHeight;
 
         if (highlightedIndex === 0) {
-          listbox.scrollTop = optionBottom - listboxHeight;
+          listbox.scrollTop = 0;
         } else if (optionTop < visibleTop) {
           listbox.scrollTop = optionTop;
         } else if (optionBottom > visibleBottom) {
