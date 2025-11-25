@@ -24,6 +24,12 @@ export function SelectOption({ children, value, disabled = false, className }: S
     triggerRef.current?.focus();
   };
 
+  const getOptionClassName = () => {
+    if (disabled) return 'text-gray-400 cursor-not-allowed';
+    if (isHighlighted) return 'bg-primary-500 text-white cursor-pointer';
+    return 'hover:bg-gray-100 cursor-pointer';
+  };
+
   return (
     <li
       id={`${listboxId}-option-${index}`}
@@ -31,15 +37,7 @@ export function SelectOption({ children, value, disabled = false, className }: S
       aria-selected={isSelected}
       aria-disabled={disabled}
       onClick={handleSelectOptionClick}
-      className={cn(
-        'px-3 py-2',
-        disabled
-          ? 'text-gray-400 cursor-not-allowed'
-          : isHighlighted
-            ? 'bg-primary-500 text-white cursor-pointer'
-            : 'hover:bg-gray-100 cursor-pointer',
-        className,
-      )}
+      className={cn('px-3 py-2', getOptionClassName(), className)}
     >
       {children}
     </li>
