@@ -29,6 +29,8 @@ React 19와 TypeScript를 사용한 프로젝트입니다.
 
 ## 컴포넌트 문서
 
+### [배포된 스토리북 링크](https://69241e33c399e0a7b2dc458c-quqjuffvmw.chromatic.com/)
+
 ### [Select](./src/components/Select/README.md)
 
 ### [Modal](./src/components/Modal/README.md)

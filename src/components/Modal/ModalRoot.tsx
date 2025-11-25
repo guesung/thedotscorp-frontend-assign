@@ -5,12 +5,12 @@ import { ModalOverlay } from './ModalOverlay';
 const ANIMATION_DURATION = 200;
 
 interface ModalContextValue {
-  isOpen: boolean;
+  isOpen: boolean; // 모달을 열었는지 여부
   onClose: () => void;
-  titleId: string;
-  descriptionId: string;
-  isAnimating: boolean;
+  isAnimating: boolean; // 모달을 애니메이션 중인지 여부
   contentRef: React.RefObject<HTMLDivElement | null>;
+  titleId: string; // 제목 요소 ID
+  descriptionId: string; // 설명 요소 ID
 }
 
 const ModalContext = createContext<ModalContextValue | null>(null);
