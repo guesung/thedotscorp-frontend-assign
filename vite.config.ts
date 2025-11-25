@@ -1,8 +1,8 @@
-import { defineConfig, type InlineConfig, type UserConfig } from 'vite';
-import react from '@vitejs/plugin-react-swc';
 import tailwindcss from '@tailwindcss/vite';
-import svgr from 'vite-plugin-svgr';
+import react from '@vitejs/plugin-react-swc';
 import path from 'path';
+import { defineConfig, type InlineConfig, type UserConfig } from 'vite';
+import svgr from 'vite-plugin-svgr';
 import packageJson from './package.json';
 
 interface VitestConfigExport extends UserConfig {
@@ -35,12 +35,6 @@ export default defineConfig({
         dependency,
         new RegExp(`^${dependency}(/.*)?$`),
       ]),
-      output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-        },
-      },
     },
   },
 } as VitestConfigExport);
